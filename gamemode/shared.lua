@@ -10,8 +10,9 @@ g_base.Config.ConsolePrefix    = "[g_base]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 function g_base.ConsoleMessage(...)
 	local mColor = g_base.Config.MainColor
-	local prefix = g_base.Config.ConsolePrefix
-	MsgC(mColor,prefix,...,"\n") // \n to prevent same line console messages
+	local prefix = g_base.Config.ConsolePrefix .. " "
+	local textCo = g_base.Config.DefaultTextColor
+	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
 local function includedir( scanDirectory, isGamemode )
@@ -89,4 +90,8 @@ function g_base.GetPermissionLevel(ply)
 end
 
 // load core plugins/extensions
+g_base.ConsoleMessage("loading extensions")
 includedir( GM.FolderName .. "/admin/"  )
+
+g_base.ConsoleMessage("loading plugins")
+includedir( GM.FolderName .. "/plugins/" )

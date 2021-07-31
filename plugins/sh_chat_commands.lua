@@ -37,10 +37,10 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 			-- can client run the command
 			if cmdData.canRun(cmdData,ply) then
 				cmdData.onRun(cmdData,ply,args)
+			else
+				ply:ChatPrint("You do not have permission to use this command.")
+				return ""
 			end
-		else
-			ply:ChatPrint("You do not have permission to use this command.")
-			return ""
 		end
 		ply:ChatPrint("The command \"" .. command .. "\" doesn't exist." )
 		return ""

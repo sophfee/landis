@@ -1,0 +1,12 @@
+"gunga"
+{
+	"base"		"base"
+	"title"		"g_base dev testing"
+	"category"	"pve"
+	"menusystem"	"1"
+	"workshopid"	"-1"
+
+	"settings"
+	{
+	}
+}

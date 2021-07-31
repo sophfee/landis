@@ -15,7 +15,7 @@ function g_base.ConsoleMessage(...)
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
-local function includedir( scanDirectory, isGamemode )
+function includedir( scanDirectory, isGamemode )
 	-- Null-coalescing for optional argument
 	isGamemode = isGamemode or false
 	
@@ -32,7 +32,7 @@ local function includedir( scanDirectory, isGamemode )
 			
 			-- Include files within this directory
 			for _, fileName in pairs( files ) do
-				--print(fileName)
+				print(fileName)
 				if fileName != "shared.lua" and fileName != "init.lua" and fileName != "cl_init.lua" then
 					-- print( "Found: ", fileName )
 					
@@ -88,10 +88,29 @@ function g_base.GetPermissionLevel(ply)
 	if ply:IsAdmin()      then return 2 end
 	return 1
 end
+if SERVER then
+	// load core plugins/extensions
+	g_base.ConsoleMessage("loading extensions")
+	includedir( GM.FolderName .. "/core/"  )
 
-// load core plugins/extensions
-g_base.ConsoleMessage("loading extensions")
-includedir( GM.FolderName .. "/admin/"  )
+	g_base.ConsoleMessage("loading plugins")
+	includedir( GM.FolderName .. "/plugins/" )
+end
+if CLIENT then 
+	// load core plugins/extensions
+	g_base.ConsoleMessage("loading extensions")
+	includedir( GM.FolderName .. "/core"  )
 
-g_base.ConsoleMessage("loading plugins")
-includedir( GM.FolderName .. "/plugins/" )
+	g_base.ConsoleMessage("loading plugins")
+	includedir( GM.FolderName .. "/plugins" )
+end
+/*
+local data = g_base.Settings["test"]
+
+local parent = vgui.Create("DFrame")
+parent:SetSize(400,400)
+parent:Center()
+parent:MakePopup()
+
+data.createPanel(parent,data)
+*/

@@ -6,6 +6,7 @@ g_base.Config =  {}
 g_base.Config.MainColor        = Color( 10,  132, 255 )
 g_base.Config.DefaultTextColor = Color( 245, 245, 245 )
 g_base.Config.BGColorDark      = Color( 44,  44,  46  )
+g_base.Config.BGColorLight     = Color( 229, 229, 234  )
 g_base.Config.ConsolePrefix    = "[g_base]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 function g_base.ConsoleMessage(...)

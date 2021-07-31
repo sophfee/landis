@@ -19,8 +19,15 @@ local testStruct = {
 		PANEL:Dock(TOP)
 		PANEL:SetText(data:GetPrintName())
 		PANEL:SetValue(data:GetValue())
-		function PANEL:DoClick()
-			data:SetValue(self:GetValue())
+		PANEL.Paint = function(self,w,h)
+			local mainColor = g_base.Config.MainColor
+			surface.SetDrawColor(mainColor.r,mainColor.g,mainColor.b,200)
+			surface.DrawRect(0, 0, w, h)
+		end
+		function PANEL:OnChange(bVal)
+			print("penis")
+			data:SetValue(bVal)
+			PrintTable(data)
 		end
 	end,
 	printName    = "Test Setting",
@@ -32,10 +39,8 @@ local testStruct = {
 local validType = {
 	"bool",
 	"string",
-	"int_wang",
-	"int_slider",
-	"float_slider",
-	"float_box"
+	"int",
+	"float"
 }
 
 -- Function: Create Setting Class

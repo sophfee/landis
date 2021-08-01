@@ -1,9 +1,10 @@
 local SKIN = {}
+derma.RefreshSkins()
 
 g_base.Config.ButtonColorOff      = Color(72,72,74,255)
 g_base.Config.ButtonColorHovered  = Color(99,99,102,255)
 g_base.Config.ButtonColorOn       = Color(142,142,147,255)
-g_base.Config.CloseButtonColor = Color(255,69,58,255)
+g_base.Config.CloseButtonColor    = Color(255,69,58,255)
 
 surface.CreateFont("g_base-default-14", {
 	font = "Arial",
@@ -42,7 +43,7 @@ function SKIN:PaintFrame( self,w,h )
 	blurDerma(self,200,10,20)
 	local mainColor = g_base.Config.MainColor
 	local bgColor   = g_base.Config.BGColorDark
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 180 )
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
 	surface.DrawRect( 0, 0, w, h )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	surface.DrawRect( 0, 0, w, 23 )
@@ -60,6 +61,11 @@ function SKIN:PaintFrame( self,w,h )
 	end
 end
 
+function SKIN:PaintMenuBar(self,w,h)
+	local bgColor   = g_base.Config.ButtonColorOff
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+	surface.DrawRect( 0, 0, w, h )
+end
 
 function SKIN:PaintWindowMaximizeButton() end
 function SKIN:PaintWindowMinimizeButton() end
@@ -99,8 +105,14 @@ end
 
 function SKIN:PaintTab(self,w,h)
 	local mainColor = g_base.Config.MainColor
-	local bgColor   = g_base.Config.BGColorDark
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 180 )
+	local bgColor   = g_base.Config.ButtonColorOff
+	if self:IsHovered() then
+		bgColor = g_base.Config.ButtonColorHovered
+	end
+	if self:IsDown() then
+		bgColor = g_base.Config.ButtonColorOn
+	end
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	if self:IsActive() then
 		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	end
@@ -108,6 +120,7 @@ function SKIN:PaintTab(self,w,h)
 end
 
 function SKIN:PaintButton(self,w,h)
+	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
 	local bgColor   = g_base.Config.ButtonColorOff
 	if self:IsHovered() then
@@ -128,20 +141,37 @@ end
 
 function SKIN:PaintComboBox(self,w,h)
 	self:SetTextColor(color_white)
-	local mainColor = g_base.Config.MainColor
 	local bgColor   = g_base.Config.ButtonColorOff
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	if self:IsDown() or self:IsMenuOpen() then
-		
-		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
+	if self:IsHovered() then
+		bgColor = g_base.Config.ButtonColorHovered
 	end
+	if self:IsDown() then
+		bgColor = g_base.Config.ButtonColorOn
+	end
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
+
+function SKIN:PaintMenuOption(self,w,h)
+	local bgColor   = g_base.Config.BGColorLight
+	self:SetTextColor(color_black) 
+	if self:IsHovered() then
+		bgColor = g_base.Config.MainColor
+		self:SetTextColor(color_white)
+	end
+	if self:IsDown() then
+		bgColor = Color(100,210,255)
+	end
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+	surface.DrawRect(0, 0, w, h)
+end
+
+
 
 function SKIN:PaintLabel(self,w,h)
 	print(self:GetFont())
 	if self:GetFont() == "DermaDefault" then
-		self:SetFont("g_base-default-14")
+		self:SetFont("g_base-default-20")
 	end
 end
 

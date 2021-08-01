@@ -25,7 +25,6 @@ local testStruct = {
 			surface.DrawRect(0, 0, w, h)
 		end
 		function PANEL:OnChange(bVal)
-			print("penis")
 			data:SetValue(bVal)
 			PrintTable(data)
 		end

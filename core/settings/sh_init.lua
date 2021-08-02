@@ -14,17 +14,13 @@ local baseStruct = {
 local settings = {
 	["useThirdperson"] = {
 		valueType    = "bool",
-		createPanel  = function()
+		createPanel  = function(parent,data)
 			if SERVER then return end -- ensure that this never runs on the server.
 			local PANEL = vgui.Create("DCheckBoxLabel", parent)
+			PANEL:DockMargin(5, 5, 5, 5)
 			PANEL:Dock(TOP)
 			PANEL:SetText(data:GetPrintName())
 			PANEL:SetValue(data:GetValue())
-			PANEL.Paint = function(self,w,h)
-				local mainColor = g_base.Config.MainColor
-				surface.SetDrawColor(mainColor.r,mainColor.g,mainColor.b,200)
-				surface.DrawRect(0, 0, w, h)
-			end
 			function PANEL:OnChange(bVal)
 				data:SetValue(bVal)
 				PrintTable(data)
@@ -34,6 +30,49 @@ local settings = {
 		category     = "Camera",
 		defaultValue = false, -- fallback
 		activeValue  = false
+	},
+	["Viewbobbing"] = {
+		valueType    = "bool",
+		createPanel  = function(parent,data)
+			if SERVER then return end -- ensure that this never runs on the server.
+			local PANEL = vgui.Create("DCheckBoxLabel", parent)
+			PANEL:DockMargin(5, 5, 5, 5)
+			PANEL:Dock(TOP)
+
+			PANEL:SetText(data:GetPrintName())
+			PANEL:SetValue(data:GetValue())
+			function PANEL:OnChange(bVal)
+				data:SetValue(bVal)
+				PrintTable(data)
+			end
+		end,
+		printName    = "Enable Viewbobbing",
+		category     = "e",
+		defaultValue = false, -- fallback
+		activeValue  = false
+	},
+	["ThirdpersonFOV"] = {
+		valueType    = "int",
+		createPanel  = function(parent,data)
+			if SERVER then return end -- ensure that this never runs on the server.
+			local PANEL = vgui.Create("DNumSlider", parent)
+			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
+			PANEL:DockMargin(5, 0, 5, 0)
+			PANEL:Dock(TOP)
+			PANEL:SetText(data:GetPrintName())
+			PANEL:SetMax(100)
+			PANEL:SetMin(65)
+			PANEL:SetDecimals(0)
+			PANEL:SetValue(data:GetValue())
+			function PANEL:OnValueChanged(bVal)
+				data:SetValue(math.Round(bVal,0))
+				PrintTable(data)
+			end
+		end,
+		printName    = "Thirdperson Field of View",
+		category     = "Camera",
+		defaultValue = 90, -- fallback
+		activeValue  = 90
 	}
 }
 
@@ -128,6 +167,88 @@ end
 for name,data in pairs(settings) do
 	Setting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
 end
+
+if SERVER then return end
+
+local saveDataName = "g_base_settings.json"
+
+function g_base:GetSetting(className)
+	local data = self.Settings[className]
+	if data then
+		return data:GetValue()
+	end
+	return nil
+end
+
+function loadData()
+	if file.Exists("gbase-settings","DATA") then
+		if file.Exists("gbase-settings/"..saveDataName, "DATA") then
+			local data = file.Open("gbase-settings/"..saveDataName, "r", "DATA")
+			if data then
+				local tableData = util.JSONToTable(data:ReadLine())
+				for name,value in pairs(tableData) do
+					g_base.Settings[name]:SetValue(value)
+				end
+			end
+		end
+	end
+end
+
+function saveData()
+	local d = {}
+	for n,v in pairs(g_base.Settings) do
+		d[n] = v:GetValue()
+	end
+	file.Write("gbase-settings/"..saveDataName, util.TableToJSON(d,false))
+end
+
+loadData()
+
+-- rename to draw gBaseSettings
+
+local PANEL = {}
+
+function PANEL:Init()
+	self:SetSize(800,600)
+	self:SetTitle("Settings & Options")
+	self.TabHolder = vgui.Create("DPropertySheet", self)
+	self.TabHolder:DockMargin(10, 10, 10, 10)
+	self.TabHolder:Dock(FILL)
+
+	function self:OnClose()
+		saveData()
+	end
+
+	-- assemble the categories
+	local cg = {}
+
+	for name,metaData in pairs(settings) do
+		if not cg[metaData.category] then
+			cg[metaData.category] = {name}
+			continue
+		end
+		table.ForceInsert(cg[metaData.category], name)
+	end
+
+	for name,classes in pairs(cg) do
+		local c = vgui.Create("DPanel", self.TabHolder)
+		self.TabHolder:AddSheet(name,c)
+		c.Paint = function() end
+		c:DockMargin(10, 10, 10, 10)
+		c:Dock(FILL)
+		for _,class in ipairs(classes) do
+			g_base.Settings[class].createPanel(c,g_base.Settings[class])
+		end
+	end
+
+	PrintTable(cg)
+	self:Center()
+	self:MakePopup()
+
+end
+
+vgui.Register("gBaseSettings", PANEL, "DFrame")
+
 --[[
 local data = g_base.Settings["test"]
 

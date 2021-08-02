@@ -98,7 +98,7 @@ function SKIN:PaintPropertySheet(self,w,h)
 	local mainColor = g_base.Config.MainColor
 	local bgColor   = g_base.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
-	surface.DrawRect( 0, 0, w, h )
+	surface.DrawRect( 0, 26, w, h-26 )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	surface.DrawOutlinedRect( 0, 26, w, h-26, 2 )
 end

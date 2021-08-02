@@ -11,6 +11,32 @@ local baseStruct = {
 	activeValue  = false
 }
 
+local settings = {
+	["useThirdperson"] = {
+		valueType    = "bool",
+		createPanel  = function()
+			if SERVER then return end -- ensure that this never runs on the server.
+			local PANEL = vgui.Create("DCheckBoxLabel", parent)
+			PANEL:Dock(TOP)
+			PANEL:SetText(data:GetPrintName())
+			PANEL:SetValue(data:GetValue())
+			PANEL.Paint = function(self,w,h)
+				local mainColor = g_base.Config.MainColor
+				surface.SetDrawColor(mainColor.r,mainColor.g,mainColor.b,200)
+				surface.DrawRect(0, 0, w, h)
+			end
+			function PANEL:OnChange(bVal)
+				data:SetValue(bVal)
+				PrintTable(data)
+			end
+		end,
+		printName    = "Enable Thirdperson",
+		category     = "Camera",
+		defaultValue = false, -- fallback
+		activeValue  = false
+	}
+}
+
 local testStruct = {
 	valueType    = "bool",
 	createPanel  = function(parent,data)
@@ -99,12 +125,9 @@ function Setting(className,struct)
 
 end
 
-local testSetting = Setting("test",testStruct)
-//print(testSetting:GetValue())
-PrintTable(testSetting)
-print("------")
-testSetting:SetValue(true)
-PrintTable(g_base.Settings["test"])
+for name,data in pairs(settings) do
+	Setting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
+end
 --[[
 local data = g_base.Settings["test"]
 

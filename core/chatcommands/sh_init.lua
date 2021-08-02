@@ -4,7 +4,15 @@ local baseStruct = {
 	RequireAlive    = false,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_USER,
-	canRun = function(self,ply)
+	HelpDescription = "Unset description.",
+	canRun = function(self,ply,args)
+		if self.RequireAlive then
+			if not ply:Alive() then return false end
+		end
+		if (self.RequireArgs == true) then
+			if not args then return false end
+			if #args <= 0 then return false end
+		end
 		return g_base.GetPermissionLevel(ply) >= self.PermissionLevel
 	end,
 	onRun  = function(self,ply,args)
@@ -32,11 +40,13 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 		local args = table.Copy(arr)
 		local validCommands = table.Copy(g_base.chat.commands)
 		if validCommands[command] then
+			
 			local cmdData = validCommands[command]
 
 			-- can client run the command
-			if cmdData.canRun(cmdData,ply) then
+			if cmdData.canRun(cmdData,ply,args) then
 				cmdData.onRun(cmdData,ply,args)
+				return ""
 			else
 				ply:ChatPrint("You do not have permission to use this command.")
 				return ""

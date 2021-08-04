@@ -8,12 +8,14 @@ MsgC(Color(10,132,255),[[
   \__, |   |_.__/ \__,_|___/\___|
    __/ |_____                    
   |___/______|                  
+
 //////////////////////////////////
 
   g_base is a framework for gmod
 
    created by urnotnick & 1avx1
 
-//////////////////////////////////]])
-
+//////////////////////////////////
+]])
+AddCSLuaFile("shared.lua")
 include("shared.lua")

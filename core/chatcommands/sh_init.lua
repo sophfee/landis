@@ -16,7 +16,7 @@ local baseStruct = {
 		return g_base.GetPermissionLevel(ply) >= self.PermissionLevel
 	end,
 	onRun  = function(self,ply,args)
-		-- this like... should be used and not left to the default set by the base
+		-- this should be used and not left to the default set by the base
 	end
 }
 
@@ -27,7 +27,7 @@ function g_base.chat.RegisterCommand(className,struct)
 	if makeStruct then
 		g_base.chat.commands[string.lower(className)] = makeStruct
 		if SERVER then
-			g_base.ConsoleMessage("Registered Chat Command: ",className)
+			g_base.ConsoleMessage("Registered Chat Command: "..className)
 		end
 	end
 end

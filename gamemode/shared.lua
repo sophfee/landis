@@ -33,7 +33,7 @@ function includedir( scanDirectory, isGamemode )
 			
 			-- Include files within this directory
 			for _, fileName in pairs( files ) do
-				print(fileName)
+				//print(fileName)
 				if fileName != "shared.lua" and fileName != "init.lua" and fileName != "cl_init.lua" then
 					-- print( "Found: ", fileName )
 					
@@ -91,10 +91,10 @@ function g_base.GetPermissionLevel(ply)
 end
 if SERVER then
 	// load core plugins/extensions
-	g_base.ConsoleMessage("loading extensions")
+	//g_base.ConsoleMessage("loading extensions")
 	includedir( GM.FolderName .. "/core/"  )
 
-	g_base.ConsoleMessage("loading plugins")
+	//g_base.ConsoleMessage("loading plugins")
 	includedir( GM.FolderName .. "/plugins/" )
 end
 if CLIENT then 

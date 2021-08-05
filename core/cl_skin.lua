@@ -200,7 +200,7 @@ end
 
 
 function SKIN:PaintLabel(self,w,h)
-	print(self:GetFont())
+	//print(self:GetFont())
 	if self:GetFont() == "DermaDefault" then
 		self:SetFont("g_base-default-20")
 	end

@@ -136,6 +136,89 @@ function SKIN:PaintTab(self,w,h)
 	surface.DrawRect(0, 0, w, h)
 end
 
+function SKIN:PaintScrollBarGrip(self,w,h)
+	if not self.hSND then
+		self.hSND = false
+	end
+	if not self.pSND then
+		self.pSND = false
+	end
+	//if self:GetName() == "DNumberScratch" then return end
+	//self:SetTextColor(color_white)
+	local bgColor   = g_base.Config.ButtonColorOff
+	if self:IsHovered() then
+		if not self.hSND then
+			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			self.hSND = true
+		end
+		//bgColor = g_base.Config.ButtonColorHovered
+	else self.hSND = false end
+	/*if self:IsDown() then
+		if not self.pSND then
+			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			self.pSND = true
+		end
+		bgColor = g_base.Config.ButtonColorOn
+	else self.pSND = false end*/
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+	surface.DrawRect(0, 0, w, h)
+end
+
+function SKIN:PaintButtonUp(self,w,h)
+	if not self.hSND then
+		self.hSND = false
+	end
+	if not self.pSND then
+		self.pSND = false
+	end
+	if self:GetName() == "DNumberScratch" then return end
+	self:SetTextColor(color_white)
+	local bgColor   = g_base.Config.ButtonColorOff
+	if self:IsHovered() then
+		if not self.hSND then
+			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			self.hSND = true
+		end
+		bgColor = g_base.Config.ButtonColorHovered
+	else self.hSND = false end
+	if self:IsDown() then
+		if not self.pSND then
+			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			self.pSND = true
+		end
+		bgColor = g_base.Config.ButtonColorOn
+	else self.pSND = false end
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+	surface.DrawRect(0, 0, w, h)
+	surface.SetDrawColor(255,255,255)
+	local arrow = {
+		{
+			x = self:GetX() + w/4,
+			y = self:GetY() + h/2
+		},
+		{
+			x = self:GetX() + w/2,
+			h = self:GetY() + h/4
+		},
+		{
+			x = self:GetX() + w-w/4,
+			h = self:GetY() + h/2
+		},
+		{
+			x = self:GetX() + w/4,
+			y = self:GetY() + h/2
+		}
+	}
+	draw.NoTexture()
+	surface.DrawPoly(arrow)
+end
+
+function SKIN:PaintVScrollBar(self,w,h)
+	local bgColor   = g_base.Config.ButtonColorHovered
+	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+	surface.DrawRect(0, 0, w, h)
+end
+
 function SKIN:PaintButton(self,w,h)
 	if not self.hSND then
 		self.hSND = false

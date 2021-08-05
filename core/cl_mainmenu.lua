@@ -24,9 +24,9 @@ function PANEL:Init()
 		return
 	end
 	menuOpen = true
-	/*hook.Add("HUDShouldDraw", "removeall", function(name)
+	 hook.Add("HUDShouldDraw", "removeall", function(name)
 		if not( name == "CHudGMod" )then return false end
-	end)*/
+	end)
 	self:Dock(LEFT)
 	self:SetSize(ScrW()/2,ScrH())
 	self.Paint = function()

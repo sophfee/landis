@@ -49,7 +49,7 @@ local settings = {
 		printName    = "Enable Button Hover/Press Noise",
 		category     = "Misc.",
 		defaultValue = true, -- fallback
-		activeValue  = true
+		activeValue  = false
 	},
 	["ThirdpersonFOV"] = {
 		valueType    = "int",
@@ -179,6 +179,8 @@ function g_base:GetSetting(className)
 	end
 	return false
 end
+
+file.CreateDir("gbase-settings")
 
 function loadData()
 	if file.Exists("gbase-settings","DATA") then

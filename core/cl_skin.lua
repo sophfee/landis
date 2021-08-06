@@ -94,13 +94,13 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 end
 
 function SKIN:PaintPropertySheet(self,w,h)
-	--blurDerma(self,200,10,20)
+	blurDerma(self,200,10,20)
 	local mainColor = g_base.Config.MainColor
 	local bgColor   = g_base.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
-	surface.DrawRect( 0, 26, w, h-26 )
+	surface.DrawRect(  0, 20, w, h-20 )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
-	surface.DrawOutlinedRect( 0, 26, w, h-26, 2 )
+	surface.DrawOutlinedRect( 0, 20, w, h-20, 2 )
 end
 
 function SKIN:PaintTab(self,w,h)
@@ -133,10 +133,10 @@ function SKIN:PaintTab(self,w,h)
 	if self:IsActive() then
 		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	end
-	surface.DrawRect(0, 0, w, h)
+	surface.DrawRect(0, 0, w, 20)
 end
 
-function SKIN:PaintScrollBarGrip(self,w,h)
+--[[function SKIN:PaintScrollBarGrip(self,w,h)
 	if not self.hSND then
 		self.hSND = false
 	end
@@ -217,7 +217,7 @@ function SKIN:PaintVScrollBar(self,w,h)
 	local bgColor   = g_base.Config.ButtonColorHovered
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
-end
+end*/]]
 
 function SKIN:PaintButton(self,w,h)
 	if not self.hSND then

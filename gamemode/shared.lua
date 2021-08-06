@@ -1,4 +1,4 @@
-DeriveGamemode("base")
+DeriveGamemode("sandbox")
 g_base = {}
 
 // fallback configurations

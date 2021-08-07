@@ -6,3 +6,10 @@ function meta:SetupDataTables()
 		self:SetStamina(5)
 	end
 end
+
+if SERVER then
+	hook.Add("PlayerSpawn","setuphands", function(ply)
+		ply:SetupHands()
+	end)
+	hook.Add("PlayerDeathSound","mutebeep",function() return true end)
+end

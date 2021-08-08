@@ -26,17 +26,17 @@ function PANEL:Paint(w,h)
 
 	local r, gC, b = self.Color:Unpack()
 
-	surface.SetDrawColor(r,gC,b,180)
+	surface.SetDrawColor(r,gC,b,255)
+
+	surface.DrawRect(0, 0, w, h)
+
+	surface.SetDrawColor(r/2,gC/2,b/2,150)
 	surface.DrawTexturedRect(0, 0, w, h)
+
 
 	if not self.Owner then return end
 
 	draw.SimpleText(self.Owner:Nick(), "pCardName", 69, 5)
-
-	local r, gC, b = color_white:Unpack()
-
-	surface.SetDrawColor(r,gC,b,255)
-	surface.DrawOutlinedRect(0, 0, w, h, 1)
 
 	draw.SimpleText( self.Owner:Ping(), "pCardMisc", w-5, 5, color_white, TEXT_ALIGN_RIGHT )
 
@@ -52,6 +52,27 @@ function PANEL:SetPlayer(ply)
 	self.Icon:SetAnimSpeed( 4 )
 	self.Icon:SetDisabled( true )
 
+	for v,b in ipairs(g.Badges.Data) do
+		if b.userTest(ply) then
+			table.ForceInsert(self.Badges, b)
+		end
+	end
+	for i,k in ipairs(self.Badges) do
+		local icon = k.icon
+		local btn  = vgui.Create( "DButton", self)
+		btn:SetSize(16,16)
+		btn:SetPos(69+(i-1)*16,29)
+		btn:SetText("")
+		btn.Paint = function(self,w,h)
+			surface.SetMaterial(Material(icon))
+			surface.SetDrawColor(255, 255, 255)
+			surface.DrawTexturedRect(0, 0, w, h)
+		end
+		btn.DoClick = function(self)
+			Derma_Message(k.desc, "Badge Information")
+		end
+	end
+
 end
 function PANEL:Init()
 
@@ -61,6 +82,7 @@ function PANEL:Init()
 	self.Icon:SetSize(62,62)
 	self.Icon:SetPos(1,1)
 	self.Owner = nil
+	self.Badges ={}
 	function self.Icon:LayoutEntity()
 	end
 end

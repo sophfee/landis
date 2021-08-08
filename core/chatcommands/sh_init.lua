@@ -1,5 +1,5 @@
-g_base.chat = {}
-g_base.chat.commands = {}
+g.chat = {}
+g.chat.commands = {}
 local baseStruct = {
 	RequireAlive    = false,
 	RequireArgs     = false,
@@ -13,21 +13,21 @@ local baseStruct = {
 			if not args then return false end
 			if #args <= 0 then return false end
 		end
-		return g_base.GetPermissionLevel(ply) >= self.PermissionLevel
+		return g.GetPermissionLevel(ply) >= self.PermissionLevel
 	end,
 	onRun  = function(self,ply,args)
 		-- this should be used and not left to the default set by the base
 	end
 }
 
-function g_base.chat.RegisterCommand(className,struct)
+function g.chat.RegisterCommand(className,struct)
 	if not className or not struct then return end
 	local makeStruct = table.Inherit(struct, baseStruct)
 	-- shoud never fail
 	if makeStruct then
-		g_base.chat.commands[string.lower(className)] = makeStruct
+		g.chat.commands[string.lower(className)] = makeStruct
 		if SERVER then
-			g_base.ConsoleMessage("Registered Chat Command: "..className)
+			g.ConsoleMessage("Registered Chat Command: "..className)
 		end
 	end
 end
@@ -38,7 +38,7 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 		local command = string.lower(table.Copy(arr)[1])
 		table.remove(arr, 1)
 		local args = table.Copy(arr)
-		local validCommands = table.Copy(g_base.chat.commands)
+		local validCommands = table.Copy(g.chat.commands)
 		if validCommands[command] then
 			
 			local cmdData = validCommands[command]

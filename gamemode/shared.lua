@@ -1,18 +1,18 @@
 DeriveGamemode("sandbox")
-g_base = {}
+g = {}
 
 // fallback configurations
-g_base.Config =  {}
-g_base.Config.MainColor        = Color( 10,  132, 255 )
-g_base.Config.DefaultTextColor = Color( 245, 245, 245 )
-g_base.Config.BGColorDark      = Color( 44,  44,  46  )
-g_base.Config.BGColorLight     = Color( 229, 229, 234  )
-g_base.Config.ConsolePrefix    = "[g_base]"
+g.Config =  {}
+g.Config.MainColor        = Color( 10,  132, 255 )
+g.Config.DefaultTextColor = Color( 245, 245, 245 )
+g.Config.BGColorDark      = Color( 44,  44,  46  )
+g.Config.BGColorLight     = Color( 229, 229, 234  )
+g.Config.ConsolePrefix    = "[g_base]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
-function g_base.ConsoleMessage(...)
-	local mColor = g_base.Config.MainColor
-	local prefix = g_base.Config.ConsolePrefix .. " "
-	local textCo = g_base.Config.DefaultTextColor
+function g.ConsoleMessage(...)
+	local mColor = g.Config.MainColor
+	local prefix = g.Config.ConsolePrefix .. " "
+	local textCo = g.Config.DefaultTextColor
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
@@ -84,29 +84,29 @@ PERMISSION_LEVEL_USER       = 1
 PERMISSION_LEVEL_ADMIN      = 2
 PERMISSION_LEVEL_SUPERADMIN = 3
 
-function g_base.GetPermissionLevel(ply)
+function g.GetPermissionLevel(ply)
 	if ply:IsSuperAdmin() then return 3 end
 	if ply:IsAdmin()      then return 2 end
 	return 1
 end
 if SERVER then
 	// load core plugins/extensions
-	//g_base.ConsoleMessage("loading extensions")
+	//g.ConsoleMessage("loading extensions")
 	includedir( GM.FolderName .. "/core/"  )
 
-	//g_base.ConsoleMessage("loading plugins")
+	//g.ConsoleMessage("loading plugins")
 	includedir( GM.FolderName .. "/plugins/" )
 end
 if CLIENT then 
 	// load core plugins/extensions
-	g_base.ConsoleMessage("loading extensions")
+	g.ConsoleMessage("loading extensions")
 	includedir( GM.FolderName .. "/core"  )
 
-	g_base.ConsoleMessage("loading plugins")
+	g.ConsoleMessage("loading plugins")
 	includedir( GM.FolderName .. "/plugins" )
 end
 /*
-local data = g_base.Settings["test"]
+local data = g.Settings["test"]
 
 local parent = vgui.Create("DFrame")
 parent:SetSize(400,400)

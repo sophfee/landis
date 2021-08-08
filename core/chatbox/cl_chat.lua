@@ -10,6 +10,10 @@ eChat.config = {
 	position = 1,	
 	fadeTime = 12,
 }
+eChat.CommandColors = {}
+eChat.CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
+eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+eChat.CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
 surface.CreateFont( "eChat_18", {
 	font = "Arial",
@@ -29,23 +33,18 @@ surface.CreateFont( "eChat_16", {
 	extended = true,
 } )
 
+
 --// Builds the chatbox but doesn't display it
 function eChat.buildBox()
 	eChat.frame = vgui.Create("DFrame")
 	eChat.frame:SetSize( ScrW()*0.375, ScrH()*0.25 )
 	eChat.frame:SetTitle("")
 	eChat.frame:ShowCloseButton( false )
-	eChat.frame:SetDraggable( true )
-	eChat.frame:SetSizable( false )
+	//eChat.frame:SetDraggable( true )
+	//eChat.frame:SetSizable( true )
 	eChat.frame:SetPos( ScrW()*0.0116, (ScrH() - eChat.frame:GetTall()) - ScrH()*0.177)
 	eChat.frame:SetMinWidth( 300 )
 	eChat.frame:SetMinHeight( 100 )
-	/*eChat.frame.Paint = function( self, w, h )
-		eChat.blur( self, 10, 20, 255 )
-		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 200 ) )
-		
-		draw.RoundedBox( 0, 0, 0, w, 25, Color( 80, 80, 80, 100 ) )
-	end*/
 	eChat.oldPaint = eChat.frame.Paint
 	eChat.frame.Think = function()
 		if input.IsKeyDown( KEY_ESCAPE ) then
@@ -65,9 +64,6 @@ function eChat.buildBox()
 	settings:SetTextColor( Color( 230, 230, 230, 150 ) )
 	settings:SetSize( 70, 25 )
 	settings:SetPos( eChat.frame:GetWide() - settings:GetWide(), 0 )
-	settings.Paint = function( self, w, h )
-		draw.RoundedBox( 0, 0, 0, w, h, Color( 50, 50, 50, 200 ) )
-	end
 	settings.DoClick = function( self )
 		eChat.openSettings()
 	end
@@ -129,27 +125,13 @@ function eChat.buildBox()
 		end
 	end
 
-	eChat.chatLog = vgui.Create("DScrollPanel", eChat.frame) 
+	eChat.chatLog = vgui.Create("RichText", eChat.frame) 
 	eChat.chatLog:SetSize( eChat.frame:GetWide() - 10, eChat.frame:GetTall() - 60 )
 	eChat.chatLog:SetPos( 5, 30 )
-	local sbar = eChat.chatLog:GetVBar()
-function sbar:Paint(w, h)
-	//draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 100))
-end
-function sbar.btnUp:Paint(w, h)
-	//draw.RoundedBox(0, 0, 0, w, h, Color(200, 100, 0))
-end
-function sbar.btnDown:Paint(w, h)
-	//draw.RoundedBox(0, 0, 0, w, h, Color(200, 100, 0))
-end
-function sbar.btnGrip:Paint(w, h)
-	//draw.RoundedBox(0, 0, 0, w, h, Color(100, 200, 0))
-end
-	//eChat.chatLog:GetVBar().Paint = function() end
 	eChat.chatLog.Paint = function( self, w, h )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 	end
-	/*eChat.chatLog.Think = function( self )
+	eChat.chatLog.Think = function( self )
 		if eChat.lastMessage then
 			if CurTime() - eChat.lastMessage > eChat.config.fadeTime then
 				self:SetVisible( false )
@@ -159,11 +141,35 @@ end
 		end
 		self:SetSize( eChat.frame:GetWide() - 10, eChat.frame:GetTall() - eChat.entry:GetTall() - serverName:GetTall() - 20 )
 		settings:SetPos( eChat.frame:GetWide() - settings:GetWide(), 0 )
-	end*/
+	end
 	eChat.chatLog.PerformLayout = function( self )
 		self:SetFontInternal("eChat_18")
 		self:SetFGColor( color_white )
 	end
+	eChat.chatLog.PaintOver = function( self, w, h )
+        if not g.chat then return end
+        if not g.chat.commands then return end
+        if eChat.entry:IsEditing() then
+            local typed = eChat.entry:GetValue()
+            if not typed then return end
+            typed = string.Split(typed, " ")[1]
+            local len   = string.len(typed)
+            if string.Left(typed, 1) == "/" then
+                blurDerma(self,200,15,10)
+                local i = 1
+                local pLevel = LocalPlayer():GetPermissionLevel()
+                for name,data in pairs( g.chat.commands ) do
+                    if string.Left(typed, len) == string.Left(name, len) then
+                        if pLevel < data.PermissionLevel then 
+                            continue 
+                        end 
+                        draw.SimpleText(name .. " - " .. data.HelpDescription, "eChat_18", 5, 5 + ((i-1)*18), eChat.CommandColors[data.PermissionLevel])
+                        i = i + 1
+                    end
+                end
+            end
+        end
+    end
 	eChat.oldPaint2 = eChat.chatLog.Paint
 	
 	local text = "Say :"
@@ -212,7 +218,6 @@ end
 
 --// Hides the chat box but not the messages
 function eChat.hideBox()
-	eChat.isOpen = false
 	eChat.frame.Paint = function() end
 	eChat.chatLog.Paint = function() end
 	
@@ -246,7 +251,6 @@ end
 
 --// Shows the chat box
 function eChat.showBox()
-	eChat.isOpen = true
 	-- Draw the chat box again
 	eChat.frame.Paint = eChat.oldPaint
 	eChat.chatLog.Paint = eChat.oldPaint2
@@ -280,6 +284,14 @@ function eChat.openSettings()
 	eChat.frameS:MakePopup()
 	eChat.frameS:SetPos( ScrW()/2 - eChat.frameS:GetWide()/2, ScrH()/2 - eChat.frameS:GetTall()/2 )
 	eChat.frameS:ShowCloseButton( true )
+	eChat.frameS.Paint = function( self, w, h )
+		eChat.blur( self, 10, 20, 255 )
+		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 200 ) )
+		
+		draw.RoundedBox( 0, 0, 0, w, 25, Color( 80, 80, 80, 100 ) )
+		
+		draw.RoundedBox( 0, 0, 25, w, 25, Color( 50, 50, 50, 50 ) )
+	end
 	
 	local serverName = vgui.Create("DLabel", eChat.frameS)
 	serverName:SetText( "eChat - Settings" )
@@ -379,50 +391,43 @@ function chat.AddText(...)
 		eChat.buildBox()
 	end
 	
-	local msg = vgui.Create("RichText", eChat.chatLog)
-	msg.RealAlpha = 255
-	msg.FadeAt = CurTime() + eChat.config.fadeTime
+	local msg = {}
+	
 	-- Iterate through the strings and colors
 	for _, obj in pairs( {...} ) do
 		if type(obj) == "table" then
-			msg:InsertColorChange( obj.r, obj.g, obj.b, obj.a )
-			//table.insert( msg, Color(obj.r, obj.g, obj.b, obj.a) )
+			eChat.chatLog:InsertColorChange( obj.r, obj.g, obj.b, obj.a )
+			table.insert( msg, Color(obj.r, obj.g, obj.b, obj.a) )
 		elseif type(obj) == "string"  then
-			msg:AppendText( obj )
-			//table.insert( msg, obj )
+			eChat.chatLog:AppendText( obj )
+			table.insert( msg, obj )
 		elseif obj:IsPlayer() then
 			local ply = obj
 			
 			if eChat.config.timeStamps then
-				msg:InsertColorChange( 130, 130, 130, 255 )
-				msg:AppendText( "["..os.date("%X").."] ")
+				eChat.chatLog:InsertColorChange( 130, 130, 130, 255 )
+				eChat.chatLog:AppendText( "["..os.date("%X").."] ")
 			end
 			
 			if eChat.config.seeChatTags and ply:GetNWBool("eChat_tagEnabled", false) then
 				local col = ply:GetNWString("eChat_tagCol", "255 255 255")
 				local tbl = string.Explode(" ", col )
-				msg:InsertColorChange( tbl[1], tbl[2], tbl[3], 255 )
-				msg:AppendText( "["..ply:GetNWString("eChat_tag", "N/A").."] ")
+				eChat.chatLog:InsertColorChange( tbl[1], tbl[2], tbl[3], 255 )
+				eChat.chatLog:AppendText( "["..ply:GetNWString("eChat_tag", "N/A").."] ")
 			end
 			
 			local col = GAMEMODE:GetTeamColor( obj )
-			msg:InsertColorChange( col.r, col.g, col.b, 255 )
-			msg:AppendText( obj:Nick() )
-			//table.insert( msg, obj:Nick() )
+			eChat.chatLog:InsertColorChange( col.r, col.g, col.b, 255 )
+			eChat.chatLog:AppendText( obj:Nick() )
+			table.insert( msg, obj:Nick() )
 		end
 	end
-	eChat.chatLog:AddItem(msg)
-	msg.PerformLayout = function( self )
-		self:SetFontInternal("eChat_18")
-		self:SetFGColor( color_white )
-	end
-	msg:DockMargin(0, 0, 0, 0)
-	msg:Dock(TOP)
-	table.ForceInsert(messages, msg)
-	eChat.chatLog:ScrollToChild(msg)
-	//eChat.chatLog:SetVisible( true )
-	//eChat.lastMessage = CurTime()
-	//eChat.chatLog:InsertColorChange( 255, 255, 255, 255 )
+	eChat.chatLog:AppendText("\n")
+	
+	eChat.chatLog:SetVisible( true )
+	eChat.lastMessage = CurTime()
+	eChat.chatLog:InsertColorChange( 255, 255, 255, 255 )
+	chat.PlaySound()
 --	oldAddText(unpack(msg))
 end
 
@@ -489,18 +494,3 @@ function chat.Close(...)
 		eChat.showBox()
 	end
 end
-
-hook.Add("Tick", "fadeOut!!", function()
-	for _,panel in ipairs( messages ) do
-
-		if CurTime() > panel.FadeAt then
-			panel.RealAlpha = math.Clamp(panel.RealAlpha - (FrameTime()*320),0,255)
-		end
-
-		if eChat.isOpen then
-			panel:SetAlpha(255)
-		else
-			panel:SetAlpha(panel.RealAlpha)
-		end
-	end
-end)

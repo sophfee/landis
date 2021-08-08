@@ -1,10 +1,10 @@
 local SKIN = {}
 derma.RefreshSkins()
 
-g_base.Config.ButtonColorOff      = Color(72,72,74,255)
-g_base.Config.ButtonColorHovered  = Color(99,99,102,255)
-g_base.Config.ButtonColorOn       = Color(142,142,147,255)
-g_base.Config.CloseButtonColor    = Color(255,69,58,255)
+g.Config.ButtonColorOff      = Color(72,72,74,255)
+g.Config.ButtonColorHovered  = Color(99,99,102,255)
+g.Config.ButtonColorOn       = Color(142,142,147,255)
+g.Config.CloseButtonColor    = Color(255,69,58,255)
 
 surface.CreateFont("g_base-default-14", {
 	font = "Arial",
@@ -41,8 +41,8 @@ end
 
 function SKIN:PaintFrame( self,w,h )
 	blurDerma(self,200,10,20)
-	local mainColor = g_base.Config.MainColor
-	local bgColor   = g_base.Config.BGColorDark
+	local mainColor = g.Config.MainColor
+	local bgColor   = g.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
 	surface.DrawRect( 0, 0, w, h )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
@@ -62,7 +62,7 @@ function SKIN:PaintFrame( self,w,h )
 end
 
 function SKIN:PaintMenuBar(self,w,h)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect( 0, 0, w, h )
 end
@@ -74,8 +74,8 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 	if not self.ButtonHoldAlpha then
 		self.ButtonHoldAlpha = 0
 	end
-	local mainColor = g_base.Config.CloseButtonColor
-	local bgColor   = g_base.Config.ButtonColorOff
+	local mainColor = g.Config.CloseButtonColor
+	local bgColor   = g.Config.ButtonColorOff
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
@@ -95,8 +95,8 @@ end
 
 function SKIN:PaintPropertySheet(self,w,h)
 	blurDerma(self,200,10,20)
-	local mainColor = g_base.Config.MainColor
-	local bgColor   = g_base.Config.BGColorDark
+	local mainColor = g.Config.MainColor
+	local bgColor   = g.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
 	surface.DrawRect(  0, 20, w, h-20 )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
@@ -113,23 +113,23 @@ function SKIN:PaintTab(self,w,h)
 	end
 	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		bgColor = g_base.Config.ButtonColorHovered
+		bgColor = g.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = g_base.Config.ButtonColorOn
+		bgColor = g.Config.ButtonColorOn
 	else self.pSND = false end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	local mainColor = g_base.Config.MainColor
+	local mainColor = g.Config.MainColor
 	if self:IsActive() then
 		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	end
@@ -145,20 +145,20 @@ end
 	end
 	//if self:GetName() == "DNumberScratch" then return end
 	//self:SetTextColor(color_white)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		//bgColor = g_base.Config.ButtonColorHovered
+		//bgColor = g.Config.ButtonColorHovered
 	else self.hSND = false end
 	/*if self:IsDown() then
 		if not self.pSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = g_base.Config.ButtonColorOn
+		bgColor = g.Config.ButtonColorOn
 	else self.pSND = false end*/
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
@@ -173,20 +173,20 @@ function SKIN:PaintButtonUp(self,w,h)
 	end
 	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		bgColor = g_base.Config.ButtonColorHovered
+		bgColor = g.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = g_base.Config.ButtonColorOn
+		bgColor = g.Config.ButtonColorOn
 	else self.pSND = false end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
@@ -214,7 +214,7 @@ function SKIN:PaintButtonUp(self,w,h)
 end
 
 function SKIN:PaintVScrollBar(self,w,h)
-	local bgColor   = g_base.Config.ButtonColorHovered
+	local bgColor   = g.Config.ButtonColorHovered
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end*/]]
@@ -228,49 +228,49 @@ function SKIN:PaintButton(self,w,h)
 	end
 	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		bgColor = g_base.Config.ButtonColorHovered
+		bgColor = g.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if g_base:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if g:GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = g_base.Config.ButtonColorOn
+		bgColor = g.Config.ButtonColorOn
 	else self.pSND = false end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
 function SKIN:PaintTooltip(self,w,h)
-	local bgColor = g_base.Config.BGColorLight
+	local bgColor = g.Config.BGColorLight
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
 function SKIN:PaintComboBox(self,w,h)
 	self:SetTextColor(color_white)
-	local bgColor   = g_base.Config.ButtonColorOff
+	local bgColor   = g.Config.ButtonColorOff
 	if self:IsHovered() then
-		bgColor = g_base.Config.ButtonColorHovered
+		bgColor = g.Config.ButtonColorHovered
 	end
 	if self:IsDown() then
-		bgColor = g_base.Config.ButtonColorOn
+		bgColor = g.Config.ButtonColorOn
 	end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
 function SKIN:PaintMenuOption(self,w,h)
-	local bgColor   = g_base.Config.BGColorLight
+	local bgColor   = g.Config.BGColorLight
 	self:SetTextColor(color_black) 
 	if self:IsHovered() then
-		bgColor = g_base.Config.MainColor
+		bgColor = g.Config.MainColor
 		self:SetTextColor(color_white)
 	end
 	if self:IsDown() then
@@ -289,7 +289,7 @@ function SKIN:PaintLabel(self,w,h)
 	end
 end
 
-derma.DefineSkin("g_base", "The default skin for g_base.", SKIN)
+derma.DefineSkin("g_base", "The default skin for g.", SKIN)
 -- lol look at tthe identifier
 hook.Add("ForceDermaSkin", "foreskin", function()
 	return "g_base"

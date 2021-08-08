@@ -30,7 +30,7 @@ function PANEL:Init()
 	self:Dock(LEFT)
 	self:SetSize(ScrW()/2,ScrH())
 	self.Paint = function()
-		local mainColor = g_base.Config.MainColor
+		local mainColor = g.Config.MainColor
 		draw.SimpleTextOutlined("g_base Dev", "g_base_main_menu_title", 10, ScrH()/2-82, mainColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,255))
 	end
 	self.PlayBtn = vgui.Create("DButton", self, "g_base-playbutton")
@@ -38,7 +38,7 @@ function PANEL:Init()
 	self.OffsetPlayBtn = 0
 	self.PlayBtn.HoveredSound = false
 	self.PlayBtn.Paint = function(curPanel,w,h)
-	local mainColor = g_base.Config.MainColor
+	local mainColor = g.Config.MainColor
 		if curPanel:IsHovered() then
 			if not curPanel.HoveredSound then
 				surface.PlaySound(Sound("helix/ui/rollover.wav"))
@@ -68,7 +68,7 @@ function PANEL:Init()
 	self.OffsetOptBtn = 0
 	self.OptBtn.HoveredSound = false
 	self.OptBtn.Paint = function(curPanel,w,h)
-		local mainColor = g_base.Config.MainColor
+		local mainColor = g.Config.MainColor
 		if self.OptBtn:IsHovered() then
 			if not curPanel.HoveredSound then
 				surface.PlaySound(Sound("helix/ui/rollover.wav"))
@@ -108,4 +108,4 @@ hook.Add("PlayerButtonDown", "g_baseMenuOpener", function(_,btn)
 	end
 end)
 
-local foo = vgui.Create("gbaseMainMenu")
+//local foo = vgui.Create("gbaseMainMenu")

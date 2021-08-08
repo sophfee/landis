@@ -168,6 +168,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		ply = LocalPlayer()
 		return 
 	end
+
 	if not ply:Alive() then return end
 	drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50})
 	//drawBar("Stamina",ply:GetNWFloat("Stamina"),Color(50,173,230),{x=25,y=ScrH()-100})

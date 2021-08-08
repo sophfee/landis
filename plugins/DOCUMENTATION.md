@@ -10,7 +10,7 @@
 
 # Chat
 
-# g_base.chat.RegisterCommand(className,struct)
+# g.chat.RegisterCommand(className,struct)
 - Registers a new chat command
 
 - className

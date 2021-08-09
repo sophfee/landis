@@ -48,11 +48,11 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 				cmdData.onRun(cmdData,ply,args)
 				return ""
 			else
-				ply:ChatPrint("You do not have permission to use this command.")
+				ply:Notify("Invalid Permission or Arguments!")
 				return ""
 			end
 		end
-		ply:ChatPrint("The command \"" .. command .. "\" doesn't exist." )
+		ply:Notify("The command \"" .. command .. "\" doesn't exist." )
 		return ""
 	end
 end)

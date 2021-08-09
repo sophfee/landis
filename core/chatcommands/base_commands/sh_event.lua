@@ -14,10 +14,10 @@ end
 g.chat.RegisterCommand("/event",{
 	RequireAlive    = false,
 	RequireArgs     = true,
-	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
-	HelpDescription = "Shows this message.",
+	PermissionLevel = PERMISSION_LEVEL_LEAD_ADMIN,
+	HelpDescription = "Broadcast a message for the entire server.",
 	onRun  = function(self,ply,args)
-		if ply:IsSuperAdmin() then
+		if ply:IsLeadAdmin() then
 			net.Start("eventCommand")
 				net.WriteString(table.concat(args," "))
 			net.Broadcast()

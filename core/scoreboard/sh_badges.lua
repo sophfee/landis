@@ -6,7 +6,8 @@ print("hi")
 g.Badges = {}
 
 local testers = {
-	["STEAM_0:1:92733650"] = true
+	["STEAM_0:1:92733650"] = true,
+	["STEAM_0:1:513014903"] = true
 }
 
 g.Badges.Data = {

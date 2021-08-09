@@ -13,6 +13,7 @@ eChat.config = {
 eChat.CommandColors = {}
 eChat.CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
 eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
 eChat.CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
 surface.CreateFont( "eChat_18", {

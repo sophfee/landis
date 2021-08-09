@@ -82,20 +82,22 @@ end
 
 PERMISSION_LEVEL_USER       = 1
 PERMISSION_LEVEL_ADMIN      = 2
-PERMISSION_LEVEL_SUPERADMIN = 3
+PERMISSION_LEVEL_LEAD_ADMIN = 3
+PERMISSION_LEVEL_SUPERADMIN = 4
 
 function g.GetPermissionLevel(ply)
-	if ply:IsSuperAdmin() then return 3 end
+	if ply:IsSuperAdmin() then return 4 end
+	if ply:IsLeadAdmin()  then return 3 end
 	if ply:IsAdmin()      then return 2 end
 	return 1
 end
 if SERVER then
 	// load core plugins/extensions
 	//g.ConsoleMessage("loading extensions")
-	includedir( GM.FolderName .. "/core/"  )
+	includedir( GM.FolderName .. "/core"  )
 
 	//g.ConsoleMessage("loading plugins")
-	includedir( GM.FolderName .. "/plugins/" )
+	includedir( GM.FolderName .. "/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions

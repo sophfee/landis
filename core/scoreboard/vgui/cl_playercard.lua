@@ -76,6 +76,7 @@ function PANEL:Init()
 		local self = self:GetParent()
 		if self.Player then
 			SetClipboardText(self.Player:SteamID())
+			LocalPlayer():Notify("Copied the SteamID for " .. self.Player:Nick(),3)
 		end
 	end
 

@@ -5,9 +5,6 @@ g.chat.RegisterCommand("/me",{
 	PermissionLevel = PERMISSION_LEVEL_USER,
 	HelpDescription = "Make yourself perform an action",
 	onRun  = function(self,ply,args)
-		ply:ChatPrint("========== All Commands ==========")
-		for name,command in pairs(g.chat.commands) do
-			ply:ChatPrint(name .. " - " .. command.HelpDescription)
-		end
+		return // not finished, need sv code
 	end
 })

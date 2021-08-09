@@ -4,8 +4,6 @@ openPlayercard = false
 
 function PANEL:CreatePlayerList()
 
-	print("penis")
-
 	local players = table.Copy( player.GetHumans() ) // Bots tend to create errors when getting steam IDs and shit
 	local sorted  = {}
 

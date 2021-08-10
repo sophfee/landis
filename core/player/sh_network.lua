@@ -42,6 +42,15 @@ if CLIENT then
 		LocalPlayer():Notify(message,duration)
 	end)
 end
+-- eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+-- eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
+
+function meta:GetPhysgunColor()
+	if self:IsSuperAdmin() then return Vector( 1.00000, .000000, .000000 ) end
+	if self:IsLeadAdmin()  then return Vector( .247058, .000000, .498039 ) end
+	if self:IsAdmin()      then return Vector( .000000, 1.00000, .258823 ) end
+	return nil
+end
 
 if SERVER then
 	hook.Add("PlayerSpawn","setuphands", function(ply)
@@ -49,3 +58,10 @@ if SERVER then
 	end)
 	hook.Add("PlayerDeathSound","mutebeep",function() return true end)
 end
+
+hook.Add("PlayerSpawn", "SpawnSetColor", function( ply )
+	local col = ply:GetPhysgunColor()
+	if col then
+		ply:SetWeaponColor( col )
+	end
+end )

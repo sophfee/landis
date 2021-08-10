@@ -49,17 +49,17 @@ local function drawBar(label,val,col,pos)
 		{x=pos.x+2,y=pos.y+27},
 		{x=pos.x,y=pos.y+25}
 	}
-	local r,g,b = col:Unpack()
+	local r,gC,b = col:Unpack()
 	surface.SetDrawColor(80/2, 80/2, 80/2,255)
 	surface.DrawPoly(vertOutline)
 	surface.SetDrawColor(80,80,80,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, g/3, b/3,120)
+	surface.SetDrawColor(r/3, gC/3, b/3,120)
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
-	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, g/3, b/3,255), TEXT_ALIGN_LEFT)
+	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT)
 	//draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	//raw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/3, g/3, b/3,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	//raw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	//draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.NoTexture()
 
@@ -76,17 +76,17 @@ local function drawBar(label,val,col,pos)
 		{x=pos.x+2,y=pos.y+27},
 		{x=pos.x,y=pos.y+25}
 	}
-	local r,g,b = col:Unpack()
-	surface.SetDrawColor(r/3, g/3, b/3,255)
+	local r,gC,b = col:Unpack()
+	surface.SetDrawColor(r/3, gC/3, b/3,255)
 	surface.DrawPoly(vertOutline)
-	surface.SetDrawColor(r,g,b,255)
+	surface.SetDrawColor(r,gC,b,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/2, g/2, b/2,100)
+	surface.SetDrawColor(r/2, gC/2, b/2,100)
 	surface.DrawTexturedRect(pos.x,pos.y,value,25)
-	draw.DrawText(tostring(math.Round(val,0)), "hud24", pos.x+5, pos.y+2, Color(r/8, g/8, b/8,255), TEXT_ALIGN_LEFT)
+	draw.DrawText(tostring(math.Round(val,0)), "hud24", pos.x+5, pos.y+2, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT)
 	draw.DrawText(tostring(math.Round(val,0)), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	draw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/8, g/8, b/8,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	draw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.NoTexture()
 end
@@ -119,17 +119,17 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x-2,y=pos.y+27},
 		{x=pos.x,y=pos.y+25}
 	}
-	local r,g,b = col:Unpack()
+	local r,gC,b = col:Unpack()
 	surface.SetDrawColor(80/2, 80/2, 80/2,255)
 	surface.DrawPoly(vertOutline)
 	surface.SetDrawColor(80,80,80,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, g/3, b/3,120)
+	surface.SetDrawColor(r/3, gC/3, b/3,120)
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
-	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, g/3, b/3,255), TEXT_ALIGN_LEFT)
+	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT)
 	//draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	//raw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/3, g/3, b/3,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	//raw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	//draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.NoTexture()
 	local vert = {
@@ -145,29 +145,39 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x+2,y=pos.y+27},
 		{x=pos.x,y=pos.y+25}
 	}
-	local r,g,b = col:Unpack()
-	surface.SetDrawColor(r/3, g/3, b/3,255)
+	local r,gC,b = col:Unpack()
+	surface.SetDrawColor(r/3, gC/3, b/3,255)
 	//surface.DrawPoly(vertOutline)
-	surface.SetDrawColor(r,g,b,255)
+	surface.SetDrawColor(r,gC,b,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-r"))
-	surface.SetDrawColor(r/2, g/2, b/2,100)
+	surface.SetDrawColor(r/2, gC/2, b/2,100)
 	//surface.DrawTexturedRect(pos.x,pos.y,value,25)
-	draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/8, g/8, b/8,255), TEXT_ALIGN_LEFT)
+	draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT)
 	draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	draw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/8, g/8, b/8,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	draw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 	draw.NoTexture()
 end
 
 local ply = LocalPlayer()
-local r,g,b = color_white:Unpack()
+local r,gC,b = color_white:Unpack()
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
 		return 
 	end
+
+	surface.SetDrawColor( 255, 255, 255 )
+	local centerW = ScrW()/2
+	local centerH = ScrH()/2
+	local len     = g:GetSetting("crosshairLength")
+	local gap     = g:GetSetting("crosshairGap")
+	surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
+	surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
+	surface.DrawRect( centerW, centerH - gap - len, 1, len)
+	surface.DrawRect( centerW - gap - len, centerH, len, 1 )
 
 	if not ply:Alive() then return end
 	drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50})

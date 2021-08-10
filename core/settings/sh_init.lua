@@ -31,6 +31,52 @@ local settings = {
 		defaultValue = false, -- fallback
 		activeValue  = false
 	},
+	["crosshairGap"] = {
+		valueType    = "int",
+		createPanel  = function(parent,data)
+			if SERVER then return end -- ensure that this never runs on the server.
+			local PANEL = vgui.Create("DNumSlider", parent)
+			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
+			PANEL:DockMargin(5, 0, 5, 0)
+			PANEL:Dock(TOP)
+			PANEL:SetText(data:GetPrintName())
+			PANEL:SetMax(15)
+			PANEL:SetMin(0)
+			PANEL:SetDecimals(0)
+			PANEL:SetValue(data:GetValue())
+			function PANEL:OnValueChanged(bVal)
+				data:SetValue(math.Round(bVal,0))
+				//PrintTable(data)
+			end
+		end,
+		printName    = "Crosshair Gap",
+		category     = "Crosshair",
+		defaultValue = 4, -- fallback
+		activeValue  = 4
+	},
+	["crosshairLength"] = {
+		valueType    = "int",
+		createPanel  = function(parent,data)
+			if SERVER then return end -- ensure that this never runs on the server.
+			local PANEL = vgui.Create("DNumSlider", parent)
+			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
+			PANEL:DockMargin(5, 0, 5, 0)
+			PANEL:Dock(TOP)
+			PANEL:SetText(data:GetPrintName())
+			PANEL:SetMax(15)
+			PANEL:SetMin(0)
+			PANEL:SetDecimals(0)
+			PANEL:SetValue(data:GetValue())
+			function PANEL:OnValueChanged(bVal)
+				data:SetValue(math.Round(bVal,0))
+				//PrintTable(data)
+			end
+		end,
+		printName    = "Crosshair Length",
+		category     = "Crosshair",
+		defaultValue = 4, -- fallback
+		activeValue  = 4
+	},
 	["buttonClicks"] = {
 		valueType    = "bool",
 		createPanel  = function(parent,data)

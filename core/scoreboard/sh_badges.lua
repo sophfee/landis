@@ -2,12 +2,12 @@
 ** Badges is a sub-section of the Scoreboard system, it allows certain icons to appear for users that qualify.
 */
 
-print("hi")
 g.Badges = {}
 
 local testers = {
-	["STEAM_0:1:92733650"] = true,
-	["STEAM_0:1:513014903"] = true
+	["STEAM_0:1:92733650"] = true, -- nick
+	["STEAM_0:1:513014903"] = true, -- creamy
+	["STEAM_0:1:545592128"] = true -- henry
 }
 
 g.Badges.Data = {

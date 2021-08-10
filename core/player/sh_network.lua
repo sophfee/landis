@@ -11,6 +11,9 @@ function meta:GetPermissionLevel()
 	if self:IsSuperAdmin() then
 		return PERMISSION_LEVEL_SUPERADMIN
 	end
+	if self:IsLeadAdmin() then
+		return PERMISSION_LEVEL_LEAD_ADMIN
+	end
 	if self:IsAdmin() then
 		return PERMISSION_LEVEL_ADMIN
 	end

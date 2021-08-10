@@ -38,3 +38,4 @@ hook.Add("Think", "startcam",function()
 		hook.Remove("CalcView","ragdoll_camera")
 	end
 end)
+

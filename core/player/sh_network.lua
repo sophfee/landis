@@ -1,9 +1,9 @@
 local meta = FindMetaTable("Player")
 
 function meta:SetupDataTables()
-	self:NetworkVar("Float", 0, "Stamina")
+	self:NetworkVar("Bool", 0, "weaponRaised")
 	if SERVER then
-		self:SetStamina(5)
+		//self:SetStamina(5)
 	end
 end
 
@@ -42,6 +42,109 @@ if CLIENT then
 		LocalPlayer():Notify(message,duration)
 	end)
 end
+
+function meta:IsWeaponRaised()
+	local weapon = self:GetActiveWeapon()
+
+	if IsValid(weapon) then
+		if weapon.IsAlwaysRaised or false then
+			return true
+		elseif weapon.IsAlwaysLowered then
+			return false
+		end
+	end
+
+	return self:GetNWBool("weaponRaised", true)
+end
+
+// credit : Jake Green (vin)
+// code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!!
+// !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!
+
+--[[if SERVER then
+
+	hook.Add("CanPrimaryAttack", "noShootWeaponLowered1", function(self)
+		return false //self.Owner:IsWeaponRaised()
+	end)
+
+	hook.Add("CanSecondaryAttack", "noShootWeaponLowered22", function(self)
+		return false //self.Owner:IsWeaponRaised()
+	end)
+
+	function meta:SetWeaponRaised(state)
+		self:SetNWBool("weaponRaised", state)
+
+		local weapon = self:GetActiveWeapon()
+
+		if IsValid(weapon) then
+			weapon:SetNextPrimaryFire(CurTime() + 0.25)
+			weapon:SetNextSecondaryFire(CurTime() + 0.25)
+
+			if weapon.OnLowered then
+				weapon:OnLowered()
+			end
+		end
+	end
+
+	function meta:ToggleWeaponRaised()
+		self:SetWeaponRaised( !self:IsWeaponRaised() )
+	end
+
+	hook.Add("PlayerButtonDown", "raise", function(self,btn)
+		if btn == KEY_G then
+			self:ToggleWeaponRaised()
+		end
+	end)
+
+end
+
+if CLIENT then
+
+	local loweredAngles = Angle(30, -30, -25)
+
+	function GM:CalcViewModelView(weapon, viewmodel, oldEyePos, oldEyeAng, eyePos, eyeAngles)
+		if not IsValid(weapon) then return end
+
+		local vm_origin, vm_angles = eyePos, eyeAngles
+
+		do
+			local lp = LocalPlayer()
+			local raiseTarg = 0
+
+			if !lp:IsWeaponRaised() then
+				raiseTarg = 500
+			end
+
+			local frac = (lp.raiseFraction or 0) / 500
+			local rot = weapon.LowerAngles or loweredAngles
+
+			vm_angles:RotateAroundAxis(vm_angles:Up(), rot.p * frac)
+			vm_angles:RotateAroundAxis(vm_angles:Forward(), rot.y * frac)
+			vm_angles:RotateAroundAxis(vm_angles:Right(), rot.r * frac)
+
+			lp.raiseFraction = Lerp(FrameTime() * 5, lp.raiseFraction or 0, raiseTarg)
+		end
+
+		--The original code of the hook.
+		/*do
+			local func = weapon.GetViewModelPosition
+			if (func) then
+				local pos, ang = func( weapon, eyePos*1, eyeAngles*1 )
+				vm_origin = pos or vm_origin
+				vm_angles = ang or vm_angles
+			end
+
+			func = weapon.CalcViewModelView
+			if (func) then
+				local pos, ang = func( weapon, viewModel, oldEyePos*1, oldEyeAngles*1, eyePos*1, eyeAngles*1 )
+				vm_origin = pos or vm_origin
+				vm_angles = ang or vm_angles
+			end
+		end*/
+
+		return vm_origin, vm_angles
+	end
+end--]]
 -- eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
 -- eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
 

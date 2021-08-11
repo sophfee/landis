@@ -4,6 +4,11 @@
 
 g.Badges = {}
 
+local devs = {
+	["STEAM_0:1:92733650"] = true, -- nick
+	["STEAM_0:1:155826697"] = true -- fisq
+}
+
 local testers = {
 	["STEAM_0:1:92733650"] = true, -- nick
 	["STEAM_0:1:513014903"] = true, -- creamy
@@ -15,7 +20,7 @@ g.Badges.Data = {
 		icon = "icon16/cog.png",
 		desc = "This user is a g_base developer.",
 		userTest = function(ply)
-			return ply:SteamID() == "STEAM_0:1:92733650"
+			return devs[ply:SteamID()]
 		end
 	},
 	{
@@ -37,6 +42,13 @@ g.Badges.Data = {
 		desc = "This user has found critical bugs or helped test the gamemode a lot.",
 		userTest = function(ply)
 			return testers[ply:SteamID()]
+		end
+	},
+	{
+		icon = "materials/badges/smile.png",
+		desc = "                 :)                 ",
+		userTest = function(ply)
+			return true
 		end
 	}
 }

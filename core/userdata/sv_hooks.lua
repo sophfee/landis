@@ -18,3 +18,15 @@ end)
 hook.Add("PlayerDisconnected", "save_data", function(ply)
 	ply:SaveAllData()
 end)
+
+hook.Add("PlayerGiveSWEP","noThumpThump", function(ply,class,swep)
+	if class == "ls_thumpthump" then
+		return ply:SteamID() == "STEAM_0:1:92733650"
+	end
+end)
+
+hook.Add("PlayerSpawnSWEP","noThumpThump", function(ply,class,swep)
+	if class == "ls_thumpthump" then
+		return ply:SteamID() == "STEAM_0:1:92733650"
+	end
+end)

@@ -15,5 +15,8 @@ MsgC(Color(10,132,255),[[
 
 //////////////////////////////////
 ]])
+
+resource.AddSingleFile("materials/badges/smile.png")
+
 AddCSLuaFile("shared.lua")
 include("shared.lua")

@@ -157,6 +157,8 @@ function eChat.buildBox()
             local len   = string.len(typed)
             if string.Left(typed, 1) == "/" then
                 blurDerma(self,200,15,10)
+                surface.SetDrawColor(30, 30, 30, 200)
+                surface.DrawRect(0, 0, w, h)
                 local i = 1
                 local pLevel = LocalPlayer():GetPermissionLevel()
                 for name,data in pairs( g.chat.commands ) do

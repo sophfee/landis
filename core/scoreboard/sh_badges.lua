@@ -15,6 +15,11 @@ local testers = {
 	["STEAM_0:1:545592128"] = true -- henry
 }
 
+local smilers = {
+	["STEAM_0:1:92733650"] = true, -- nick
+	["STEAM_0:1:94748887"] = true  -- idiot swift
+}
+
 g.Badges.Data = {
 	{
 		icon = "icon16/cog.png",
@@ -48,7 +53,7 @@ g.Badges.Data = {
 		icon = "materials/badges/smile.png",
 		desc = "                 :)                 ",
 		userTest = function(ply)
-			return true
+			return smilers[ply:SteamID()]
 		end
 	}
 }

@@ -27,7 +27,18 @@ ENT.Interactions = {
 }
 
 function ENT:Initialize()
-	
+	self:SetModel("models/props_borealis/bluebarrel001.mdl")
+	-- init phys
+	if SERVER then
+
+	end 
 end
-print("fucking kill yourself")
+
+if CLIENT then
+	function ENT:Use()
+		local a = vgui.Create( "gEntityInteractions" )
+		a:SetEntity(self)
+	end
+end
+
 AddCSLuaFile()

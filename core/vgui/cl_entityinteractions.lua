@@ -5,24 +5,31 @@ local PANEL = {}
 function PANEL:Init()
 	self:SetTitle("Invalid Entity Interactions!")
 	self.ent = nil
-	self.tracedLine = vgui.Create("DPanel", self)
-	self.tracedLine:NoClipping(true)
-	self.tracedLine.Paint = function(p,w,h)
+	hook.Add("HUDPaint", "LinePointer", function()
+		if not IsValid( self ) then
+			hook.Remove("HUDPaint", "LinePointer")
+		end
 		if not self.ent then return end
 		local red,green,blue = g.Config.MainColor:Unpack()
 		surface.SetDrawColor(red, green, blue, 255)
 		local endPos     = self.ent:LocalToWorld( self.ent:OBBCenter() ):ToScreen()
-		local startPos   = p:GetPos()
-		surface.DrawLine( startPos[1], startPos[2], endPos[1], endPos[2] )
-	end
+		if not endPos.visible then self:Remove() return end
+		local endX, endY = endPos.x,endPos.y
+		local startX, startY   = self:GetPos()
+		surface.DrawLine( startX, startY, endX, endY)
+		surface.DrawLine( startX, startY + self:GetTall(), endX, endY)
+		surface.DrawLine( startX + self:GetWide(), startY + self:GetTall(), endX, endY)
+		surface.DrawLine( startX + self:GetWide(), startY, endX, endY)
+	end)
 	self:SetSize(600,600)
-	self:MakePopup()
+	//self:MakePopup()
 end
 
 function PANEL:SetEntity( ent )
 
 	if not ent then return nil end
 	if not IsValid(ent) then return nil end
+	self.ent = ent
 
 	local entData = scripted_ents.Get( ent:GetClass() )
 
@@ -31,7 +38,7 @@ function PANEL:SetEntity( ent )
 
 	self.ent = ent
 
-	for v,k in ipairs( endData.Interactions ) do
+	for v,k in ipairs( entData.Interactions ) do
 
 	end
 end

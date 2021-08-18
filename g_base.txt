@@ -1,7 +1,7 @@
-"g_base"
+"landys_base"
 {
 	"base"		"base"
-	"title"		"g_base dev testing"
+	"title"		"landys Dev"
 	"category"	"pve"
 	"menusystem"	"1"
 	"workshopid"	"-1"

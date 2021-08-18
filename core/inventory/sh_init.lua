@@ -1,12 +1,12 @@
-g.ConsoleMessage("Loading Inventory/Items Plugin")
+landys.ConsoleMessage("Loading Inventory/Items Plugin")
 
-g.items = {}
+landys.items = {}
 
 EQUIP_WEAPON = 1
 EQUIP_ARMOR  = 2
 EQUIP_COS    = 3
 
-g.items.base = {
+landys.items.base = {
 	UniqueID  = nil,
 	Model     = "models/props_lab/huladoll.mdl",
 	iconCam   = {
@@ -28,8 +28,8 @@ g.items.base = {
 }
 
 -- Setup the item class
-function g.items.RegisterItem( UniqueID, meta )
-	local self = table.Inherit( meta, g.items.base )
+function landys.items.RegisterItem( UniqueID, meta )
+	local self = table.Inherit( meta, landys.items.base )
 
 	function self:onEquip( ply )
 		if self.equipData.type == EQUIP_WEAPON then

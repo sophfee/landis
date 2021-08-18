@@ -1,4 +1,4 @@
--- g.chat.commands
+-- landys.chat.commands
 
 if SERVER then
 	util.AddNetworkString("eventCommand")
@@ -11,7 +11,7 @@ if CLIENT then
 	end)
 end
 
-g.chat.RegisterCommand("/event",{
+landys.chat.RegisterCommand("/event",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_LEAD_ADMIN,

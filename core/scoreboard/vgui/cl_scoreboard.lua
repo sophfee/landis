@@ -18,7 +18,7 @@ function PANEL:CreatePlayerList()
 	end
 
 	for v,k in ipairs(player.GetAll()) do
-		local playerInfoCard = vgui.Create("gPlayerPanel", nil, "gPcard")
+		local playerInfoCard = vgui.Create("landysPlayerPanel", nil, "landysPcard")
 		
 		self.Scroll:AddItem(playerInfoCard)
 		playerInfoCard:Dock(TOP)
@@ -39,7 +39,7 @@ function PANEL:Init()
 		self:SetSize(640,480)
 		self:Center()
 		self:MakePopup()
-		self.Scroll = vgui.Create("DScrollPanel", self, "g-baseScoreboardScrollPanel")
+		self.Scroll = vgui.Create("DScrollPanel", self, "landys-baseScoreboardScrollPanel")
 		self.Scroll.Paint = function(self,w,h) 
 			//surface.SetDrawColor(255, 255, 255, 100)
 			//surface.DrawRect(0, 0, w, h)
@@ -50,7 +50,7 @@ function PANEL:Init()
 		self:SetSize(900,700)
 		self:Center()
 		self:MakePopup()
-		self.Scroll = vgui.Create("DScrollPanel", self, "g-baseScoreboardScrollPanel")
+		self.Scroll = vgui.Create("DScrollPanel", self, "landys-baseScoreboardScrollPanel")
 		self.Scroll.Paint = function(self,w,h) 
 			//surface.SetDrawColor(255, 255, 255, 100)
 			//surface.DrawRect(0, 0, w, h)
@@ -60,14 +60,14 @@ function PANEL:Init()
 	end
 end
 
-vgui.Register("gScoreboard", PANEL, "DFrame")
+vgui.Register("landysScoreboard", PANEL, "DFrame")
 
 local activePanel
 
 // Remove default scoreboard
 function GM:ScoreboardShow()
 	if not activePanel then
-		activePanel = vgui.Create("gScoreboard",nil,"gScoreboardPlayer")
+		activePanel = vgui.Create("landysScoreboard",nil,"landysScoreboardPlayer")
 	end
 end
 function GM:ScoreboardHide()

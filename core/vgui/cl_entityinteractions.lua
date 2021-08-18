@@ -10,7 +10,7 @@ function PANEL:Init()
 			hook.Remove("HUDPaint", "LinePointer")
 		end
 		if not self.ent then return end
-		local red,green,blue = g.Config.MainColor:Unpack()
+		local red,green,blue = landys.Config.MainColor:Unpack()
 		surface.SetDrawColor(red, green, blue, 255)
 		local endPos     = self.ent:LocalToWorld( self.ent:OBBCenter() ):ToScreen()
 		if not endPos.visible then self:Remove() return end
@@ -43,4 +43,4 @@ function PANEL:SetEntity( ent )
 	end
 end
 
-vgui.Register("gEntityInteractions", PANEL, "DFrame")
+vgui.Register("landysEntityInteractions", PANEL, "DFrame")

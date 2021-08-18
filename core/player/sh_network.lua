@@ -21,12 +21,12 @@ function meta:GetPermissionLevel()
 end
 
 if SERVER then 
-	util.AddNetworkString("gNotify")
+	util.AddNetworkString("landysNotify")
 
 	function meta:Notify(message,duration)
 		if not message then return end
 		duration = duration or 5
-		net.Start("gNotify")
+		net.Start("landysNotify")
 			net.WriteString(message)
 			net.WriteInt(duration,32)
 		net.Send(self)
@@ -35,11 +35,11 @@ end
 
 if CLIENT then
 	function meta:Notify(message,duration)
-		local panel = vgui.Create("gNotify")
+		local panel = vgui.Create("landysNotify")
 		panel:SetDuration(duration or 5)
 		panel:SetMessage(message)
 	end
-	net.Receive("gNotify", function()
+	net.Receive("landysNotify", function()
 		local message = net.ReadString()
 		local duration = net.ReadInt(32)
 		LocalPlayer():Notify(message,duration)

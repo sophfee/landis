@@ -1,18 +1,19 @@
 DeriveGamemode("sandbox")
-g = {}
+landys = landys or {}
+landys.lib = landys.lib or {}
 
 // fallback configurations
-g.Config =  {}
-g.Config.MainColor        = Color( 10,  132, 255 )
-g.Config.DefaultTextColor = Color( 245, 245, 245 )
-g.Config.BGColorDark      = Color( 44,  44,  46  )
-g.Config.BGColorLight     = Color( 229, 229, 234  )
-g.Config.ConsolePrefix    = "[g_base]"
+landys.Config =  {}
+landys.Config.MainColor        = Color( 10,  132, 255 )
+landys.Config.DefaultTextColor = Color( 245, 245, 245 )
+landys.Config.BGColorDark      = Color( 44,  44,  46  )
+landys.Config.BGColorLight     = Color( 229, 229, 234  )
+landys.Config.ConsolePrefix    = "[landys]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
-function g.ConsoleMessage(...)
-	local mColor = g.Config.MainColor
-	local prefix = g.Config.ConsolePrefix .. " "
-	local textCo = g.Config.DefaultTextColor
+function landys.ConsoleMessage(...)
+	local mColor = landys.Config.MainColor
+	local prefix = landys.Config.ConsolePrefix .. " "
+	local textCo = landys.Config.DefaultTextColor
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
@@ -85,30 +86,39 @@ PERMISSION_LEVEL_ADMIN      = 2
 PERMISSION_LEVEL_LEAD_ADMIN = 3
 PERMISSION_LEVEL_SUPERADMIN = 4
 
-function g.GetPermissionLevel(ply)
-	if ply:IsSuperAdmin() then return 4 end
-	if ply:IsLeadAdmin()  then return 3 end
-	if ply:IsAdmin()      then return 2 end
-	return 1
+-- deprecated
+
+
+-- Core Client Meta
+if CLIENT then
+	--        Get ratio scale
+	LOW_RES = ScrH()*ScrW() < 1000000 and true or false
 end
+
 if SERVER then
 	// load core plugins/extensions
-	//g.ConsoleMessage("loading extensions")
+	landys.ConsoleMessage("loading libraries")
+	includedir( GM.FolderName .. "/gamemode/lib"  )
+
+	//landys.ConsoleMessage("loading extensions")
 	includedir( GM.FolderName .. "/core"  )
 
-	//g.ConsoleMessage("loading plugins")
+	//landys.ConsoleMessage("loading plugins")
 	includedir( GM.FolderName .. "/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions
-	g.ConsoleMessage("loading extensions")
+	landys.ConsoleMessage("loading libraries")
+	includedir( GM.FolderName .. "/gamemode/lib"  )
+
+	landys.ConsoleMessage("loading extensions")
 	includedir( GM.FolderName .. "/core"  )
 
-	g.ConsoleMessage("loading plugins")
+	landys.ConsoleMessage("loading plugins")
 	includedir( GM.FolderName .. "/plugins" )
 end
 /*
-local data = g.Settings["test"]
+local data = landys.Settings["test"]
 
 local parent = vgui.Create("DFrame")
 parent:SetSize(400,400)

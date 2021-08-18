@@ -1,6 +1,6 @@
 // mostly moderation things
 hook.Add("CheckPassword", "CheckForBan", function(uSteamID64)
-	local userData = g.userdata.Fetch(uSteamID64)
+	local userData = landys.userdata.Fetch(uSteamID64)
 	if not userData then return true end
 	for _,ban in ipairs(userData.bans) do
 		if os.time() < ban.endDate then 

@@ -1,22 +1,22 @@
-----// eChat //----
+----// landys.chatbox //----
 -- Author: Exho (obviously), Tomelyr, LuaTenshi
 -- Version: 4/12/15
 
-eChat = {}
-eChat.isOpen = false
+landys.chatbox = {}
+landys.chatbox.isOpen = false
 messages = {}
-eChat.config = {
+landys.chatbox.config = {
 	timeStamps = false,
 	position = 1,	
-	fadeTime = 12,
+	fadeTime = 12
 }
-eChat.CommandColors = {}
-eChat.CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
-eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
-eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
-eChat.CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
+landys.chatbox.CommandColors = {}
+landys.chatbox.CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
+landys.chatbox.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+landys.chatbox.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
+landys.chatbox.CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
-surface.CreateFont( "eChat_18", {
+surface.CreateFont( "landys.chatbox_18", {
 	font = "Arial",
 	size = 18,
 	weight = 3500,
@@ -25,7 +25,7 @@ surface.CreateFont( "eChat_18", {
 	extended = true,
 } )
 
-surface.CreateFont( "eChat_16", {
+surface.CreateFont( "landys.chatbox_16", {
 	font = "Arial",
 	size = 16,
 	weight = 3500,
@@ -36,122 +36,112 @@ surface.CreateFont( "eChat_16", {
 
 
 --// Builds the chatbox but doesn't display it
-function eChat.buildBox()
-	eChat.frame = vgui.Create("DFrame")
-	eChat.frame:SetSize( ScrW()*0.375, ScrH()*0.25 )
-	eChat.frame:SetTitle("")
-	eChat.frame:ShowCloseButton( false )
-	//eChat.frame:SetDraggable( true )
-	//eChat.frame:SetSizable( true )
-	eChat.frame:SetPos( ScrW()*0.0116, (ScrH() - eChat.frame:GetTall()) - ScrH()*0.177)
-	eChat.frame:SetMinWidth( 300 )
-	eChat.frame:SetMinHeight( 100 )
-	eChat.oldPaint = eChat.frame.Paint
-	eChat.frame.Think = function()
+function landys.chatbox.buildBox()
+	landys.chatbox.frame = vgui.Create("DFrame")
+	landys.chatbox.frame:SetSize( ScrW()*0.375, ScrH()*0.25 )
+	landys.chatbox.frame:SetTitle("")
+	landys.chatbox.frame:ShowCloseButton( false )
+	//landys.chatbox.frame:SetDraggable( true )
+	//landys.chatbox.frame:SetSizable( true )
+	landys.chatbox.frame:SetPos( ScrW()*0.0116, (ScrH() - landys.chatbox.frame:GetTall()) - ScrH()*0.177)
+	landys.chatbox.frame:SetMinWidth( 300 )
+	landys.chatbox.frame:SetMinHeight( 100 )
+	landys.chatbox.oldPaint = landys.chatbox.frame.Paint
+	landys.chatbox.frame.Think = function()
 		if input.IsKeyDown( KEY_ESCAPE ) then
-			eChat.hideBox()
+			landys.chatbox.hideBox()
 		end
 	end
 	
-	local serverName = vgui.Create("DLabel", eChat.frame)
+	local serverName = vgui.Create("DLabel", landys.chatbox.frame)
 	serverName:SetText( GetHostName() )
-	serverName:SetFont( "eChat_18")
+	serverName:SetFont( "landys.chatbox_18")
 	serverName:SizeToContents()
 	serverName:SetPos( 5, 4 )
 	
-	local settings = vgui.Create("DButton", eChat.frame)
-	settings:SetText("Settings")
-	settings:SetFont( "eChat_18")
-	settings:SetTextColor( Color( 230, 230, 230, 150 ) )
-	settings:SetSize( 70, 25 )
-	settings:SetPos( eChat.frame:GetWide() - settings:GetWide(), 0 )
-	settings.DoClick = function( self )
-		eChat.openSettings()
-	end
-	
-	eChat.entry = vgui.Create("DTextEntry", eChat.frame) 
-	eChat.entry:SetSize( eChat.frame:GetWide() - 50, 20 )
-	eChat.entry:SetTextColor( color_white )
-	eChat.entry:SetFont("eChat_18")
-	eChat.entry:SetDrawBorder( false )
-	eChat.entry:SetDrawBackground( false )
-	eChat.entry:SetCursorColor( color_white )
-	eChat.entry:SetHighlightColor( Color(52, 152, 219) )
-	eChat.entry:SetPos( 45, eChat.frame:GetTall() - eChat.entry:GetTall() - 5 )
-	eChat.entry.Paint = function( self, w, h )
+	landys.chatbox.entry = vgui.Create("DTextEntry", landys.chatbox.frame) 
+	landys.chatbox.entry:SetSize( landys.chatbox.frame:GetWide() - 50, 20 )
+	landys.chatbox.entry:SetTextColor( color_white )
+	landys.chatbox.entry:SetFont("landys.chatbox_18")
+	landys.chatbox.entry:SetDrawBorder( false )
+	landys.chatbox.entry:SetDrawBackground( false )
+	landys.chatbox.entry:SetCursorColor( color_white )
+	landys.chatbox.entry:SetHighlightColor( Color(52, 152, 219) )
+	landys.chatbox.entry:SetPos( 45, landys.chatbox.frame:GetTall() - landys.chatbox.entry:GetTall() - 5 )
+	landys.chatbox.entry.Paint = function( self, w, h )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 		derma.SkinHook( "Paint", "TextEntry", self, w, h )
 	end
 
-	eChat.entry.OnTextChanged = function( self )
+	landys.chatbox.entry.OnTextChanged = function( self )
 		if self and self.GetText then 
 			gamemode.Call( "ChatTextChanged", self:GetText() or "" )
 		end
 	end
 
-	eChat.entry.OnKeyCodeTyped = function( self, code )
+	landys.chatbox.entry.OnKeyCodeTyped = function( self, code )
 		local types = {"", "teamchat", "console"}
 
 		if code == KEY_ESCAPE then
 
-			eChat.hideBox()
+			landys.chatbox.hideBox()
 			gui.HideGameUI()
 
 		elseif code == KEY_TAB then
 			
-			eChat.TypeSelector = (eChat.TypeSelector and eChat.TypeSelector + 1) or 1
+			landys.chatbox.TypeSelector = (landys.chatbox.TypeSelector and landys.chatbox.TypeSelector + 1) or 1
 			
-			if eChat.TypeSelector > 3 then eChat.TypeSelector = 1 end
-			if eChat.TypeSelector < 1 then eChat.TypeSelector = 3 end
+			if landys.chatbox.TypeSelector > 3 then landys.chatbox.TypeSelector = 1 end
+			if landys.chatbox.TypeSelector < 1 then landys.chatbox.TypeSelector = 3 end
 			
-			eChat.ChatType = types[eChat.TypeSelector]
+			landys.chatbox.ChatType = types[landys.chatbox.TypeSelector]
 
-			timer.Simple(0.001, function() eChat.entry:RequestFocus() end)
+			timer.Simple(0.001, function() landys.chatbox.entry:RequestFocus() end)
 
 		elseif code == KEY_ENTER then
 			-- Replicate the client pressing enter
 			
 			if string.Trim( self:GetText() ) != "" then
-				if eChat.ChatType == types[2] then
+				if landys.chatbox.ChatType == types[2] then
 					LocalPlayer():ConCommand("say_team \"" .. (self:GetText() or "") .. "\"")
-				elseif eChat.ChatType == types[3] then
+				elseif landys.chatbox.ChatType == types[3] then
 					LocalPlayer():ConCommand(self:GetText() or "")
 				else
 					LocalPlayer():ConCommand("say \"" .. self:GetText() .. "\"")
 				end
 			end
 
-			eChat.TypeSelector = 1
-			eChat.hideBox()
+			landys.chatbox.TypeSelector = 1
+			landys.chatbox.hideBox()
 		end
 	end
 
-	eChat.chatLog = vgui.Create("RichText", eChat.frame) 
-	eChat.chatLog:SetSize( eChat.frame:GetWide() - 10, eChat.frame:GetTall() - 60 )
-	eChat.chatLog:SetPos( 5, 30 )
-	eChat.chatLog.Paint = function( self, w, h )
+	landys.chatbox.chatLog = vgui.Create("RichText", landys.chatbox.frame) 
+	landys.chatbox.chatLog:SetSize( landys.chatbox.frame:GetWide() - 10, landys.chatbox.frame:GetTall() - 60 )
+	landys.chatbox.chatLog:SetPos( 5, 30 )
+	landys.chatbox.chatLog.Paint = function( self, w, h )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 	end
-	eChat.chatLog.Think = function( self )
-		if eChat.lastMessage then
-			if CurTime() - eChat.lastMessage > eChat.config.fadeTime then
+	landys.chatbox.chatLog.Think = function( self )
+		if landys.chatbox.lastMessage then
+			if CurTime() - landys.chatbox.lastMessage > landys.chatbox.config.fadeTime then
 				self:SetVisible( false )
 			else
 				self:SetVisible( true )
 			end
 		end
-		self:SetSize( eChat.frame:GetWide() - 10, eChat.frame:GetTall() - eChat.entry:GetTall() - serverName:GetTall() - 20 )
-		settings:SetPos( eChat.frame:GetWide() - settings:GetWide(), 0 )
+		self:SetSize( landys.chatbox.frame:GetWide() - 10, landys.chatbox.frame:GetTall() - landys.chatbox.entry:GetTall() - serverName:GetTall() - 20 )
+		//settings:SetPos( landys.chatbox.frame:GetWide() - settings:GetWide(), 0 )
 	end
-	eChat.chatLog.PerformLayout = function( self )
-		self:SetFontInternal("eChat_18")
+	landys.chatbox.chatLog.PerformLayout = function( self )
+		self:SetFontInternal("landys.chatbox_18")
 		self:SetFGColor( color_white )
 	end
-	eChat.chatLog.PaintOver = function( self, w, h )
-        if not g.chat then return end
-        if not g.chat.commands then return end
-        if eChat.entry:IsEditing() then
-            local typed = eChat.entry:GetValue()
+	landys.chatbox.chatLog.PaintOver = function( self, w, h )
+        if not landys.chat then return end
+        if not landys.chat.commands then return end
+        if landys.chatbox.entry:IsEditing() then
+            local typed = landys.chatbox.entry:GetValue()
             if not typed then return end
             typed = string.Split(typed, " ")[1]
             local len   = string.len(typed)
@@ -161,134 +151,138 @@ function eChat.buildBox()
                 surface.DrawRect(0, 0, w, h)
                 local i = 1
                 local pLevel = LocalPlayer():GetPermissionLevel()
-                for name,data in pairs( g.chat.commands ) do
+                for name,data in pairs( landys.chat.commands ) do
                     if string.Left(typed, len) == string.Left(name, len) then
                         if pLevel < data.PermissionLevel then 
                             continue 
                         end 
-                        draw.SimpleText(name .. " - " .. data.HelpDescription, "eChat_18", 5, 5 + ((i-1)*18), eChat.CommandColors[data.PermissionLevel])
+                        draw.SimpleText(name .. " - " .. data.HelpDescription, "landys.chatbox_18", 5, 5 + ((i-1)*18), landys.chatbox.CommandColors[data.PermissionLevel])
                         i = i + 1
                     end
                 end
             end
         end
     end
-	eChat.oldPaint2 = eChat.chatLog.Paint
+	landys.chatbox.oldPaint2 = landys.chatbox.chatLog.Paint
 	
 	local text = "Say :"
 
-	local say = vgui.Create("DLabel", eChat.frame)
+	local say = vgui.Create("DLabel", landys.chatbox.frame)
 	say:SetText("")
-	surface.SetFont( "eChat_18")
+	surface.SetFont( "landys.chatbox_18")
 	local w, h = surface.GetTextSize( text )
 	say:SetSize( w + 5, 20 )
-	say:SetPos( 5, eChat.frame:GetTall() - eChat.entry:GetTall() - 5 )
+	say:SetPos( 5, landys.chatbox.frame:GetTall() - landys.chatbox.entry:GetTall() - 5 )
 	
 	say.Paint = function( self, w, h )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
-		draw.DrawText( text, "eChat_18", 2, 1, color_white )
+		draw.DrawText( text, "landys.chatbox_18", 2, 1, color_white )
 	end
 
 	say.Think = function( self )
 		local types = {"", "teamchat", "console"}
 		local s = {}
 
-		if eChat.ChatType == types[2] then 
+		if landys.chatbox.ChatType == types[2] then 
 			text = "Say (TEAM) :"	
-		elseif eChat.ChatType == types[3] then
+		elseif landys.chatbox.ChatType == types[3] then
 			text = "Console :"
 		else
 			text = "Say :"
 			s.pw = 45
-			s.sw = eChat.frame:GetWide() - 50
+			s.sw = landys.chatbox.frame:GetWide() - 50
 		end
 
 		if s then
 			if not s.pw then s.pw = self:GetWide() + 10 end
-			if not s.sw then s.sw = eChat.frame:GetWide() - self:GetWide() - 15 end
+			if not s.sw then s.sw = landys.chatbox.frame:GetWide() - self:GetWide() - 15 end
 		end
 
 		local w, h = surface.GetTextSize( text )
 		self:SetSize( w + 5, 20 )
-		self:SetPos( 5, eChat.frame:GetTall() - eChat.entry:GetTall() - 5 )
+		self:SetPos( 5, landys.chatbox.frame:GetTall() - landys.chatbox.entry:GetTall() - 5 )
 
-		eChat.entry:SetSize( s.sw, 20 )
-		eChat.entry:SetPos( s.pw, eChat.frame:GetTall() - eChat.entry:GetTall() - 5 )
+		landys.chatbox.entry:SetSize( s.sw, 20 )
+		landys.chatbox.entry:SetPos( s.pw, landys.chatbox.frame:GetTall() - landys.chatbox.entry:GetTall() - 5 )
 	end	
 	
-	eChat.hideBox()
+	landys.chatbox.hideBox()
 end
 
 --// Hides the chat box but not the messages
-function eChat.hideBox()
-	eChat.frame.Paint = function() end
-	eChat.chatLog.Paint = function() end
+function landys.chatbox.hideBox()
+	landys.chatbox.isOpen = false
+
+	landys.chatbox.frame.Paint = function() end
+	landys.chatbox.chatLog.Paint = function() end
 	
-	eChat.chatLog:SetVerticalScrollbarEnabled( false )
-	eChat.chatLog:GotoTextEnd()
+	landys.chatbox.chatLog:SetVerticalScrollbarEnabled( false )
+	landys.chatbox.chatLog:GotoTextEnd()
 	
-	eChat.lastMessage = eChat.lastMessage or CurTime() - eChat.config.fadeTime
+	landys.chatbox.lastMessage = landys.chatbox.lastMessage or CurTime() - landys.chatbox.config.fadeTime
 	
 	-- Hide the chatbox except the log
-	local children = eChat.frame:GetChildren()
+	local children = landys.chatbox.frame:GetChildren()
 	for _, pnl in pairs( children ) do
-		if pnl == eChat.frame.btnMaxim or pnl == eChat.frame.btnClose or pnl == eChat.frame.btnMinim then continue end
+		if pnl == landys.chatbox.frame.btnMaxim or pnl == landys.chatbox.frame.btnClose or pnl == landys.chatbox.frame.btnMinim then continue end
 		
-		if pnl != eChat.chatLog then
+		if pnl != landys.chatbox.chatLog then
 			pnl:SetVisible( false )
 		end
 	end
 	
 	-- Give the player control again
-	eChat.frame:SetMouseInputEnabled( false )
-	eChat.frame:SetKeyboardInputEnabled( false )
+	landys.chatbox.frame:SetMouseInputEnabled( false )
+	landys.chatbox.frame:SetKeyboardInputEnabled( false )
 	gui.EnableScreenClicker( false )
 	
 	-- We are done chatting
 	gamemode.Call("FinishChat")
 	
 	-- Clear the text entry
-	eChat.entry:SetText( "" )
+	landys.chatbox.entry:SetText( "" )
 	gamemode.Call( "ChatTextChanged", "" )
+	landys.chatbox.chatLog:SetVisible(true)
 end
 
 --// Shows the chat box
-function eChat.showBox()
+function landys.chatbox.showBox()
+	landys.chatbox.isOpen = true
 	-- Draw the chat box again
-	eChat.frame.Paint = eChat.oldPaint
-	eChat.chatLog.Paint = eChat.oldPaint2
+	landys.chatbox.frame.Paint = landys.chatbox.oldPaint
+	landys.chatbox.chatLog.Paint = landys.chatbox.oldPaint2
 	
-	eChat.chatLog:SetVerticalScrollbarEnabled( true )
-	eChat.lastMessage = nil
+	landys.chatbox.chatLog:SetVerticalScrollbarEnabled( true )
+	landys.chatbox.lastMessage = nil
 	
 	-- Show any hidden children
-	local children = eChat.frame:GetChildren()
+	local children = landys.chatbox.frame:GetChildren()
 	for _, pnl in pairs( children ) do
-		if pnl == eChat.frame.btnMaxim or pnl == eChat.frame.btnClose or pnl == eChat.frame.btnMinim then continue end
+		if pnl == landys.chatbox.frame.btnMaxim or pnl == landys.chatbox.frame.btnClose or pnl == landys.chatbox.frame.btnMinim then continue end
 		
 		pnl:SetVisible( true )
 	end
-	
+	landys.chatbox.chatLog:SetVisible(true)
 	-- MakePopup calls the input functions so we don't need to call those
-	eChat.frame:MakePopup()
-	eChat.entry:RequestFocus()
+	landys.chatbox.frame:MakePopup()
+	landys.chatbox.entry:RequestFocus()
 	
 	-- Make sure other addons know we are chatting
 	gamemode.Call("StartChat")
 end
 
 --// Opens the settings panel
-function eChat.openSettings()
-	eChat.hideBox()
+function landys.chatbox.openSettings()
+	landys.chatbox.hideBox()
 	
-	eChat.frameS = vgui.Create("DFrame")
-	eChat.frameS:SetSize( 400, 300 )
-	eChat.frameS:SetTitle("")
-	eChat.frameS:MakePopup()
-	eChat.frameS:SetPos( ScrW()/2 - eChat.frameS:GetWide()/2, ScrH()/2 - eChat.frameS:GetTall()/2 )
-	eChat.frameS:ShowCloseButton( true )
-	eChat.frameS.Paint = function( self, w, h )
-		eChat.blur( self, 10, 20, 255 )
+	landys.chatbox.frameS = vgui.Create("DFrame")
+	landys.chatbox.frameS:SetSize( 400, 300 )
+	landys.chatbox.frameS:SetTitle("")
+	landys.chatbox.frameS:MakePopup()
+	landys.chatbox.frameS:SetPos( ScrW()/2 - landys.chatbox.frameS:GetWide()/2, ScrH()/2 - landys.chatbox.frameS:GetTall()/2 )
+	landys.chatbox.frameS:ShowCloseButton( true )
+	landys.chatbox.frameS.Paint = function( self, w, h )
+		landys.chatbox.blur( self, 10, 20, 255 )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 200 ) )
 		
 		draw.RoundedBox( 0, 0, 0, w, 25, Color( 80, 80, 80, 100 ) )
@@ -296,34 +290,34 @@ function eChat.openSettings()
 		draw.RoundedBox( 0, 0, 25, w, 25, Color( 50, 50, 50, 50 ) )
 	end
 	
-	local serverName = vgui.Create("DLabel", eChat.frameS)
-	serverName:SetText( "eChat - Settings" )
-	serverName:SetFont( "eChat_18")
+	local serverName = vgui.Create("DLabel", landys.chatbox.frameS)
+	serverName:SetText( "landys.chatbox - Settings" )
+	serverName:SetFont( "landys.chatbox_18")
 	serverName:SizeToContents()
 	serverName:SetPos( 5, 4 )
 	
-	local label1 = vgui.Create("DLabel", eChat.frameS)
+	local label1 = vgui.Create("DLabel", landys.chatbox.frameS)
 	label1:SetText( "Time stamps: " )
-	label1:SetFont( "eChat_18")
+	label1:SetFont( "landys.chatbox_18")
 	label1:SizeToContents()
 	label1:SetPos( 10, 40 )
 	
-	local checkbox1 = vgui.Create("DCheckBox", eChat.frameS ) 
+	local checkbox1 = vgui.Create("DCheckBox", landys.chatbox.frameS ) 
 	checkbox1:SetPos(label1:GetWide() + 15, 42)
-	checkbox1:SetValue( eChat.config.timeStamps )
+	checkbox1:SetValue( landys.chatbox.config.timeStamps )
 	
-	local label2 = vgui.Create("DLabel", eChat.frameS)
+	local label2 = vgui.Create("DLabel", landys.chatbox.frameS)
 	label2:SetText( "Fade time: " )
-	label2:SetFont( "eChat_18")
+	label2:SetFont( "landys.chatbox_18")
 	label2:SizeToContents()
 	label2:SetPos( 10, 70 )
 	
-	local textEntry = vgui.Create("DTextEntry", eChat.frameS) 
+	local textEntry = vgui.Create("DTextEntry", landys.chatbox.frameS) 
 	textEntry:SetSize( 50, 20 )
 	textEntry:SetPos( label2:GetWide() + 15, 70 )
-	textEntry:SetText( eChat.config.fadeTime ) 
+	textEntry:SetText( landys.chatbox.config.fadeTime ) 
 	textEntry:SetTextColor( color_white )
-	textEntry:SetFont("eChat_18")
+	textEntry:SetFont("landys.chatbox_18")
 	textEntry:SetDrawBorder( false )
 	textEntry:SetDrawBackground( false )
 	textEntry:SetCursorColor( color_white )
@@ -333,26 +327,26 @@ function eChat.openSettings()
 		derma.SkinHook( "Paint", "TextEntry", self, w, h )
 	end
 	
-	--[[local checkbox2 = vgui.Create("DCheckBox", eChat.frameS ) 
+	--[[local checkbox2 = vgui.Create("DCheckBox", landys.chatbox.frameS ) 
 	checkbox2:SetPos(label2:GetWide() + 15, 72)
-	checkbox2:SetValue( eChat.config.seeChatTags )
+	checkbox2:SetValue( landys.chatbox.config.selandys.chatboxTags )
 	
-	local label3 = vgui.Create("DLabel", eChat.frameS)
+	local label3 = vgui.Create("DLabel", landys.chatbox.frameS)
 	label3:SetText( "Use chat tags: " )
-	label3:SetFont( "eChat_18")
+	label3:SetFont( "landys.chatbox_18")
 	label3:SizeToContents()
 	label3:SetPos( 10, 100 )
 	
-	local checkbox3 = vgui.Create("DCheckBox", eChat.frameS ) 
+	local checkbox3 = vgui.Create("DCheckBox", landys.chatbox.frameS ) 
 	checkbox3:SetPos(label3:GetWide() + 15, 102)
-	checkbox3:SetValue( eChat.config.useChatTag )]]
+	checkbox3:SetValue( landys.chatbox.config.uslandys.chatboxTag )]]
 	
-	local save = vgui.Create("DButton", eChat.frameS)
+	local save = vgui.Create("DButton", landys.chatbox.frameS)
 	save:SetText("Save")
-	save:SetFont( "eChat_18")
+	save:SetFont( "landys.chatbox_18")
 	save:SetTextColor( Color( 230, 230, 230, 150 ) )
 	save:SetSize( 70, 25 )
-	save:SetPos( eChat.frameS:GetWide()/2 - save:GetWide()/2, eChat.frameS:GetTall() - save:GetTall() - 10)
+	save:SetPos( landys.chatbox.frameS:GetWide()/2 - save:GetWide()/2, landys.chatbox.frameS:GetTall() - save:GetTall() - 10)
 	save.Paint = function( self, w, h )
 		if self:IsDown() then
 			draw.RoundedBox( 0, 0, 0, w, h, Color( 80, 80, 80, 200 ) )
@@ -361,16 +355,16 @@ function eChat.openSettings()
 		end
 	end
 	save.DoClick = function( self )
-		eChat.frameS:Close()
+		landys.chatbox.frameS:Close()
 		
-		eChat.config.timeStamps = checkbox1:GetChecked() 
-		eChat.config.fadeTime = tonumber(textEntry:GetText()) or eChat.config.fadeTime
+		landys.chatbox.config.timeStamps = checkbox1:GetChecked() 
+		landys.chatbox.config.fadeTime = tonumber(textEntry:GetText()) or landys.chatbox.config.fadeTime
 	end
 end
 
 --// Panel based blur function by Chessnut from NutScript
 local blur = Material( "pp/blurscreen" )
-function eChat.blur( panel, layers, density, alpha )
+function landys.chatbox.blur( panel, layers, density, alpha )
 	-- Its a scientifically proven fact that blur improves a script
 	local x, y = panel:LocalToScreen(0, 0)
 
@@ -390,89 +384,91 @@ local oldAddText = chat.AddText
 
 --// Overwrite chat.AddText to detour it into my chatbox
 function chat.AddText(...)
-	if not eChat.chatLog then
-		eChat.buildBox()
+	if not landys.chatbox.chatLog then
+		landys.chatbox.buildBox()
 	end
 	
-	local msg = {}
+	local msg = vgui.Create( "chatmessage", landys.chatbox.chatLog )
+	msg:SetMessage( ... )
+	msg:Dock( TOP )
 	
 	-- Iterate through the strings and colors
-	for _, obj in pairs( {...} ) do
+	--[[for _, obj in pairs( {...} ) do
 		if type(obj) == "table" then
-			eChat.chatLog:InsertColorChange( obj.r, obj.g, obj.b, obj.a )
+			landys.chatbox.chatLog:InsertColorChange( obj.r, obj.g, obj.b, obj.a )
 			table.insert( msg, Color(obj.r, obj.g, obj.b, obj.a) )
 		elseif type(obj) == "string"  then
-			eChat.chatLog:AppendText( obj )
+			landys.chatbox.chatLog:AppendText( obj )
 			table.insert( msg, obj )
 		elseif obj:IsPlayer() then
 			local ply = obj
 			
-			if eChat.config.timeStamps then
-				eChat.chatLog:InsertColorChange( 130, 130, 130, 255 )
-				eChat.chatLog:AppendText( "["..os.date("%X").."] ")
+			if landys.chatbox.config.timeStamps then
+				landys.chatbox.chatLog:InsertColorChange( 130, 130, 130, 255 )
+				landys.chatbox.chatLog:AppendText( "["..os.date("%X").."] ")
 			end
 			
-			if eChat.config.seeChatTags and ply:GetNWBool("eChat_tagEnabled", false) then
-				local col = ply:GetNWString("eChat_tagCol", "255 255 255")
+			if landys.chatbox.config.selandys.chatboxTags and ply:GetNWBool("landys.chatbox_tagEnabled", false) then
+				local col = ply:GetNWString("landys.chatbox_tagCol", "255 255 255")
 				local tbl = string.Explode(" ", col )
-				eChat.chatLog:InsertColorChange( tbl[1], tbl[2], tbl[3], 255 )
-				eChat.chatLog:AppendText( "["..ply:GetNWString("eChat_tag", "N/A").."] ")
+				landys.chatbox.chatLog:InsertColorChange( tbl[1], tbl[2], tbl[3], 255 )
+				landys.chatbox.chatLog:AppendText( "["..ply:GetNWString("landys.chatbox_tag", "N/A").."] ")
 			end
 			
 			local col = GAMEMODE:GetTeamColor( obj )
-			eChat.chatLog:InsertColorChange( col.r, col.g, col.b, 255 )
-			eChat.chatLog:AppendText( obj:Nick() )
+			landys.chatbox.chatLog:InsertColorChange( col.r, col.g, col.b, 255 )
+			landys.chatbox.chatLog:AppendText( obj:Nick() )
 			table.insert( msg, obj:Nick() )
 		end
-	end
-	eChat.chatLog:AppendText("\n")
+	end]]
+	landys.chatbox.chatLog:AppendText("\n")
 	
-	eChat.chatLog:SetVisible( true )
-	eChat.lastMessage = CurTime()
-	eChat.chatLog:InsertColorChange( 255, 255, 255, 255 )
+	landys.chatbox.chatLog:SetVisible( true )
+	landys.chatbox.lastMessage = CurTime()
+	landys.chatbox.chatLog:InsertColorChange( 255, 255, 255, 255 )
 	chat.PlaySound()
 --	oldAddText(unpack(msg))
 end
 
 --// Write any server notifications
-hook.Remove( "ChatText", "echat_joinleave")
-hook.Add( "ChatText", "echat_joinleave", function( index, name, text, type )
-	if not eChat.chatLog then
-		eChat.buildBox()
+hook.Remove( "ChatText", "landys.chatbox_joinleave")
+hook.Add( "ChatText", "landys.chatbox_joinleave", function( index, name, text, type )
+	if not landys.chatbox.chatLog then
+		landys.chatbox.buildBox()
 	end
 	
 	if type != "chat" then
-		eChat.chatLog:InsertColorChange( 0, 128, 255, 255 )
-		eChat.chatLog:AppendText( text.."\n" )
-		eChat.chatLog:SetVisible( true )
-		eChat.lastMessage = CurTime()
+		landys.chatbox.chatLog:InsertColorChange( 0, 128, 255, 255 )
+		landys.chatbox.chatLog:AppendText( text.."\n" )
+		landys.chatbox.chatLog:SetVisible( true )
+		landys.chatbox.lastMessage = CurTime()
 		return true
 	end
 end)
 
 --// Stops the default chat box from being opened
-hook.Remove("PlayerBindPress", "echat_hijackbind")
-hook.Add("PlayerBindPress", "echat_hijackbind", function(ply, bind, pressed)
+hook.Remove("PlayerBindPress", "landys.chatbox_hijackbind")
+hook.Add("PlayerBindPress", "landys.chatbox_hijackbind", function(ply, bind, pressed)
 	if string.sub( bind, 1, 11 ) == "messagemode" then
 		if bind == "messagemode2" then 
-			eChat.ChatType = "teamchat"
+			landys.chatbox.ChatType = "teamchat"
 		else
-			eChat.ChatType = ""
+			landys.chatbox.ChatType = ""
 		end
 		
-		if IsValid( eChat.frame ) then
-			eChat.showBox()
+		if IsValid( landys.chatbox.frame ) then
+			landys.chatbox.showBox()
 		else
-			eChat.buildBox()
-			eChat.showBox()
+			landys.chatbox.buildBox()
+			landys.chatbox.showBox()
 		end
 		return true
 	end
 end)
 
 --// Hide the default chat too in case that pops up
-hook.Remove("HUDShouldDraw", "echat_hidedefault")
-hook.Add("HUDShouldDraw", "echat_hidedefault", function( name )
+hook.Remove("HUDShouldDraw", "landys.chatbox_hidedefault")
+hook.Add("HUDShouldDraw", "landys.chatbox_hidedefault", function( name )
 	if name == "CHudChat" then
 		return false
 	end
@@ -481,19 +477,19 @@ end)
  --// Modify the Chatbox for align.
 local oldGetChatBoxPos = chat.GetChatBoxPos
 function chat.GetChatBoxPos()
-	return eChat.frame:GetPos()
+	return landys.chatbox.frame:GetPos()
 end
 
 function chat.GetChatBoxSize()
-	return eChat.frame:GetSize()
+	return landys.chatbox.frame:GetSize()
 end
 
-chat.Open = eChat.showBox
+chat.Open = landys.chatbox.showBox
 function chat.Close(...) 
-	if IsValid( eChat.frame ) then 
-		eChat.hideBox(...)
+	if IsValid( landys.chatbox.frame ) then 
+		landys.chatbox.hideBox(...)
 	else
-		eChat.buildBox()
-		eChat.showBox()
+		landys.chatbox.buildBox()
+		landys.chatbox.showBox()
 	end
 end

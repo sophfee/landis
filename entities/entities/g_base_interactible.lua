@@ -1,7 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
-ENT.PrintName = "gBase Interactible Base (dont use)"
-ENT.Category  = "gBase Ents"
+ENT.PrintName = "landysBase Interactible Base (dont use)"
+ENT.Category  = "landysBase Ents"
 ENT.Spawnable = true -- switch to false post dev
 ENT.AdminOnly = true
 ENT.Author    = "nick"
@@ -28,7 +28,7 @@ ENT.Interactions = {
 }
 
 if SERVER then
-	util.AddNetworkString("g_openMenu_entityInteract")
+	util.AddNetworkString("landys_openMenu_entityInteract")
 
 	local meta = FindMetaTable( "Player" )
 
@@ -36,7 +36,7 @@ if SERVER then
 		if !( IsValid( ent ) ) then return end
 		if !( self:Alive() ) then return end
 
-		net.Start( "g_openMenu_entityInteract" )
+		net.Start( "landys_openMenu_entityInteract" )
 			net.WriteEntity( ent )
 		net.Send( self )
 	end
@@ -44,11 +44,13 @@ end
 
 if CLIENT then
 
-	net.Receive( "g_openMenu_entityInteract", function()
+	
+
+	net.Receive( "landys_openMenu_entityInteract", function()
 		local ent = net.ReadEntity()
 
 		if IsValid( ent ) then
-			local P = vgui.Create( "gEntityInteractions" )
+			local P = vgui.Create( "landysEntityInteractions" )
 			P:SetSize(400,400)
 			P:Center()
 			P:SetEntity( ent )
@@ -57,14 +59,16 @@ if CLIENT then
 	end)
 
 	function ENT:Draw(f)
-		self:DrawModel(f)
-		cam.Start3D2D( self:LocalToWorld( self:OBBCenter() ), self:GetAngles() + Angle(-180`,-90,-90), 0.07)
+		self:DrawModel()
+		cam.Start3D2D( self:LocalToWorld( self:OBBCenter() ), self:GetAngles() + Angle(-180,-90,-90), 0.07)
 			surface.SetDrawColor(255, 255, 255)
 			surface.SetTextPos(200, 0)
 			surface.DrawText("test")
 		cam.End3D2D()
 		
 	end
+
+
 
 end
 
@@ -86,7 +90,7 @@ end
 
 if CLIENT then
 	function ENT:Use()
-		local a = vgui.Create( "gEntityInteractions" )
+		local a = vgui.Create( "landysEntityInteractions" )
 		a:SetEntity(self)
 	end
 end

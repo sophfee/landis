@@ -172,8 +172,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	surface.SetDrawColor( 255, 255, 255 )
 	local centerW = ScrW()/2
 	local centerH = ScrH()/2
-	local len     = g:GetSetting("crosshairLength")
-	local gap     = g:GetSetting("crosshairGap")
+	local len     = landys.lib.GetSetting("crosshairLength")
+	local gap     = landys.lib.GetSetting("crosshairGap")
 	surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
 	surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
 	surface.DrawRect( centerW, centerH - gap - len, 1, len)

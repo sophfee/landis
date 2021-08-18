@@ -52,7 +52,7 @@ function PANEL:SetPlayer(ply)
 	self.Icon:SetAnimSpeed( 4 )
 	self.Icon:SetDisabled( true )
 
-	for v,b in ipairs(g.Badges.Data) do
+	for v,b in ipairs(landys.Badges.Data) do
 		if b.userTest(ply) then
 			table.ForceInsert(self.Badges, b)
 		end
@@ -90,10 +90,10 @@ function PANEL:DoClick()
 	if not IsValid( self.Owner ) then return end
 	if openPlayercard then return end
 	openPlayercard = true
-	local __ = vgui.Create("gPlayerCard")
+	local __ = vgui.Create("landysPlayerCard")
 	__:Center()
 	__:MakePopup()
 	__:SetPlayer( self.Owner )
 end
 
-vgui.Register("gPlayerPanel", PANEL, "DButton")
+vgui.Register("landysPlayerPanel", PANEL, "DButton")

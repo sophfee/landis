@@ -24,7 +24,7 @@ function PANEL:SetPlayer( ply )
 	self.Player = ply
 	self.Avatar:SetPlayer(ply,64)
 	self.playerModel:SetModel(ply:GetModel())
-	for v,b in ipairs(g.Badges.Data) do
+	for v,b in ipairs(landys.Badges.Data) do
 		if b.userTest(ply) then
 			table.ForceInsert(self.Badges, b)
 		end
@@ -103,7 +103,7 @@ function PANEL:OnClose()
 	openPlayercard = false
 end
 
-vgui.Register("gPlayerCard", PANEL, "DFrame")
+vgui.Register("landysPlayerCard", PANEL, "DFrame")
 
 properties.Add("openPlayercard", {
 	MenuLabel = "[admin] Open Player Info",
@@ -114,7 +114,7 @@ properties.Add("openPlayercard", {
 	end,
 	Action = function(ply,self)
 		if self:IsPlayer() then
-			local Card = vgui.Create("gPlayerCard")
+			local Card = vgui.Create("landysPlayerCard")
 			Card:SetPlayer(self)
 
 		end

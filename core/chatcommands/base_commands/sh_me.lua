@@ -1,5 +1,5 @@
--- g.chat.commands
-g.chat.RegisterCommand("/me",{
+-- landys.chat.commands
+landys.chat.RegisterCommand("/me",{
 	RequireAlive    = true,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_USER,

@@ -1,6 +1,6 @@
 local PANEL = {}
 
-g.Notifications = {}
+landys.Notifications = {}
 
 surface.CreateFont("notifyText", {
 	font = "Arial",
@@ -39,20 +39,20 @@ function PANEL:SetMessage(text)
 		surface.DrawRect(0, h-3, ( ( self.removeTime - CurTime() ) / self.duration ) * w, 3)
 		if CurTime() > self.removeTime then
 			self:Remove()
-			table.RemoveByValue(g.Notifications, self)
+			table.RemoveByValue(landys.Notifications, self)
 		end
 	end
 
 	local yoffset = 0
 
-	for v,k in ipairs(g.Notifications) do
+	for v,k in ipairs(landys.Notifications) do
 
 		yoffset = yoffset - 20 - k:GetTall()
 
 	end
 
 	self:SetPos(ScrW()-w-20,ScrH()-h-40+yoffset)
-	table.ForceInsert(g.Notifications, self)
+	table.ForceInsert(landys.Notifications, self)
 
 end
 
@@ -72,4 +72,4 @@ function PANEL:Init()
 	//self.message = vgui.Create("DLabel", self)
 end
 
-vgui.Register("gNotify",PANEL, "DPanel")
+vgui.Register("landysNotify",PANEL, "DPanel")

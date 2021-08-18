@@ -2,7 +2,7 @@
 ** Badges is a sub-section of the Scoreboard system, it allows certain icons to appear for users that qualify.
 */
 
-g.Badges = {}
+landys.Badges = {}
 
 local devs = {
 	["STEAM_0:1:92733650"] = true, -- nick
@@ -20,10 +20,10 @@ local smilers = {
 	["STEAM_0:1:94748887"] = true  -- idiot swift
 }
 
-g.Badges.Data = {
+landys.Badges.Data = {
 	{
 		icon = "icon16/cog.png",
-		desc = "This user is a g_base developer.",
+		desc = "This user is a Landys developer.",
 		userTest = function(ply)
 			return devs[ply:SteamID()]
 		end

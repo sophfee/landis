@@ -116,7 +116,7 @@ function landys.chatbox.buildBox()
 		end
 	end
 
-	landys.chatbox.chatLog = vgui.Create("RichText", landys.chatbox.frame) 
+	landys.chatbox.chatLog = vgui.Create("DScrollPanel", landys.chatbox.frame) 
 	landys.chatbox.chatLog:SetSize( landys.chatbox.frame:GetWide() - 10, landys.chatbox.frame:GetTall() - 60 )
 	landys.chatbox.chatLog:SetPos( 5, 30 )
 	landys.chatbox.chatLog.Paint = function( self, w, h )
@@ -421,11 +421,7 @@ function chat.AddText(...)
 			table.insert( msg, obj:Nick() )
 		end
 	end]]
-	landys.chatbox.chatLog:AppendText("\n")
-	
-	landys.chatbox.chatLog:SetVisible( true )
 	landys.chatbox.lastMessage = CurTime()
-	landys.chatbox.chatLog:InsertColorChange( 255, 255, 255, 255 )
 	chat.PlaySound()
 --	oldAddText(unpack(msg))
 end

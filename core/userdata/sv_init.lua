@@ -1,4 +1,4 @@
-landys.userdata = {}
+landis.userdata = {}
 
 file.CreateDir("user_data")
 
@@ -14,7 +14,7 @@ local baseData = {
 }
 
 // used to check userdata before they are fully connected
-function landys.userdata.Fetch(uSteamID64)
+function landis.userdata.Fetch(uSteamID64)
 	if not file.Exists("user_data/" .. uSteamID64 .. ".json", "DATA") then return nil end
 	local fileClass = file.Open("user_data/" .. uSteamID64 .. ".json", "r", "DATA")
 	local userData = util.JSONToTable( fileClass:ReadLine() )

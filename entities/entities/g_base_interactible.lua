@@ -1,7 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
-ENT.PrintName = "landysBase Interactible Base (dont use)"
-ENT.Category  = "landysBase Ents"
+ENT.PrintName = "landisBase Interactible Base (dont use)"
+ENT.Category  = "landisBase Ents"
 ENT.Spawnable = true -- switch to false post dev
 ENT.AdminOnly = true
 ENT.Author    = "nick"
@@ -28,7 +28,7 @@ ENT.Interactions = {
 }
 
 if SERVER then
-	util.AddNetworkString("landys_openMenu_entityInteract")
+	util.AddNetworkString("landis_openMenu_entityInteract")
 
 	local meta = FindMetaTable( "Player" )
 
@@ -36,7 +36,7 @@ if SERVER then
 		if !( IsValid( ent ) ) then return end
 		if !( self:Alive() ) then return end
 
-		net.Start( "landys_openMenu_entityInteract" )
+		net.Start( "landis_openMenu_entityInteract" )
 			net.WriteEntity( ent )
 		net.Send( self )
 	end
@@ -46,11 +46,11 @@ if CLIENT then
 
 	
 
-	net.Receive( "landys_openMenu_entityInteract", function()
+	net.Receive( "landis_openMenu_entityInteract", function()
 		local ent = net.ReadEntity()
 
 		if IsValid( ent ) then
-			local P = vgui.Create( "landysEntityInteractions" )
+			local P = vgui.Create( "landisEntityInteractions" )
 			P:SetSize(400,400)
 			P:Center()
 			P:SetEntity( ent )
@@ -90,7 +90,7 @@ end
 
 if CLIENT then
 	function ENT:Use()
-		local a = vgui.Create( "landysEntityInteractions" )
+		local a = vgui.Create( "landisEntityInteractions" )
 		a:SetEntity(self)
 	end
 end

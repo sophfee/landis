@@ -14,4 +14,4 @@ function PANEL:Init()
 end
 
 
-vgui.Register("landysPlayerMenu", PANEL, "DFrame")
+vgui.Register("landisPlayerMenu", PANEL, "DFrame")

@@ -1,28 +1,28 @@
 DeriveGamemode("sandbox")
-landys = landys or {}
-landys.lib = landys.lib or {}
-landys.__VERSION = "DEV-0.1"
-landys.__DISPLAY = "Landis Base"
-landys.__XTNOTES = [[This gamemode is considered confidential.
+landis = landis or {}
+landis.lib = landis.lib or {}
+landis.__VERSION = "DEV-0.1"
+landis.__DISPLAY = "Landis Base"
+landis.__XTNOTES = [[This gamemode is considered confidential.
 (c) 2021 Nick S]]
-landys.__DVBUILD = true
+landis.__DVBUILD = true
 
 // fallback configurations
-landys.Config =  {}
-landys.Config.MainColor        = Color( 10,  132, 255 )
-landys.Config.DefaultTextColor = Color( 245, 245, 245 )
-landys.Config.BGColorDark      = Color( 44,  44,  46  )
-landys.Config.BGColorLight     = Color( 229, 229, 234  )
-landys.Config.ConsolePrefix    = "[landys]"
+landis.Config =  {}
+landis.Config.MainColor        = Color( 10,  132, 255 )
+landis.Config.DefaultTextColor = Color( 245, 245, 245 )
+landis.Config.BGColorDark      = Color( 44,  44,  46  )
+landis.Config.BGColorLight     = Color( 229, 229, 234  )
+landis.Config.ConsolePrefix    = "[landis]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
-function landys.ConsoleMessage(...)
-	local mColor = landys.Config.MainColor
-	local prefix = landys.Config.ConsolePrefix .. " "
-	local textCo = landys.Config.DefaultTextColor
+function landis.ConsoleMessage(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix .. " "
+	local textCo = landis.Config.DefaultTextColor
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
-function landys.lib.includeDir( scanDirectory, isGamemode )
+function landis.lib.includeDir( scanDirectory, isGamemode )
 	-- Null-coalescing for optional argument
 	isGamemode = isGamemode or false
 	
@@ -102,28 +102,28 @@ end
 
 if SERVER then
 	// load core plugins/extensions
-	landys.ConsoleMessage("loading libraries")
-	landys.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
+	landis.ConsoleMessage("loading libraries")
+	landis.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
 
-	//landys.ConsoleMessage("loading extensions")
-	landys.lib.includeDir( GM.FolderName .. "/core"  )
+	//landis.ConsoleMessage("loading extensions")
+	landis.lib.includeDir( GM.FolderName .. "/core"  )
 
-	//landys.ConsoleMessage("loading plugins")
-	landys.lib.includeDir( GM.FolderName .. "/plugins" )
+	//landis.ConsoleMessage("loading plugins")
+	landis.lib.includeDir( GM.FolderName .. "/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions
-	landys.ConsoleMessage("loading libraries")
-	landys.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
+	landis.ConsoleMessage("loading libraries")
+	landis.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
 
-	landys.ConsoleMessage("loading extensions")
-	landys.lib.includeDir( GM.FolderName .. "/core"  )
+	landis.ConsoleMessage("loading extensions")
+	landis.lib.includeDir( GM.FolderName .. "/core"  )
 
-	landys.ConsoleMessage("loading plugins")
-	landys.lib.includeDir( GM.FolderName .. "/plugins" )
+	landis.ConsoleMessage("loading plugins")
+	landis.lib.includeDir( GM.FolderName .. "/plugins" )
 end
 /*
-local data = landys.Settings["test"]
+local data = landis.Settings["test"]
 
 local parent = vgui.Create("DFrame")
 parent:SetSize(400,400)

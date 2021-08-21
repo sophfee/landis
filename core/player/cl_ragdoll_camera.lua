@@ -7,6 +7,7 @@ function meta:DoRagdollCamera()
 	local ragdoll = self:GetRagdollEntity()
 	if not IsValid(ragdoll) then return end
 	hookRunning = true
+	surface.PlaySound(Sound("landis/player_death_sound.mp3"))
 	hook.Add("CalcView", "ragdoll_camera", function(_,__,__,fov,znear,zfar)
 		if not IsValid(ragdoll) then
 			hookRunning = false

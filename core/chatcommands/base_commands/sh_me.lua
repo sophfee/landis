@@ -1,5 +1,5 @@
--- landys.chat.commands
-landys.chat.RegisterCommand("/me",{
+-- landis.chat.commands
+landis.chat.RegisterCommand("/me",{
 	RequireAlive    = true,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_USER,

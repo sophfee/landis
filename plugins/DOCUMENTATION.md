@@ -10,7 +10,7 @@
 
 # Chat
 
-# landys.chat.RegisterCommand(className,struct)
+# landis.chat.RegisterCommand(className,struct)
 - Registers a new chat command
 
 - className

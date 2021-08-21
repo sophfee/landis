@@ -30,5 +30,5 @@ function PANEL:Init()
 	self:MakePopup()
 end
 
-vgui.Register("landysIcontool", PANEL, "DFrame")
+vgui.Register("landisIcontool", PANEL, "DFrame")
 

@@ -1,18 +1,23 @@
 local SKIN = {}
 derma.RefreshSkins()
 
-landys.Config.ButtonColorOff      = Color(72,72,74,255)
-landys.Config.ButtonColorHovered  = Color(99,99,102,255)
-landys.Config.ButtonColorOn       = Color(142,142,147,255)
-landys.Config.CloseButtonColor    = Color(255,69,58,255)
+landis.Config.ButtonColorOff      = Color(72,72,74,255)
+landis.Config.ButtonColorHovered  = Color(99,99,102,255)
+landis.Config.ButtonColorOn       = Color(142,142,147,255)
+landis.Config.CloseButtonColor    = Color(255,69,58,255)
 
-surface.CreateFont("landys_base-default-14", {
+landis.Config.ButtonColorOffV      = Vector(72,72,74,255)
+landis.Config.ButtonColorHoveredV  = Vector(99,99,102,255)
+landis.Config.ButtonColorOnV       = Vector(142,142,147,255)
+landis.Config.CloseButtonColorV    = Vector(255,69,58,255)
+
+surface.CreateFont("landis_base-default-14", {
 	font = "Arial",
 	weight = 2500,
 	size = 14
 })
 
-surface.CreateFont("landys_base-default-20", {
+surface.CreateFont("landis_base-default-20", {
 	font = "Arial",
 	weight = 2500,
 	size = 20
@@ -41,8 +46,8 @@ end
 
 function SKIN:PaintFrame( self,w,h )
 	blurDerma(self,200,10,20)
-	local mainColor = landys.Config.MainColor
-	local bgColor   = landys.Config.BGColorDark
+	local mainColor = landis.Config.MainColor
+	local bgColor   = landis.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
 	surface.DrawRect( 0, 0, w, h )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
@@ -62,7 +67,7 @@ function SKIN:PaintFrame( self,w,h )
 end
 
 function SKIN:PaintMenuBar(self,w,h)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect( 0, 0, w, h )
 end
@@ -74,8 +79,8 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 	if not self.ButtonHoldAlpha then
 		self.ButtonHoldAlpha = 0
 	end
-	local mainColor = landys.Config.CloseButtonColor
-	local bgColor   = landys.Config.ButtonColorOff
+	local mainColor = landis.Config.CloseButtonColor
+	local bgColor   = landis.Config.ButtonColorOff
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
@@ -95,8 +100,8 @@ end
 
 function SKIN:PaintPropertySheet(self,w,h)
 	blurDerma(self,200,10,20)
-	local mainColor = landys.Config.MainColor
-	local bgColor   = landys.Config.BGColorDark
+	local mainColor = landis.Config.MainColor
+	local bgColor   = landis.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
 	surface.DrawRect(  0, 20, w, h-20 )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
@@ -113,23 +118,23 @@ function SKIN:PaintTab(self,w,h)
 	end
 	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		bgColor = landys.Config.ButtonColorHovered
+		bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = landys.Config.ButtonColorOn
+		bgColor = landis.Config.ButtonColorOn
 	else self.pSND = false end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	local mainColor = landys.Config.MainColor
+	local mainColor = landis.Config.MainColor
 	if self:IsActive() then
 		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	end
@@ -145,20 +150,20 @@ end
 	end
 	//if self:GetName() == "DNumberScratch" then return end
 	//self:SetTextColor(color_white)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		//bgColor = landys.Config.ButtonColorHovered
+		//bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	/*if self:IsDown() then
 		if not self.pSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = landys.Config.ButtonColorOn
+		bgColor = landis.Config.ButtonColorOn
 	else self.pSND = false end*/
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
@@ -173,20 +178,20 @@ function SKIN:PaintButtonUp(self,w,h)
 	end
 	if self:GetName() == "DNumberScratch" then return end
 	self:SetTextColor(color_white)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
 		end
-		bgColor = landys.Config.ButtonColorHovered
+		bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
 		end
-		bgColor = landys.Config.ButtonColorOn
+		bgColor = landis.Config.ButtonColorOn
 	else self.pSND = false end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
@@ -214,63 +219,88 @@ function SKIN:PaintButtonUp(self,w,h)
 end
 
 function SKIN:PaintVScrollBar(self,w,h)
-	local bgColor   = landys.Config.ButtonColorHovered
+	local bgColor   = landis.Config.ButtonColorHovered
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end*/]]
 
 function SKIN:PaintButton(self,w,h)
+	if !self.m_bBackground then return end
+	
 	if not self.hSND then
 		self.hSND = false
 	end
 	if not self.pSND then
 		self.pSND = false
 	end
+	if not self.no then
+		self.no = false
+	end
+	if not self.LerpPos then 
+		self.LerpPos = 1
+	end
+	
 	if self:GetName() == "DNumberScratch" then return end
+	self.LerpPos = math.Clamp( self.LerpPos	+ FrameTime()*4, 0, 1)
 	self:SetTextColor(color_white)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
 			self.hSND = true
+			self.LerpPos = 0
 		end
-		bgColor = landys.Config.ButtonColorHovered
+		local c = LerpVector( self.LerpPos, landis.Config.ButtonColorOffV, landis.Config.ButtonColorHoveredV )
+		bgColor = Color(c[1],c[2],c[3])
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landys.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
 			self.pSND = true
+			self.LerpPos = 0
 		end
-		bgColor = landys.Config.ButtonColorOn
+		local c = LerpVector( self.LerpPos, landis.Config.ButtonColorHoveredV, landis.Config.ButtonColorOnV )
+		bgColor = Color(c[1],c[2],c[3])
 	else self.pSND = false end
+	if not self.hSND and not self.pSND then
+		if not self.no then
+			self.no = true
+			self.LerpPos = 0
+		end
+		local c = LerpVector( self.LerpPos, landis.Config.ButtonColorHoveredV, landis.Config.ButtonColorOffV )
+		bgColor = Color(c[1],c[2],c[3])
+	else
+		self.no = false
+	end
+
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
 function SKIN:PaintTooltip(self,w,h)
-	local bgColor = landys.Config.BGColorLight
+	local bgColor = landis.Config.BGColorLight
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
 function SKIN:PaintComboBox(self,w,h)
 	self:SetTextColor(color_white)
-	local bgColor   = landys.Config.ButtonColorOff
+	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
-		bgColor = landys.Config.ButtonColorHovered
+		bgColor = landis.Config.ButtonColorHovered
 	end
 	if self:IsDown() then
-		bgColor = landys.Config.ButtonColorOn
+		bgColor = landis.Config.ButtonColorOn
 	end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
 end
 
-function SKIN:PaintMenuOption(self,w,h)
-	local bgColor   = landys.Config.BGColorLight
+--[[function SKIN:PaintMenuOption(self,w,h)
+	local bgColor   = landis.Config.BGColorLight
 	self:SetTextColor(color_black) 
 	if self:IsHovered() then
-		bgColor = landys.Config.MainColor
+		bgColor = landis.Config.MainColor
 		self:SetTextColor(color_white)
 	end
 	if self:IsDown() then
@@ -278,19 +308,21 @@ function SKIN:PaintMenuOption(self,w,h)
 	end
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
 	surface.DrawRect(0, 0, w, h)
-end
-
-
-
-function SKIN:PaintLabel(self,w,h)
-	//print(self:GetFont())
-	if self:GetFont() == "DermaDefault" then
-		self:SetFont("landys_base-default-20")
+	if self:GetChecked() then
+		surface.SetDrawColor(255, 255, 255)
+		draw.NoTexture()
+		surface.SetMaterial(Material("icon16/tick.png"))
+		surface.DrawTexturedRect(3, 3, 16, 16)
 	end
-end
+	
+end[]]
 
-derma.DefineSkin("landys_base", "The default skin for landys.", SKIN)
+
+
+
+
+derma.DefineSkin("landis_base", "The default skin for landis.", SKIN)
 -- lol look at tthe identifier
 hook.Add("ForceDermaSkin", "foreskin", function()
-	return "landys_base"
+	return "landis_base"
 end)

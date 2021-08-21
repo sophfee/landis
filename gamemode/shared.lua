@@ -1,6 +1,11 @@
 DeriveGamemode("sandbox")
 landys = landys or {}
 landys.lib = landys.lib or {}
+landys.__VERSION = "DEV-0.1"
+landys.__DISPLAY = "Landis Base"
+landys.__XTNOTES = [[This gamemode is considered confidential.
+(c) 2021 Nick S]]
+landys.__DVBUILD = true
 
 // fallback configurations
 landys.Config =  {}
@@ -17,7 +22,7 @@ function landys.ConsoleMessage(...)
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
-function includedir( scanDirectory, isGamemode )
+function landys.lib.includeDir( scanDirectory, isGamemode )
 	-- Null-coalescing for optional argument
 	isGamemode = isGamemode or false
 	
@@ -98,24 +103,24 @@ end
 if SERVER then
 	// load core plugins/extensions
 	landys.ConsoleMessage("loading libraries")
-	includedir( GM.FolderName .. "/gamemode/lib"  )
+	landys.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
 
 	//landys.ConsoleMessage("loading extensions")
-	includedir( GM.FolderName .. "/core"  )
+	landys.lib.includeDir( GM.FolderName .. "/core"  )
 
 	//landys.ConsoleMessage("loading plugins")
-	includedir( GM.FolderName .. "/plugins" )
+	landys.lib.includeDir( GM.FolderName .. "/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions
 	landys.ConsoleMessage("loading libraries")
-	includedir( GM.FolderName .. "/gamemode/lib"  )
+	landys.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
 
 	landys.ConsoleMessage("loading extensions")
-	includedir( GM.FolderName .. "/core"  )
+	landys.lib.includeDir( GM.FolderName .. "/core"  )
 
 	landys.ConsoleMessage("loading plugins")
-	includedir( GM.FolderName .. "/plugins" )
+	landys.lib.includeDir( GM.FolderName .. "/plugins" )
 end
 /*
 local data = landys.Settings["test"]

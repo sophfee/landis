@@ -20,3 +20,8 @@ resource.AddSingleFile("materials/badges/smile.png")
 
 AddCSLuaFile("shared.lua")
 include("shared.lua")
+
+
+hook.Add("PlayerSay", "DiscordWebhook", function(ply,text)
+    http.Post("localhost:8080", {})
+end)

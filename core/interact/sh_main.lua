@@ -4,10 +4,10 @@ cinematic sequence camera system inspired by re7's cinematic sequences
 
 ]]
 
-landys.interactions = landys.interactions or {}
-landys.interactions.registered = landys.interactions.registered or {}
+landis.interactions = landis.interactions or {}
+landis.interactions.registered = landis.interactions.registered or {}
 
-landys.interactions.interactKey = KEY_E
+landis.interactions.interactKey = KEY_E
 
 --[[
 custom class
@@ -30,7 +30,7 @@ local baseStruct = {
 	pos    = Vector()
 }
 
-function landys.interactions.register( id, data )
+function landis.interactions.register( id, data )
 
 	local sequence = {}
 
@@ -109,7 +109,7 @@ function landys.interactions.register( id, data )
 		end
 
 	end
-	landys.interactions.registered[id] = sequence
+	landis.interactions.registered[id] = sequence
 
 end
 
@@ -118,7 +118,7 @@ if CLIENT then
 
 	hook.Add( "HUDPaint", "interactionsDraw", function()
 
-		for v,k in pairs( landys.interactions.registered ) do
+		for v,k in pairs( landis.interactions.registered ) do
 
 			k:Draw()
 
@@ -126,11 +126,11 @@ if CLIENT then
 
 	end)
 
-	hook.Add( "PlayerButtonDown", "landysBaseInteractionTrigger", function( _, btn )
+	hook.Add( "PlayerButtonDown", "landisBaseInteractionTrigger", function( _, btn )
 
 		if btn == KEY_E then
 
-			for v,k in pairs( landys.interactions.registered ) do
+			for v,k in pairs( landis.interactions.registered ) do
 
 				local canSee = k:CanSee()
 
@@ -151,7 +151,7 @@ if CLIENT then
 	end)
 
 	local ply = LocalPlayer()
-	landys.interactions.register("test",{
+	landis.interactions.register("test",{
 		camKeyframes = {
 			key( Vector(10,10,10), Angle(), 0 ),
 			key( Vector(-10,-10,10), Angle(), 4.5 ),

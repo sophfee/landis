@@ -13,7 +13,7 @@ function PANEL:SetMessage( ... )
 
 	local args = { ... }
 
-	self.text    = "<font=landys.chatbox_16><colour=255,255,255>"
+	self.text    = "<font=landis.chatbox_16><colour=255,255,255>"
 	self.colors  = {}
 	self.sender  = nil
 
@@ -51,8 +51,8 @@ function PANEL:SetMessage( ... )
 	end
 	self.text = self.text .. "</colour></font>"
 	
-	local w   = landys.chatbox.chatLog:GetWide() - 5
-	self.message = markup.Parse( self.text, landys.chatbox.chatLog:GetWide() )
+	local w   = landis.chatbox.chatLog:GetWide() - 5
+	self.message = markup.Parse( self.text, landis.chatbox.chatLog:GetWide() )
 	self:SetSize( w, self.message:GetHeight() )
 	MsgC("\n")
 	--self:GetParent():GetVBar():AnimateTo(0, 0.2)

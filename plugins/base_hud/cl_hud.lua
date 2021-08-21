@@ -33,6 +33,16 @@ surface.CreateFont("hud18", {
 	italic = true
 })
 
+surface.CreateFont("hud36", {
+	font = "Arial",
+	shadow = false,
+	size = 36,
+	weight = 6000,
+	antialias = true,
+	extended = true,
+	italic = false
+})
+
 local function drawBar(label,val,col,pos)
 	local value = val*3
 
@@ -163,6 +173,9 @@ end
 local ply = LocalPlayer()
 local r,gC,b = color_white:Unpack()
 
+local whiteColor = Vector(255,255,255)
+local redColor   = Vector(255,0,0)
+
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
@@ -183,4 +196,27 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50})
 	//drawBar("Stamina",ply:GetNWFloat("Stamina"),Color(50,173,230),{x=25,y=ScrH()-100})
 	if ply:Armor() > 0 then drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100}) end
+	local wep = ply:GetActiveWeapon()
+	if IsValid(wep) then
+		if wep.DrawAmmo then
+
+			local str = "<font=hud36><colour=90,90,90>"
+			for i=1, 3-( #tostring( wep:Clip1() ) ) do str = str .. "0" end
+			local colV = wep:Clip1() / wep:GetMaxClip1() < 0.334 and LerpVector(math.sin(math.abs(CurTime()*8))/math.pi, redColor, whiteColor) or whiteColor
+			--print(colV)
+			local floor = math.floor
+			local col = floor(colV.x) .. "," .. floor(colV.y) .. "," .. floor(colV.z)
+			--print(col)
+			str = str .. "</colour><colour="..col..">" ..  wep:Clip1() .. "</colour><colour=255,255,255>/" .. "</colour><colour=90,90,90>" 
+			for i=1, 3-( #tostring( wep:Ammo1() ) ) do str = str .. "0" end
+			str = str .. "</colour><colour=255,255,255>" ..  wep:Ammo1() .. "</colour></font>" 
+
+			local markupObj = markup.Parse( str )
+			markupObj:Draw(ScrW()-25, ScrH()-25,TEXT_ALIGN_RIGHT,TEXT_ALIGN_BOTTOM,255)
+
+			--draw.SimpleText( "000/000" , "hud36", ScrW()-25, ScrH()-25, Color( 90, 90, 90, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+			--draw.SimpleText( string.sub(tostring(wep:Clip1() + 1000),2,4) .. "/" .. string.sub(tostring(wep:Ammo1() + 1000),2,4) , "hud36", ScrW()-25, ScrH()-25, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+
+		end
+	end
 end)

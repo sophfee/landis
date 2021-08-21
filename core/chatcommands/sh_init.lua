@@ -1,5 +1,5 @@
-landys.chat = {}
-landys.chat.commands = {}
+landis.chat = {}
+landis.chat.commands = {}
 local baseStruct = {
 	RequireAlive    = false,
 	RequireArgs     = false,
@@ -13,21 +13,21 @@ local baseStruct = {
 			if not args then return false end
 			if #args <= 0 then return false end
 		end
-		return landys.GetPermissionLevel(ply) >= self.PermissionLevel
+		return ply:GetPermissionLevel() >= self.PermissionLevel
 	end,
 	onRun  = function(self,ply,args)
 		-- this should be used and not left to the default set by the base
 	end
 }
 
-function landys.chat.RegisterCommand(className,struct)
+function landis.chat.RegisterCommand(className,struct)
 	if not className or not struct then return end
 	local makeStruct = table.Inherit(struct, baseStruct)
 	-- shoud never fail
 	if makeStruct then
-		landys.chat.commands[string.lower(className)] = makeStruct
+		landis.chat.commands[string.lower(className)] = makeStruct
 		if SERVER then
-			landys.ConsoleMessage("Registered Chat Command: "..className)
+			landis.ConsoleMessage("Registered Chat Command: "..className)
 		end
 	end
 end
@@ -38,7 +38,7 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 		local command = string.lower(table.Copy(arr)[1])
 		table.remove(arr, 1)
 		local args = table.Copy(arr)
-		local validCommands = table.Copy(landys.chat.commands)
+		local validCommands = table.Copy(landis.chat.commands)
 		if validCommands[command] then
 			
 			local cmdData = validCommands[command]

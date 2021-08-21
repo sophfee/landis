@@ -1,129 +1,181 @@
-landys.Settings = {}
+--[[
+
+
+HOW TO USE::
+
+
+
+
+
+
+valueType    = "bool", -- internal
+type         = "tickbox",
+printName    = "Base Setting",
+category     = "Other"
+
+
+
+
+
+
+
+
+
+
+]]--
+
+
+landis.Settings = {}
+
+if CLIENT then
+
+	landis.lib.SettingsPanels = {}
+
+	landis.lib.SettingsPanels["tickbox"] = function( parent,data )
+		local PANEL = vgui.Create("DCheckBoxLabel", parent)
+		PANEL:DockMargin(5, 5, 5, 5)
+		PANEL:Dock(TOP)
+		PANEL:SetText(data:GetPrintName())
+		PANEL:SetValue(data:GetValue())
+		function PANEL:OnChange(bVal)
+			data:SetValue(bVal)
+			//PrintTable(data)
+		end
+	end
+
+	landis.lib.SettingsPanels["dropdown"] = function( parent,data )
+		local DropDown = vgui.Create("DComboBox", parent)
+		DropDown:DockMargin(5, 5, 5, 5)
+		DropDown:Dock(TOP)
+
+		DropDown:SetText(data:GetPrintName())
+		--PANEL:SetValue(data:GetValue())
+		for v,k in ipairs(data.options) do
+			DropDown:AddChoice(k)
+		end
+
+		DropDown.OnSelect = function( self, _, val)
+			data:SetValue(val)
+		end
+		DropDown:SetSize(DropDown:GetWide()/3,DropDown:GetTall())
+	end
+
+	landis.lib.SettingsPanels["slider"] = function( parent,data )
+		local PANEL = vgui.Create("DNumSlider", parent)
+		PANEL:DockMargin(5, 5, 5, 5)
+		PANEL:Dock(TOP)
+		PANEL:SetText(data:GetPrintName())
+		
+		PANEL:SetDecimals( data.options.dec )
+		PANEL:SetMax(data.options.max)
+		PANEL:SetMin(data.options.min)
+		PANEL:SetValue(data:GetValue())
+
+		function PANEL:OnValueChanged(bVal)
+			data:SetValue(math.Round(bVal,0))
+		end
+	end
+
+	landis.lib.SettingsInit = {}
+
+	landis.lib.SettingsInit["tickbox"] = function( data )
+		data:SetValueType("bool")
+		data.defaultValue = false
+	end
+
+	landis.lib.SettingsInit["dropdown"] = function( data )
+		data:SetValueType("string")
+		data.defaultValue = ""
+	end
+
+	landis.lib.SettingsInit["slider"] = function( data )
+		local t = data["options"]
+		
+
+		if not t then Error("Invalid Arguments for Setting!") end
+		if not t["max"] then Error("Invalid Arguments for Setting!") end -- arg check
+		if not t["min"] then Error("Invalid Arguments for Setting!") end -- arg check
+		if not t["dec"] then Error("Invalid Arguments for Setting!") end -- arg check
+		data:SetValueType("int")
+		data.defaultValue = t.max
+		--ata.activeValue = data.activeValue > data.options.min and data.options.min or data.activeValue 
+	end
+
+end
 
 local baseStruct = {
-	valueType    = "bool",
-	createPanel  = function()
+	type         = "tickbox",
+	-- In new versions this is INTERNAl, shouldn't be changed unless custom.
+	createPanel  = function(parent,data)
 		if SERVER then return end -- ensure that this never runs on the server.
+		local func = landis.lib.SettingsPanels[data.type]
+		if func then
+			func(parent,data)
+		end
 	end,
-	printName    = "Base Setting",
-	category     = "Other",
+	init         = function(data)
+		if SERVER then return end -- ensure that this never runs on the server.
+		func = landis.lib.SettingsInit[data.type]
+		if func then
+			func(data)
+		end
+	end,
+	printName    = "Unset Option",
+	category     = "UNSET",
 	defaultValue = false, -- fallback
 	activeValue  = false
 }
 
 DefaultSettings = {
 	["useThirdperson"] = {
-		valueType    = "bool",
-		createPanel  = function(parent,data)
-			if SERVER then return end -- ensure that this never runs on the server.
-			local PANEL = vgui.Create("DCheckBoxLabel", parent)
-			PANEL:DockMargin(5, 5, 5, 5)
-			PANEL:Dock(TOP)
-			PANEL:SetText(data:GetPrintName())
-			PANEL:SetValue(data:GetValue())
-			function PANEL:OnChange(bVal)
-				data:SetValue(bVal)
-				//PrintTable(data)
-			end
-		end,
+		type         = "tickbox",
 		printName    = "Enable Thirdperson",
 		category     = "Camera",
-		defaultValue = false, -- fallback
 		activeValue  = false
 	},
 	["crosshairGap"] = {
-		valueType    = "int",
-		createPanel  = function(parent,data)
-			if SERVER then return end -- ensure that this never runs on the server.
-			local PANEL = vgui.Create("DNumSlider", parent)
-			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
-			PANEL:DockMargin(5, 0, 5, 0)
-			PANEL:Dock(TOP)
-			PANEL:SetText(data:GetPrintName())
-			PANEL:SetMax(15)
-			PANEL:SetMin(0)
-			PANEL:SetDecimals(0)
-			PANEL:SetValue(data:GetValue())
-			function PANEL:OnValueChanged(bVal)
-				data:SetValue(math.Round(bVal,0))
-				//PrintTable(data)
-			end
-		end,
+		type         = "slider",
+		options      = {max=16,min=1,dec=0},
 		printName    = "Crosshair Gap",
 		category     = "Crosshair",
 		defaultValue = 4, -- fallback
 		activeValue  = 4
 	},
+	["dropDownTest"] = {
+		type         = "dropdown",
+		options      = {"amogus","test 2","opt 3"},
+		printName    = "Test",
+		category     = "Testing",
+		defaultValue = "", -- fallback
+		activeValue  = ""
+	},
 	["crosshairLength"] = {
-		valueType    = "int",
-		createPanel  = function(parent,data)
-			if SERVER then return end -- ensure that this never runs on the server.
-			local PANEL = vgui.Create("DNumSlider", parent)
-			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
-			PANEL:DockMargin(5, 0, 5, 0)
-			PANEL:Dock(TOP)
-			PANEL:SetText(data:GetPrintName())
-			PANEL:SetMax(15)
-			PANEL:SetMin(0)
-			PANEL:SetDecimals(0)
-			PANEL:SetValue(data:GetValue())
-			function PANEL:OnValueChanged(bVal)
-				data:SetValue(math.Round(bVal,0))
-				//PrintTable(data)
-			end
-		end,
+		type         = "slider",
+		options      = {max=16,min=1,dec=0},
 		printName    = "Crosshair Length",
 		category     = "Crosshair",
 		defaultValue = 4, -- fallback
 		activeValue  = 4
 	},
 	["buttonClicks"] = {
-		valueType    = "bool",
-		createPanel  = function(parent,data)
-			if SERVER then return end -- ensure that this never runs on the server.
-			local PANEL = vgui.Create("DCheckBoxLabel", parent)
-			PANEL:DockMargin(5, 5, 5, 5)
-			PANEL:Dock(TOP)
-
-			PANEL:SetText(data:GetPrintName())
-			PANEL:SetValue(data:GetValue())
-			function PANEL:OnChange(bVal)
-				data:SetValue(bVal)
-				//PrintTable(data)
-			end
-		end,
+		type         = "tickbox",
 		printName    = "Enable Button Hover/Press Noise",
 		category     = "Misc.",
-		defaultValue = true, -- fallback
 		activeValue  = false
 	},
 	["ThirdpersonFOV"] = {
-		valueType    = "int",
-		createPanel  = function(parent,data)
-			if SERVER then return end -- ensure that this never runs on the server.
-			local PANEL = vgui.Create("DNumSlider", parent)
-			//PANEL:DockMargin(number marginLeft, number marginTop, number marginRight, number marginBottom)
-			PANEL:DockMargin(5, 0, 5, 0)
-			PANEL:Dock(TOP)
-			PANEL:SetText(data:GetPrintName())
-			PANEL:SetMax(100)
-			PANEL:SetMin(65)
-			PANEL:SetDecimals(0)
-			PANEL:SetValue(data:GetValue())
-			function PANEL:OnValueChanged(bVal)
-				data:SetValue(math.Round(bVal,0))
-				//PrintTable(data)
-			end
-		end,
-		printName    = "Thirdperson Field of View",
+		type         = "slider",
+		options      = {max=90,min=80,dec=0},
+		printName    = "Thirdperson FOV",
 		category     = "Camera",
-		defaultValue = 90, -- fallback
-		activeValue  = 90
+		defaultValue = 4, -- fallback
+		activeValue  = 4
 	}
 }
 
 local testStruct = {
 	valueType    = "bool",
+
 	createPanel  = function(parent,data)
 		if SERVER then return end -- ensure that this never runs on the server.
 		local PANEL = vgui.Create("DCheckBoxLabel", parent)
@@ -131,7 +183,7 @@ local testStruct = {
 		PANEL:SetText(data:GetPrintName())
 		PANEL:SetValue(data:GetValue())
 		PANEL.Paint = function(self,w,h)
-			local mainColor = landys.Config.MainColor
+			local mainColor = landis.Config.MainColor
 			surface.SetDrawColor(mainColor.r,mainColor.g,mainColor.b,200)
 			surface.DrawRect(0, 0, w, h)
 		end
@@ -155,9 +207,10 @@ local validType = {
 
 -- Function: Create Setting Class
 -- Info: This should be created on both client and server so server can verify settings and check for irregularities.
-function landys.lib.DefineSetting(className,struct)
+function landis.lib.DefineSetting(className,struct)
 
 	local CSetting = table.Inherit(struct, baseStruct)
+	
 	//PrintTable(CSetting)
 
 	function CSetting:SetValueType(newType)
@@ -205,41 +258,42 @@ function landys.lib.DefineSetting(className,struct)
 		self.category = tostring(newCategory)
 	end
 
-	landys.Settings[className] = CSetting
-	return landys.Settings[className] -- return reference to effect the global table
+	landis.Settings[className] = CSetting
+	CSetting.init(CSetting)
+	return landis.Settings[className] -- return reference to effect the global table
 
 end
 
 for name,data in pairs(DefaultSettings) do
-	landys.lib.DefineSetting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
+	landis.lib.DefineSetting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
 end
 
 if SERVER then return end
 
 local saveDataName = "settings.json"
 
-function landys.lib.GetSetting(className)
-	local data = landys.Settings[className]
+function landis.lib.GetSetting(className)
+	local data = landis.Settings[className]
 	if data then
 		return data:GetValue()
 	end
 	return false
 end
 
-local dir = "landys"
+local dir = "landis"
 
-file.CreateDir("landys")
+file.CreateDir("landis")
 
 -- INTERNAL
-function landys.lib.LoadSettings()
+function landis.lib.LoadSettings()
 	if file.Exists(dir,"DATA") then
 		if file.Exists( dir .. "/" .. saveDataName, "DATA") then
 			local data = file.Open( dir .. "/" .. saveDataName, "r", "DATA")
 			if data then
 				local tableData = util.JSONToTable(data:ReadLine())
 				for name,value in pairs(tableData) do
-					if not landys.Settings[name] then continue end
-					landys.Settings[name]:SetValue(value)
+					if not landis.Settings[name] then continue end
+					landis.Settings[name]:SetValue(value)
 				end
 			end
 		end
@@ -247,22 +301,22 @@ function landys.lib.LoadSettings()
 end
 
 -- INTERNAL
-function landys.lib.SaveSettings()
+function landis.lib.SaveSettings()
 	local d = {}
-	for n,v in pairs(landys.Settings) do
+	for n,v in pairs(landis.Settings) do
 		d[n] = v:GetValue()
 	end
 	file.Write( dir .. "/" .. saveDataName, util.TableToJSON(d,false).."\n// Do not edit this file! You risk an automatic-ban if file has any inconsistencies!")
 end
 
-landys.lib.LoadSettings()
+landis.lib.LoadSettings()
 
 -- rename to draw gBaseSettings
 
 
 
 --[[
-local data = landys.Settings["test"]
+local data = landis.Settings["test"]
 
 local parent = vgui.Create("DFrame")
 parent:SetSize(400,400)

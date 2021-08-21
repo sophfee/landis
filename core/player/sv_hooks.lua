@@ -2,6 +2,13 @@ util.AddNetworkString("ragdoll_camera")
 
 function GM:PlayerSpawn(ply)
 	ply:SetModel("models/player/Group01/male_06.mdl")
+	if ply:IsAdmin() then
+		ply:Give("weapon_physgun")
+	end
+	if ply:IsLeadAdmin() then
+		ply:Give("gmod_tool")
+	end
+	ply:Give("landis_hands")
 end
 
 hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)

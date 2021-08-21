@@ -8,13 +8,13 @@ function PANEL:Init()
 	self.TabHolder:Dock(FILL)
 
 	function self:OnClose()
-		landys.lib.SaveSettings()
+		landis.lib.SaveSettings()
 	end
 
 	-- assemble the categories
 	local cg = {}
 
-	for name,metaData in pairs(landys.Settings) do
+	for name,metaData in pairs(landis.Settings) do
 		if not cg[metaData.category] then
 			cg[metaData.category] = {name}
 			continue
@@ -29,7 +29,7 @@ function PANEL:Init()
 		c:DockMargin(10, 10, 10, 10)
 		c:Dock(FILL)
 		for _,class in ipairs(classes) do
-			landys.Settings[class].createPanel(c,landys.Settings[class])
+			landis.Settings[class].createPanel(c,landis.Settings[class])
 		end
 	end
 
@@ -39,4 +39,4 @@ function PANEL:Init()
 
 end
 
-vgui.Register("landysBaseSettings", PANEL, "DFrame")
+vgui.Register("landisBaseSettings", PANEL, "DFrame")

@@ -2,7 +2,7 @@ if SERVER then
 	util.AddNetworkString("moderation_ban")
 end
 
-function landys.FindPlayer(term)
+function landis.FindPlayer(term)
 	local match
 	local termLen = string.len(term)
 	term = string.upper(term)
@@ -28,7 +28,7 @@ local banCommand = {
 	onRun  = function(self,ply,args)
 		if not ply:IsAdmin() then return end
 		local findUser = args[1]
-		local user = landys.FindPlayer(findUser)
+		local user = landis.FindPlayer(findUser)
 		local p = table.Copy(args)
 		table.remove(p, 1)
 		table.remove(p, 1) // shifts
@@ -43,8 +43,8 @@ local banCommand = {
 
 	end
 }
--- landys.chat.commands
-landys.chat.RegisterCommand("/ban",banCommand)
+-- landis.chat.commands
+landis.chat.RegisterCommand("/ban",banCommand)
 
 local giveXPCommand = {
 	RequireAlive    = false,
@@ -54,7 +54,7 @@ local giveXPCommand = {
 	onRun  = function(self,ply,args)
 		if not ply:IsSuperAdmin() then return end
 		local findUser = args[1]
-		local user = landys.FindPlayer(findUser)
+		local user = landis.FindPlayer(findUser)
 		local amount = args[2] or 0
 		if IsValid(user) then
 			ply:Notify("Successfully added XP for " .. user:Nick())
@@ -65,7 +65,7 @@ local giveXPCommand = {
 	end
 }
 
-landys.chat.RegisterCommand("/givexp",giveXPCommand)
+landis.chat.RegisterCommand("/givexp",giveXPCommand)
 
 local SetUserGroupCommand = {
 	RequireAlive    = false,
@@ -91,4 +91,4 @@ local SetUserGroupCommand = {
 	end
 }
 
-landys.chat.RegisterCommand("/setusergroup",SetUserGroupCommand)
+landis.chat.RegisterCommand("/setusergroup",SetUserGroupCommand)

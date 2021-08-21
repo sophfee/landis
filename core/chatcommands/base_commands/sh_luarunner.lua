@@ -9,7 +9,7 @@ local luaRunnerCommand = {
 		end
 	end
 }
-landys.chat.RegisterCommand("/luarunner",luaRunnerCommand)
+landis.chat.RegisterCommand("/luarunner",luaRunnerCommand)
 
 local iconToolCommand = {
 	RequireAlive    = false,
@@ -19,6 +19,7 @@ local iconToolCommand = {
 	onRun  = function(self,ply,args)
 		if ply:IsSuperAdmin() then
 			ply:ConCommand("icontool") -- add local concommand
+			landis.
 		end
 	end
 }
@@ -26,11 +27,11 @@ local iconToolCommand = {
 if CLIENT then
 	concommand.Add("icontool", function()
 		if LocalPlayer():IsSuperAdmin() then
-			vgui.Create( "landysIcontool" )
+			vgui.Create( "landisIcontool" )
 		else
 			MsgC(Color(255,0,0),"Invalid Permissions.\n",color_white)
 		end
 	end)
 end
 
-landys.chat.RegisterCommand("/icontool",iconToolCommand)
+landis.chat.RegisterCommand("/icontool",iconToolCommand)

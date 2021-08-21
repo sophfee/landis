@@ -1,7 +1,7 @@
-"landys_base"
+"landis_base"
 {
 	"base"		"base"
-	"title"		"landys Dev"
+	"title"		"landis Dev"
 	"category"	"pve"
 	"menusystem"	"1"
 	"workshopid"	"-1"

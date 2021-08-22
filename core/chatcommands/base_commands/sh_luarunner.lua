@@ -19,7 +19,7 @@ local iconToolCommand = {
 	onRun  = function(self,ply,args)
 		if ply:IsSuperAdmin() then
 			ply:ConCommand("icontool") -- add local concommand
-			landis.
+			--landis.
 		end
 	end
 }

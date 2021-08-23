@@ -7,7 +7,11 @@ ENT.AdminOnly = true
 ENT.Author    = "nick"
 ENT.Contact   = "@nick#3715"
 ENT.Purpose   = "A base for interactible entities."
-
+ENT.DisplayName = "fart muncher"
+ENT.Description = [[line 1
+line 2
+line 3
+line 4]]
 -- should be edited, but this shows all the different functions of the interaction system
 ENT.Interactions = {
 	{

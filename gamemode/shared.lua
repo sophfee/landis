@@ -91,9 +91,6 @@ PERMISSION_LEVEL_ADMIN      = 2
 PERMISSION_LEVEL_LEAD_ADMIN = 3
 PERMISSION_LEVEL_SUPERADMIN = 4
 
--- deprecated
-
-
 -- Core Client Meta
 if CLIENT then
 	--        Get ratio scale

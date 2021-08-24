@@ -12,6 +12,10 @@ local baseData = {
 	isLeadAdmin = false,
 	isSuperAdmin = false
 }
+-- if one table doesnt exist, then the rest don't
+sql.Query("CREATE TABLE IF NOT EXISTS `landis_user` ( `steamid` VARCHAR(20) NOT NULL, `xp` NUMBER, `usergroup` TEXT )")
+sql.Query("CREATE TABLE IF NOT EXISTS `landis_warns` ( `steamid` VARCHAR(20) NOT NULL, `moderator` VARCHAR(20) NOT NULL, `reason` TEXT, `date` NUMBER  )")
+sql.Query("CREATE TABLE IF NOT EXISTS `landis_bans` ( `steamid` VARCHAR(20) NOT NULL, `moderator` VARCHAR(20) NOT NULL, `reason` TEXT, `date` NUMBER, `end_date` NUMBER )")
 
 // used to check userdata before they are fully connected
 function landis.userdata.Fetch(uSteamID64)
@@ -49,7 +53,8 @@ end
 
 // Internal - Do not use.
 function meta:SetupData()
-	if not file.Exists(self:GetDataDir(), "DATA") then
+	local userData = sql.Query("SELECT * FROM landis_user WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
+	if not userData then
 		self:SetupNewUser()
 		return
 	end

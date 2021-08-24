@@ -35,8 +35,10 @@ local banCommand = {
 		local duration = args[2] or 0
 		local reason = table.concat( p, " " ) or "Violation of Community Guidelines."
 		if IsValid(user) then
-			user:AddBan(ply,args[2],reason)
+			sql.Query("INSERT INTO landis_bans VALUES(" .. sql.SQLStr( user:SteamID64() ) .. ", " .. sql.SQLStr( ply:SteamID64() ) .. ", " .. sql.SQLStr( reason ) .. ", " .. tostring(os.time()) .. ", " .. tostring(os.time() + (duration*60)) .. ")")
 			ply:Notify("Successfully banned " .. user:Nick())
+			user:Kick("You have been banned.")
+			
 		else
 			ply:Notify("Couldn't find the user to ban!")
 		end

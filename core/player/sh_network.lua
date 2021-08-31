@@ -2,7 +2,12 @@ local meta = FindMetaTable("Player")
 
 function meta:SetupDataTables()
 	self:NetworkVar("Bool", 0, "weaponRaised")
+	self:NetworkVar("Int",1,"XP")
 	if SERVER then
+		function self:SetXP( num )
+			sql.Query("UPDATE landis_user SET xp = " .. num .. " WHERE steamid = " .. sql.SQLStr( self:SteamID64() ) )
+			self:SetNWInt( "XP", num )
+		end
 		//self:SetStamina(5)
 	end
 end

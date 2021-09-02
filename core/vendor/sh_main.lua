@@ -1,3 +1,6 @@
+--- Used for shops & NPCs.
+-- @module Vendor
+
 -- Use as
 -- local VENDOR = landis.lib.CreateVendorTable()
 
@@ -6,6 +9,9 @@ landis.Vendor.Data = {} -- Registered Vendors
 
 -- Rest of the funcs are added into the lib table
 
+--- Creates a basic structure for a new vendor.
+-- See the file itself for each value.
+-- @return Vendor Struct
 function landis.lib.CreateVendorTable()
 	local class = {
 		UniqueID = "INVALID_VENDOR_CLASS", -- FUCKING CHANGE THIS DUMBASS 
@@ -44,9 +50,10 @@ function landis.lib.CreateVendorTable()
 	return class 
 end
 
+--- Register a new vendor.
+-- Supply a proper Vendor Struct to this and it will allow it to be used
+-- @param meta The structure for the vendor. 
 function landis.lib.RegisterVendor( meta )
-
-	print("uhh")
 
 	landis.Vendor.Data[meta.UniqueID] = meta
 

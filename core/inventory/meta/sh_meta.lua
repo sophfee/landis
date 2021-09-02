@@ -1,18 +1,23 @@
-local meta = FindMetaTable( "Player" )
+--- Player methods & helper functions.
+-- @classmod Player
 
-meta.Inventory = {}
+local PLAYER = FindMetaTable( "Player" )
 
--- Internal, replicated on client by running the same command
-function meta:SetupInventory()
+PLAYER.Inventory = {}
+
+--- [INTERNAL] Setup player inventory.
+-- [INTERNAL] Sets up inventory.
+function PLAYER:SetupInventory()
 
 end
 
--- func: Can pickup item,
---@realm shared
-function meta:CanPickupItem( item )
+--- Can pickup item.
+-- monkey nuts.
+-- @param item Item that the user wants to pickup.
+function PLAYER:CanPickupItem( item )
 end
 
-function meta:GetOpenSlot()
+function PLAYER:GetOpenSlot()
 	for v,k in ipairs( self.Inventory ) do
 		if not k then return v end
 	end

@@ -1,2 +1,2 @@
-@echo off
-lua A:\ldock\ldoc.lua schema/sh_config.lua
+@echo on
+lua A:/ldock/ ./schema/

@@ -15,7 +15,9 @@ local testers = {
 	["STEAM_0:1:513014903"] = true, -- creamy
 	["STEAM_0:1:545592128"] = true, -- henry
 	["STEAM_0:1:94748887"] = true, -- Swift
-	["STEAM_0:1:96085036"] = true -- Jacub
+	["STEAM_0:1:96085036"] = true, -- Jacub
+	["STEAM_0:0:89116555"] = true, -- sprite cran
+	["STEAM_0:0:58591866"] = true -- reese
 }
 
 local smilers = {

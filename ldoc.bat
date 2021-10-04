@@ -1,1 +1,0 @@
-lua A:\ldock\ldoc.lua %*

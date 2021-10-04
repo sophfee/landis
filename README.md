@@ -3,5 +3,6 @@ Welcome to Landis! This is a framework I designed to help me better create my ma
 
 # Notice
 * This is still in development
+* The only documentation available is found within the code files, good luck!
 * Expect bugs
 * Expect crashes or code fails

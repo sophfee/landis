@@ -1,8 +1,8 @@
-"landis_base"
+"land"
 {
 	"base"		"base"
-	"title"		"landis Dev"
-	"category"	"pve"
+	"title"		"landis"
+	"category"	"pvp"
 	"menusystem"	"1"
 	"workshopid"	"-1"
 

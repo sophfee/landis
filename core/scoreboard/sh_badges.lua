@@ -2,17 +2,20 @@
 ** Badges is a sub-section of the Scoreboard system, it allows certain icons to appear for users that qualify.
 */
 
+-- Please, do not edit these as they are for people who have contributed to the gamemode, they deserve credit!!!
+
 landis.Badges = {}
 
 local devs = {
-	["STEAM_0:1:92733650"] = true, -- nick
-	["STEAM_0:1:155826697"] = true -- fisq
+	["STEAM_0:1:92733650"] = true -- nick
 }
 
 local testers = {
 	["STEAM_0:1:92733650"] = true, -- nick
 	["STEAM_0:1:513014903"] = true, -- creamy
-	["STEAM_0:1:545592128"] = true -- henry
+	["STEAM_0:1:545592128"] = true, -- henry
+	["STEAM_0:1:94748887"] = true, -- Swift
+	["STEAM_0:1:96085036"] = true -- Jacub
 }
 
 local smilers = {

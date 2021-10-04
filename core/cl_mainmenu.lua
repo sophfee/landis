@@ -1,3 +1,5 @@
+-- TODO: MOVE THIS TO A VGUI FOLDER!!
+
 local PANEL = {}
 
 surface.CreateFont("landis_base_main_menu_title", {

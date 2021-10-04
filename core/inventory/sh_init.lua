@@ -31,7 +31,7 @@ landis.items.base = {
 function landis.items.RegisterItem( UniqueID, meta )
 	local self = table.Inherit( meta, landis.items.base )
 
-	function self:onEquip( ply )
+	function self:OnEquip( ply )
 		if self.equipData.type == EQUIP_WEAPON then
 			
 		end

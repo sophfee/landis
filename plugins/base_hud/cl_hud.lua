@@ -48,57 +48,58 @@ local function drawBar(label,val,col,pos)
 
 	local vert = {
 		pos,
-		{x=pos.x+300,y=pos.y},
-		{x=pos.x+300+25,y=pos.y+25},
+		{ x = pos.x + 300, y = pos.y },
+		{x=pos.x+300+25,y=pos.y + 25 },
 		{x=pos.x,y=pos.y+25}
 	}
 	local vertOutline = {
-		--{x=pos.x+2,y=pos.y+2},
 		{x=pos.x+300+2,y=pos.y+2},
 		{x=pos.x+300+27,y=pos.y+27},
 		{x=pos.x+2,y=pos.y+27},
 		{x=pos.x,y=pos.y+25}
 	}
-	local r,gC,b = col:Unpack()
+	local r,g,b = col:Unpack()
+
 	surface.SetDrawColor(80/2, 80/2, 80/2,255)
 	surface.DrawPoly(vertOutline)
+
 	surface.SetDrawColor(80,80,80,255)
 	surface.DrawPoly(vert)
+
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, gC/3, b/3,120)
+	surface.SetDrawColor(r/3, g/3, b/3,120)
+
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
-	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT)
-	//draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	//raw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-	//draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+
 	draw.NoTexture()
 
 	local vert = {
 		pos,
 		{x=pos.x+value,y=pos.y},
-		{x=pos.x+value+25,y=pos.y+25},
-		{x=pos.x,y=pos.y+25}
+		{x=pos.x+value+25, y = pos.y + 25},
+		{x=pos.x, y = pos.y + 25 }
 	}
 	local vertOutline = {
-		--{x=pos.x+2,y=pos.y+2},
-		{x=pos.x+value+2,y=pos.y+2},
-		{x=pos.x+value+27,y=pos.y+27},
-		{x=pos.x+2,y=pos.y+27},
-		{x=pos.x,y=pos.y+25}
+		{ x = pos.x + value + 2, y = pos.y + 2 },
+		{ x = pos.x + value + 27, y = pos.y + 27 },
+		{ x = pos.x + 2, y = pos.y + 27 },
+		{ x = pos.x, y = pos.y + 25 }
 	}
-	local r,gC,b = col:Unpack()
-	surface.SetDrawColor(r/3, gC/3, b/3,255)
-	surface.DrawPoly(vertOutline)
-	surface.SetDrawColor(r,gC,b,255)
-	surface.DrawPoly(vert)
-	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/2, gC/2, b/2,100)
-	surface.DrawTexturedRect(pos.x,pos.y,value,25)
-	draw.DrawText(tostring(math.Round(val,0)), "hud24", pos.x+5, pos.y+2, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT)
-	draw.DrawText(tostring(math.Round(val,0)), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
-	draw.SimpleText(label, "hud18", pos.x+2, pos.y, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-	draw.SimpleText(label, "hud18", pos.x, pos.y-1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+
+	surface.SetDrawColor( r / 3, g / 3, b / 3, 255 )
+	surface.DrawPoly( vertOutline )
+	surface.SetDrawColor( r, g, b, 255 )
+	surface.DrawPoly( vert )
+	surface.SetMaterial( Material( "vgui/gradient-l" ) )
+	surface.SetDrawColor( r / 2, g / 2, b / 2, 100 )
+	surface.DrawTexturedRect( pos.x, pos.y, value, 25 )
+
+	draw.DrawText( tostring( math.Round( val, 0 ) ), "hud24", pos.x + 5, pos.y + 2, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT )
+	draw.DrawText( tostring( math.Round( val, 0 )), "hud24", pos.x + 3, pos.y + 1, color_white, TEXT_ALIGN_LEFT )
+	draw.SimpleText( label, "hud18", pos.x + 2, pos.y, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.SimpleText( label, "hud18", pos.x, pos.y - 1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	draw.NoTexture()
+
 end
 
 local function drawBarFlipped(label,val,col,pos)

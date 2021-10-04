@@ -1,5 +1,6 @@
 MsgC(Color(10,132,255),"[landis] Initializing core elements...")
 
+-- Just a little badge file, nothing special
 resource.AddSingleFile("materials/badges/smile.png")
 
 AddCSLuaFile("shared.lua")

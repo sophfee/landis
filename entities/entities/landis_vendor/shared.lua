@@ -1,5 +1,3 @@
-print("shared lua ran!")
-
 ENT.Base = "base_gmodentity"
 ENT.Type = "anim"
 

@@ -40,14 +40,22 @@ function ENT:Think()
 end
 
 function ENT:Use( caller )
+
 	if IsValid( caller ) then
+
 		if not caller:IsPlayer() then return end
+
 		net.Start( "landisVendorOpen" )
+
 			net.WriteEntity( self ) -- Entity Reference
 			net.WriteString( self:GetVendorClass() or "example_vendor" ) -- Vendor Class
+
 		net.Send( caller )
+
 		hook.Run( "OpenVendor", caller, self, self:GetVendorClass() )
+
 	end
+	
 end
 
 function ENT:SetVendor( class )

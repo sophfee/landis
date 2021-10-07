@@ -1,4 +1,5 @@
 include("shared.lua")
+
 ENT.Base = "base_gmodentity"
 ENT.Type = "anim"
 

@@ -57,6 +57,8 @@ function landis.lib.RegisterVendor( meta )
 
 	landis.Vendor.Data[meta.UniqueID] = meta
 
-	PrintTable(landis.Vendor)
+end
 
+function landis.GetVendor( class )
+	return landis.Vendor.Data[ class ]
 end

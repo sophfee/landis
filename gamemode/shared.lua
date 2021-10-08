@@ -119,13 +119,3 @@ if CLIENT then
 	landis.ConsoleMessage("loading plugins")
 	landis.lib.includeDir( GM.FolderName .. "/plugins" )
 end
-/*
-local data = landis.Settings["test"]
-
-local parent = vgui.Create("DFrame")
-parent:SetSize(400,400)
-parent:Center()
-parent:MakePopup()
-
-data.createPanel(parent,data)
-*/

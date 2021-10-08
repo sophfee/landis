@@ -13,5 +13,4 @@ function landis.lib.SpawnVendor( class, pos, ang )
 		entity:SetBodygroup( v, k )
 	end
 	entity:SetSkin( classData.Model.Skin )
-	
 end

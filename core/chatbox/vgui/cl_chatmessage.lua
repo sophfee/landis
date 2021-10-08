@@ -26,11 +26,11 @@ function PANEL:SetMessage( ... )
 		if type( k ) == "table" then
 
 			self.text       = self.text .. "</colour><colour=" .. k.r .. "," .. k.g .. "," .. k.b ..">"
-			curColor = k
+			curColor        = k
 
 		elseif type( k ) == "string" then
 
-			self.text    = self.text .. k
+			self.text       = self.text .. k
 			MsgC( curColor, k )
 
 		elseif k:IsPlayer() then
@@ -40,11 +40,7 @@ function PANEL:SetMessage( ... )
 
 			self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
 			self.text       = self.text .. k:Nick()
-			--self.text       = self.text .. 
-
 			self.sender     = k
-			--MsgC( k:Nick() )
-			MsgC( Color(255,255,255,255) )
 
 		end
 
@@ -59,8 +55,13 @@ function PANEL:SetMessage( ... )
 
 end
 
-function PANEL:DoClick()
-
+function PANEL:OnClick()
+	-- Copy SteamID & Open Player Info from message click.
+	if LocalPlayer():IsAdmin() then
+		local playerMenu = DermaMenu()
+		local opt_a = playerMenu:AddOption( "[admin] Copy Sender's SteamID.", function() SetClipboardText( self.sender:SteamID() ) end )
+		opt_a:SetIcon("")
+	end
 end
 
 function PANEL:Paint( w, h )

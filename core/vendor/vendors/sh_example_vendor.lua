@@ -4,11 +4,10 @@ Welcome to the Example Vendor class!
 
 ]]
 
-print("huh")
 local VENDOR = landis.lib.CreateVendorTable()
 
 VENDOR.UniqueID    = "example_vendor"
-
+VENDOR.Behavior    = "basic"
 -- The name that appears at the top when hovering over the entity
 VENDOR.DisplayName = "Example Vendor"
 
@@ -27,5 +26,7 @@ VENDOR.Model.Bodygroup[2] = 5
 VENDOR.Model.Bodygroup[3] = 2
 VENDOR.Model.Bodygroup[4] = 1
 VENDOR.Model.Bodygroup[5] = 1
+
+VENDOR.Panel = "VendorPanel"
 
 landis.lib.RegisterVendor( VENDOR )

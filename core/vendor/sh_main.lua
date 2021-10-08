@@ -57,6 +57,15 @@ function landis.lib.RegisterVendor( meta )
 
 	landis.Vendor.Data[meta.UniqueID] = meta
 
+	local ent = {} -- Create new entity data for this!!!
+
+	ent.Type = "anim"
+	ent.Base = "landis_vendor"
+	ent.PrintName = meta.DisplayName
+	ent.Vendor = meta.UniqueID
+
+	scripted_ents.Register(ent, meta.UniqueID)
+	PrintTable(scripted_ents.Get(meta.UniqueID))
 end
 
 function landis.GetVendor( class )

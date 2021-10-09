@@ -31,6 +31,7 @@ spawnmenu.AddCreationTab( "Vendors",function()
 
 		--btn:SetText(k.DisplayName .. " (" .. k.UniqueID .. ")" )
 		btn.DoClick = function()
+			surface.PlaySound(Sound("ui/buttonclickrelease.wav"))
 			net.Start("landis_spawn_vendor")
 				net.WriteString(k.UniqueID)
 			net.SendToServer()

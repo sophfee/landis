@@ -42,7 +42,7 @@ function ENT:Use( caller )
 
 		if not caller:IsPlayer() then return end
 
-		MsgC(Color(10,132,255),"[landis] " .. caller:Nick() .. " has attempted to use Vendor["..self:GetVendorClass().."]\n")
+		landis.ConsoleMessage(caller:Nick() .. " has attempted to use Vendor["..self:GetVendorClass().."]")
 
 		hook.Run( "landisOpenVendor", caller, self, self:GetVendorClass() )
 

@@ -8,7 +8,6 @@ function meta:SetupDataTables()
 			sql.Query("UPDATE landis_user SET xp = " .. num .. " WHERE steamid = " .. sql.SQLStr( self:SteamID64() ) )
 			self:SetNWInt( "XP", num )
 		end
-		//self:SetStamina(5)
 	end
 end
 
@@ -65,9 +64,9 @@ function meta:IsWeaponRaised()
 	return self:GetNWBool("weaponRaised", true)
 end
 
-// credit : Jake Green (vin)
-// code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!!
-// !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!
+-- credit : Jake Green (vin)
+-- code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!! -- oh BTW I got perms dw lmao, just doesnt work well
+-- !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!                               -- proof of permission: https://cdn.discordapp.com/attachments/822883467997872168/896128437939503164/unknown.png
 
 --[[if SERVER then
 

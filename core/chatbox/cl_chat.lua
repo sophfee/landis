@@ -422,6 +422,7 @@ function chat.AddText(...)
 		end
 	end]]
 	landis.chatbox.lastMessage = CurTime()
+	landis.chatbox.chatLog:SetVisible( true )
 	chat.PlaySound()
 --	oldAddText(unpack(msg))
 end

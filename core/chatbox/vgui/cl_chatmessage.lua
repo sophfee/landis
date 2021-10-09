@@ -6,7 +6,10 @@ local PANEL = {}
 function PANEL:Init()
 	self.message = nil	
 	self.text    = ""
+	self.rawText = ""
 	self.colors  = {}
+	self:SetText("")
+	self:SetCursor("arrow")
 end
 
 function PANEL:SetMessage( ... )
@@ -32,6 +35,7 @@ function PANEL:SetMessage( ... )
 
 			self.text       = self.text .. k
 			MsgC( curColor, k )
+			self.rawText    = self.rawText .. k
 
 		elseif k:IsPlayer() then
 
@@ -41,6 +45,8 @@ function PANEL:SetMessage( ... )
 			self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
 			self.text       = self.text .. k:Nick()
 			self.sender     = k
+
+			self.rawText    = self.rawText .. k:Nick()
 
 		end
 
@@ -55,13 +61,32 @@ function PANEL:SetMessage( ... )
 
 end
 
-function PANEL:OnClick()
+function PANEL:DoClick()
 	-- Copy SteamID & Open Player Info from message click.
+	local playerMenu = DermaMenu()
+	local opt_a = playerMenu:AddOption( "Copy message text", function() 
+			SetClipboardText( self.rawText ) 
+			LocalPlayer():Notify("Text has been copied to clipboard!")
+		end )
+
 	if LocalPlayer():IsAdmin() then
-		local playerMenu = DermaMenu()
-		local opt_a = playerMenu:AddOption( "[admin] Copy Sender's SteamID.", function() SetClipboardText( self.sender:SteamID() ) end )
-		opt_a:SetIcon("")
+		
+		
+		local opt_a = playerMenu:AddOption( "[admin] Copy Sender's SteamID", function() 
+			SetClipboardText( self.sender:SteamID() ) 
+			LocalPlayer():Notify("Copied " .. self.sender:Nick() .. "'s SteamID!")
+		end )
+		opt_a:SetIcon("icon16/shield.png")
+
+		local opt_b = playerMenu:AddOption( "[admin] Open Player Info", function() 
+			local Card = vgui.Create("landisPlayerCard")
+			Card:SetPlayer(self.sender)
+		end )
+		opt_b:SetIcon("icon16/shield.png")
+
+		
 	end
+	playerMenu:Open()
 end
 
 function PANEL:Paint( w, h )
@@ -74,4 +99,4 @@ function PANEL:Paint( w, h )
 
 end
 
-vgui.Register( "chatmessage", PANEL, "Panel" )
+vgui.Register( "chatmessage", PANEL, "DButton" )

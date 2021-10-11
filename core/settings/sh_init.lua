@@ -227,7 +227,7 @@ function landis.lib.DefineSetting(className,struct)
 	end
 
 	function CSetting:GetCookieName()
-		return "landis_settings." .. string.Replace( self:GetPrintName(), " ", "_")
+		return "landis_settings." .. string.Replace( className, " ", "_")
 	end
 
 	function CSetting:GetValueType()
@@ -245,7 +245,18 @@ function landis.lib.DefineSetting(className,struct)
 	end
 
 	function CSetting:GetValue()
-		return NUMBER_TYPES[ self:GetValueType() ] and cookie.GetNumber( self:GetCookieName(), -1) or cookie.GetString( self:GetCookieName(), "NULL") 
+		local valueType = self:GetValueType()
+		local cookieName = self:GetCookieName()
+		if NUMBER_TYPES[ valueType ] then
+			return cookie.GetNumber( cookieName, -1 )
+		end
+		local stringVal = cookie.GetString( cookieName, nil )
+
+		if valueType == "bool" then
+			return stringVal == "true" and true or false
+		end
+		return stringVal
+		
 	end
 
 	function CSetting:SetPrintName(name)
@@ -297,12 +308,11 @@ sql.Query("CREATE TABLE IF NOT EXISTS landis_settings")
 
 -- INTERNAL
 function landis.lib.LoadSettings()
-	print("DEPRECATED")
 end
 
 -- INTERNAL
 function landis.lib.SaveSettings()
-	print("DEPRECATED") -- SAVES ON CHANGE SMILE
+	
 end
 
 landis.lib.LoadSettings()

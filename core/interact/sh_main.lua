@@ -1,3 +1,5 @@
+-- TODO: either make this at all useful or just gut it, don't really like this anyways...
+
 --[[
 
 cinematic sequence camera system inspired by re7's cinematic sequences

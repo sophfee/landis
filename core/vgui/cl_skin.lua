@@ -1,5 +1,16 @@
 local SKIN = {}
-derma.RefreshSkins()
+PrintTable(derma.SkinList.Default)
+SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
+SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
+SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)
+
+SKIN.Colours.Button.Normal = Color(255, 255, 255)
+SKIN.Colours.Button.Hover = Color(255, 255, 255)
+SKIN.Colours.Button.Down = Color(180, 180, 180)
+SKIN.Colours.Button.Disabled = Color(0, 0, 0, 100)
+
+SKIN.Colours.Label.Highlight = Color(90, 200, 250, 255)
+
 
 landis.Config.ButtonColorOff      = Color(72,72,74,255)
 landis.Config.ButtonColorHovered  = Color(99,99,102,255)
@@ -53,7 +64,6 @@ function SKIN:PaintFrame( self,w,h )
 	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 	surface.DrawRect( 0, 0, w, 23 )
 	surface.DrawOutlinedRect( 0, 23, w, h-23, 2 )
-	self.lblTitle:SetTextColor(color_white)
 	if self:GetSizable() then
 		surface.SetDrawColor(0, 0, 0)
 		draw.NoTexture()
@@ -117,7 +127,6 @@ function SKIN:PaintTab(self,w,h)
 		self.pSND = false
 	end
 	if self:GetName() == "DNumberScratch" then return end
-	self:SetTextColor(color_white)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
@@ -242,7 +251,6 @@ function SKIN:PaintButton(self,w,h)
 	
 	if self:GetName() == "DNumberScratch" then return end
 	self.LerpPos = math.Clamp( self.LerpPos	+ FrameTime()*4, 0, 1)
-	self:SetTextColor(color_white)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
@@ -283,8 +291,28 @@ function SKIN:PaintTooltip(self,w,h)
 	surface.DrawRect(0, 0, w, h)
 end
 
+local oldPaintMenuOption = derma.SkinList.Default.PaintMenuOption
+
+function SKIN:PaintMenuOption(panel,w,h)
+	panel:SetTextColor(color_black)
+	if ( panel.m_bBackground && !panel:IsEnabled() ) then
+		surface.SetDrawColor( Color( 0, 0, 0, 50 ) )
+		surface.DrawRect( 0, 0, w, h )
+		
+	end
+
+	if ( panel.m_bBackground && ( panel.Hovered || panel.Highlight) ) then
+		self.tex.MenuBG_Hover( 0, 0, w, h )
+		panel:SetTextColor(Color(80,80,80,255))
+	end
+
+	if ( panel:GetChecked() ) then
+		self.tex.Menu_Check( 5, h / 2 - 7, 15, 15 )
+
+	end
+end
+
 function SKIN:PaintComboBox(self,w,h)
-	self:SetTextColor(color_white)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		bgColor = landis.Config.ButtonColorHovered
@@ -296,33 +324,14 @@ function SKIN:PaintComboBox(self,w,h)
 	surface.DrawRect(0, 0, w, h)
 end
 
---[[function SKIN:PaintMenuOption(self,w,h)
-	local bgColor   = landis.Config.BGColorLight
-	self:SetTextColor(color_black) 
-	if self:IsHovered() then
-		bgColor = landis.Config.MainColor
-		self:SetTextColor(color_white)
-	end
-	if self:IsDown() then
-		bgColor = Color(100,210,255)
-	end
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
-	if self:GetChecked() then
-		surface.SetDrawColor(255, 255, 255)
-		draw.NoTexture()
-		surface.SetMaterial(Material("icon16/tick.png"))
-		surface.DrawTexturedRect(3, 3, 16, 16)
-	end
-	
-end[]]
-
 
 
 
 
 derma.DefineSkin("landis_base", "The default skin for landis.", SKIN)
+
 -- lol look at tthe identifier
 hook.Add("ForceDermaSkin", "foreskin", function()
 	return "landis_base"
 end)
+derma.RefreshSkins()

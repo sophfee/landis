@@ -1,14 +1,14 @@
 local meta = FindMetaTable("Player")
 
 function meta:SetupDataTables()
-	self:NetworkVar("Bool", 0, "weaponRaised")
+	self:NetworkVar("Bool", 0, "IsTyping")
 	self:NetworkVar("Int",1,"XP")
+
 	if SERVER then
 		function self:SetXP( num )
 			sql.Query("UPDATE landis_user SET xp = " .. num .. " WHERE steamid = " .. sql.SQLStr( self:SteamID64() ) )
 			self:SetNWInt( "XP", num )
 		end
-		//self:SetStamina(5)
 	end
 end
 
@@ -65,9 +65,9 @@ function meta:IsWeaponRaised()
 	return self:GetNWBool("weaponRaised", true)
 end
 
-// credit : Jake Green (vin)
-// code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!!
-// !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!
+-- credit : Jake Green (vin)
+-- code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!! -- oh BTW I got perms dw lmao, just doesnt work well
+-- !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!                               -- proof of permission: https://cdn.discordapp.com/attachments/822883467997872168/896128437939503164/unknown.png
 
 --[[if SERVER then
 
@@ -163,11 +163,48 @@ function meta:GetPhysgunColor()
 	return nil
 end
 
+function meta:IsTyping()
+	return self:GetNWBool("IsTyping",false)
+end
+
 if SERVER then
+	util.AddNetworkString("landisStartChat")
+	util.AddNetworkString("landisFinishChat")
 	hook.Add("PlayerSpawn","setuphands", function(ply)
 		ply:SetupHands()
 	end)
 	hook.Add("PlayerDeathSound","mutebeep",function() return true end)
+	net.Receive("landisStartChat", function(len,ply)
+		ply:SetNWBool("IsTyping", true)
+	end)
+	net.Receive("landisFinishChat", function(len,ply)
+		ply:SetNWBool("IsTyping", false)
+	end)
+	function meta:AddChatText(...)
+		local t = {...}
+		for v,k in ipairs(t) do
+			if type(k) == "string" then
+				t[v] = "\"" .. k .. "\""
+			elseif type(k) == "table" then
+				t[v] = "Color("..k.r..","..k.g..","..k.b..")"
+			end
+		end
+		self:SendLua( "chat.AddText(" .. table.concat( t, ", " ) .. ")" )
+	end
+end
+
+if CLIENT then
+	function GM:StartChat(isTeam)
+		net.Start("landisStartChat")
+			net.WriteBool(isTeam)
+		net.SendToServer()
+	end
+	function GM:FinishChat(isTeam)
+		net.Start("landisFinishChat")
+		net.SendToServer()
+	end
+	function GM:HUDDrawTargetID()
+	end
 end
 
 hook.Add("PlayerSpawn", "SpawnSetColor", function( ply )

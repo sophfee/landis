@@ -45,10 +45,10 @@ hook.Add( "HUDPaint", "drawEntityInformation", function()
 		if IsValid( k ) then
 			local p = k:IsPlayer()
 
-			local name = p and k:Nick() or k.DisplayName or k:GetNWString("DisplayName", "")
+			local name = p and k:Nick() or (k:GetNWString("DisplayName", "nil") == "nil" and k.DisplayName or k:GetNWString("DisplayName", "nil") )
 			--if not name then table.remove(drawEnts, v) continue end
 
-			local desc = p and ( k:IsTyping() and "Typing..." or "" ) or k.Description or k:GetNWString("DisplayName", "")
+			local desc = p and ( k:IsTyping() and "Typing..." or "" ) or (k:GetNWString("Description", "nil") == "nil" and k.Description or k:GetNWString("Description", "nil") )
 			--if not desc then table.remove(drawEnts, v) continue end
 
 			local heightOffset = k.HeightOffset or 0

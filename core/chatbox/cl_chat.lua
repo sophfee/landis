@@ -243,6 +243,7 @@ function landis.chatbox.hideBox()
 	landis.chatbox.entry:SetText( "" )
 	gamemode.Call( "ChatTextChanged", "" )
 	landis.chatbox.chatLog:SetVisible(true)
+	landis.chatbox.chatLog:GetVBar():SetVisible(false)
 end
 
 --// Shows the chat box
@@ -266,6 +267,8 @@ function landis.chatbox.showBox()
 	-- MakePopup calls the input functions so we don't need to call those
 	landis.chatbox.frame:MakePopup()
 	landis.chatbox.entry:RequestFocus()
+
+	landis.chatbox.chatLog:GetVBar():SetVisible(true)
 	
 	-- Make sure other addons know we are chatting
 	gamemode.Call("StartChat")
@@ -389,9 +392,11 @@ function chat.AddText(...)
 	end
 	
 	local msg = vgui.Create( "chatmessage", landis.chatbox.chatLog )
+	
+
 	msg:SetMessage( ... )
 	msg:Dock( TOP )
-	
+	landis.chatbox.chatLog:AddItem(msg)
 	-- Iterate through the strings and colors
 	--[[for _, obj in pairs( {...} ) do
 		if type(obj) == "table" then
@@ -423,7 +428,11 @@ function chat.AddText(...)
 	end]]
 	landis.chatbox.lastMessage = CurTime()
 	landis.chatbox.chatLog:SetVisible( true )
+
 	chat.PlaySound()
+	timer.Simple(0.05,function()
+		landis.chatbox.chatLog:ScrollToChild(msg)
+	end)
 --	oldAddText(unpack(msg))
 end
 

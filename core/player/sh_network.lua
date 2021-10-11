@@ -1,8 +1,9 @@
 local meta = FindMetaTable("Player")
 
 function meta:SetupDataTables()
-	self:NetworkVar("Bool", 0, "weaponRaised")
+	self:NetworkVar("Bool", 0, "IsTyping")
 	self:NetworkVar("Int",1,"XP")
+
 	if SERVER then
 		function self:SetXP( num )
 			sql.Query("UPDATE landis_user SET xp = " .. num .. " WHERE steamid = " .. sql.SQLStr( self:SteamID64() ) )
@@ -162,11 +163,48 @@ function meta:GetPhysgunColor()
 	return nil
 end
 
+function meta:IsTyping()
+	return self:GetNWBool("IsTyping",false)
+end
+
 if SERVER then
+	util.AddNetworkString("landisStartChat")
+	util.AddNetworkString("landisFinishChat")
 	hook.Add("PlayerSpawn","setuphands", function(ply)
 		ply:SetupHands()
 	end)
 	hook.Add("PlayerDeathSound","mutebeep",function() return true end)
+	net.Receive("landisStartChat", function(len,ply)
+		ply:SetNWBool("IsTyping", true)
+	end)
+	net.Receive("landisFinishChat", function(len,ply)
+		ply:SetNWBool("IsTyping", false)
+	end)
+	function meta:AddChatText(...)
+		local t = {...}
+		for v,k in ipairs(t) do
+			if type(k) == "string" then
+				t[v] = "\"" .. k .. "\""
+			elseif type(k) == "table" then
+				t[v] = "Color("..k.r..","..k.g..","..k.b..")"
+			end
+		end
+		self:SendLua( "chat.AddText(" .. table.concat( t, ", " ) .. ")" )
+	end
+end
+
+if CLIENT then
+	function GM:StartChat(isTeam)
+		net.Start("landisStartChat")
+			net.WriteBool(isTeam)
+		net.SendToServer()
+	end
+	function GM:FinishChat(isTeam)
+		net.Start("landisFinishChat")
+		net.SendToServer()
+	end
+	function GM:HUDDrawTargetID()
+	end
 end
 
 hook.Add("PlayerSpawn", "SpawnSetColor", function( ply )

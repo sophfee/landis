@@ -94,3 +94,56 @@ local SetUserGroupCommand = {
 }
 
 landis.chat.RegisterCommand("/setusergroup",SetUserGroupCommand)
+
+local SetHP = {
+	RequireAlive    = false,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_ADMIN,
+	HelpDescription = "Set someone's HP",
+	onRun  = function(self,ply,args)
+		local findUser = args[1]
+		local user = landis.FindPlayer(findUser)
+		local group = ply:IsSuperAdmin() and (tonumber(args[2]) or 100) or math.Clamp(tonumber(args[2]),0,100)
+		if IsValid(user) then
+			for v,k in ipairs(player.GetHumans()) do
+				if k:IsLeadAdmin() then
+					local msg = "[Admin] " .. ply:Nick() .. " set " .. user:Nick() .. "'s HP to " .. tostring(group)
+					k:AddChatText(Color(10,130,255),"[Admin] ",Color(240,240,0),ply:Nick(),color_white," set ",Color(240,240,0),user:Nick(),color_white,"'s HP to ",Color(240,240,0),tostring(group))
+				end
+			end
+			user:SetHealth(group)
+			ply:Notify("Successfully set " .. user:Nick() .. "'s HP' to " .. group)
+		else
+			ply:Notify("Couldn't find the user to edit!")
+		end
+
+	end
+}
+
+landis.chat.RegisterCommand("/sethp",SetHP)
+
+local Setteam = {
+	RequireAlive    = false,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_ADMIN,
+	HelpDescription = "Set someone's team",
+	onRun  = function(self,ply,args)
+		local findUser = args[1]
+		local user = landis.FindPlayer(findUser)
+		local group = tonumber(args[2])
+		if IsValid(user) then
+			for v,k in ipairs(player.GetHumans()) do
+				if k:IsLeadAdmin() then
+					k:AddChatText(Color(10,130,255),"[Admin] ",Color(240,240,0),ply:Nick(),color_white," set ",Color(240,240,0),user:Nick(),color_white,"'s team to ",Color(240,240,0),tostring(group))
+				end
+			end
+			user:SetTeam(group)
+			ply:Notify("Successfully set " .. user:Nick() .. "'s team to " .. group)
+		else
+			ply:Notify("Couldn't find the user to edit!")
+		end
+
+	end
+}
+
+landis.chat.RegisterCommand("/setteam",Setteam)

@@ -12,6 +12,19 @@ function meta:SetupDataTables()
 	end
 end
 
+
+function meta:GetRankName()
+	if self:IsSuperAdmin() then
+		return "Super Admin"
+	end
+	if self:IsLeadAdmin() then
+		return "Lead Admin"
+	end
+	if self:IsAdmin() then
+		return "Admin"
+	end
+	return "User"
+end
 function meta:GetPermissionLevel()
 	if self:IsSuperAdmin() then
 		return PERMISSION_LEVEL_SUPERADMIN

@@ -11,6 +11,11 @@ function PANEL:Init()
 	self:SetText("")
 	self:SetCursor("arrow")
 end
+CommandColors = {}
+CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
+CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
+CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
 function PANEL:SetMessage( ... )
 
@@ -38,6 +43,15 @@ function PANEL:SetMessage( ... )
 			self.rawText    = self.rawText .. k
 
 		elseif k:IsPlayer() then
+
+			local teamColor = CommandColors[k:GetPermissionLevel()]
+			local ka = Color(230,230,230)
+			--self.text       = self.text .. "</colour><colour=" .. ka.r .. "," .. ka.g .. "," .. ka.b ..">["
+
+			self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
+			self.text       = self.text .. "[" .. k:GetRankName() .. "] "
+
+			--self.text       = self.text .. "</colour><colour=" .. ka.r .. "," .. ka.g .. "," .. ka.b ..">] "
 
 			local teamColor = team.GetColor( k:Team() )
 			MsgC( teamColor, k:Nick() )

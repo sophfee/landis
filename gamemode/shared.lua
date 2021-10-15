@@ -22,9 +22,9 @@ function landis.ConsoleMessage(...)
 	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
 end
 
-function landis.lib.includeDir( scanDirectory, isGamemode )
+function landis.lib.includeDir( scanDirectory, core )
 	-- Null-coalescing for optional argument
-	isGamemode = isGamemode or false
+	core = core or false
 	
 	local queue = { scanDirectory }
 	
@@ -46,8 +46,9 @@ function landis.lib.includeDir( scanDirectory, isGamemode )
 					-- Create a relative path for inclusion functions
 					-- Also handle pathing case for including gamemode folders
 					local relativePath = directory .. "/" .. fileName
-					if isGamemode then
-						relativePath = string.gsub( directory .. "/" .. fileName, GM.FolderName .. "/gamemode/", "" )
+	
+					if core then
+						relativePath = string.gsub( directory .. "/" .. fileName, "landis/gamemode/", "" )
 					end
 					
 					-- Include server files
@@ -100,22 +101,22 @@ end
 if SERVER then
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
-	landis.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
+	landis.lib.includeDir( "landis/gamemode/lib"  )
 
 	//landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( GM.FolderName .. "/core"  )
+	landis.lib.includeDir( "landis/core"  )
 
 	//landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( GM.FolderName .. "/plugins" )
+	landis.lib.includeDir( "landis/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
-	landis.lib.includeDir( GM.FolderName .. "/gamemode/lib"  )
+	landis.lib.includeDir( "landis/gamemode/lib"  )
 
 	landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( GM.FolderName .. "/core"  )
+	landis.lib.includeDir( "landis/core"  )
 
 	landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( GM.FolderName .. "/plugins" )
+	landis.lib.includeDir( "landis/plugins" )
 end

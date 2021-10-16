@@ -3,7 +3,12 @@ landis.schema = {}
 SCHEMA = {}
 SCHEMA.Config = {}
 SCHEMA.HUD = {}
-SCHEMA.HUD.Elements = {}
+SCHEMA.HUD.Elements = {
+	["Crosshair"] = true,
+	["Health"] = true,
+	["Armor"] = true,
+	["Ammo"] = true
+}
 
 function landis.schema.boot( schemaName )
 	landis.ConsoleMessage("booting schema \"" .. schemaName .. "\"")

@@ -214,8 +214,9 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	end
 	
 	if SCHEMA:ShouldDrawElement( "Health" ) then drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) end
-	//drawBar("Stamina",ply:GetNWFloat("Stamina"),Color(50,173,230),{x=25,y=ScrH()-100})
+
 	if SCHEMA:ShouldDrawElement( "Armor" ) then if ply:Armor() > 0 then drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100}) end end
+
 	if SCHEMA:ShouldDrawElement( "Ammo") then
 		local wep = ply:GetActiveWeapon()
 		if IsValid(wep) then

@@ -44,14 +44,15 @@ function PANEL:SetMessage( ... )
 
 		elseif k:IsPlayer() then
 
-			local teamColor = CommandColors[k:GetPermissionLevel()]
-			local ka = Color(230,230,230)
-			--self.text       = self.text .. "</colour><colour=" .. ka.r .. "," .. ka.g .. "," .. ka.b ..">["
+			if SCHEMA:ShowRankInChat( k, k:GetUserGroup() ) then
 
-			self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
-			self.text       = self.text .. "[" .. k:GetRankName() .. "] "
+				local teamColor = CommandColors[k:GetPermissionLevel()]
+				local ka = Color(230,230,230)
 
-			--self.text       = self.text .. "</colour><colour=" .. ka.r .. "," .. ka.g .. "," .. ka.b ..">] "
+				self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
+				self.text       = self.text .. "[" .. k:GetRankName() .. "] "
+
+			end
 
 			local teamColor = team.GetColor( k:Team() )
 			MsgC( teamColor, k:Nick() )

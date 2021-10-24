@@ -1,4 +1,4 @@
-landis.schema = {}
+landis.Schema = {}
 
 SCHEMA = {}
 SCHEMA.Config = {}
@@ -10,7 +10,7 @@ SCHEMA.HUD.Elements = {
 	["Ammo"] = true
 }
 
-function landis.schema.boot( schemaName )
+function landis.Schema.Boot( schemaName )
 	landis.ConsoleMessage("booting schema \"" .. schemaName .. "\"")
 	landis.lib.includeDir(GM.FolderName .. "/schema")
 end

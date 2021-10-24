@@ -196,7 +196,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	--if ply:NoClipping
 
 	if not ply:Alive() then
-		youAreDeadAlpha = math.Clamp( youAreDeadAlpha + FrameTime() * 50, 0, 255 )
+		youAreDeadAlpha = math.Clamp( youAreDeadAlpha + FrameTime() * 255, 0, 255 )
+		draw.RoundedBox(0, 0, 0, ScrW(), ScrH(), Color(0,0,0,youAreDeadAlpha))
 		draw.SimpleText("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, youAreDeadAlpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
 		return 
 	end

@@ -187,13 +187,47 @@ surface.CreateFont("DEAD", {
 
 local youAreDeadAlpha = 0
 
+surface.CreateFont("landis-24",{
+	font = "Arial",
+	size = 24,
+	weight = 1000,
+	antialias = true,
+	extended
+})
+
+surface.CreateFont("landis-18",{
+	font = "Arial",
+	size = 18,
+	weight = 1000,
+	antialias = true,
+	extended
+})
+
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
 		return 
 	end
 
-	--if ply:NoClipping
+	if ply:InNoclip() then
+
+		draw.DrawText("Moderation View", "landis-24", 5, 5, Color( 230, 230, 230, 180 ))
+
+		local msg = [[Playercount: ]]
+		msg=msg..tostring(player.GetCount())
+
+		draw.DrawText(msg, "landis-18", 5, 29, Color( 230, 230, 230, 180 ))
+
+		if landis.lib.GetSetting("mod-esp") then
+			for v,k in ipairs(player.GetAll()) do
+				if k == LocalPlayer() then continue end
+				local viewData = (k:OBBCenter()+k:GetPos()):ToScreen()
+				if viewData.visible then
+					draw.SimpleText(k:Nick(), "entname", viewData.x, viewData.y, team.GetColor(k:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				end
+			end
+		end
+	end
 
 	if not ply:Alive() then
 		youAreDeadAlpha = math.Clamp( youAreDeadAlpha + FrameTime() * 255, 0, 255 )

@@ -3,6 +3,7 @@ local meta = FindMetaTable("Player")
 function meta:SetupDataTables()
 	self:NetworkVar("Bool", 0, "IsTyping")
 	self:NetworkVar("Int",1,"XP")
+	self:NetworkVar("Bool",2,"InNoclip")
 
 	if SERVER then
 		function self:SetXP( num )
@@ -12,6 +13,9 @@ function meta:SetupDataTables()
 	end
 end
 
+function meta:InNoclip()
+	return self:GetNWBool("InNoclip",false)
+end
 
 function meta:GetRankName()
 	if self:IsSuperAdmin() then

@@ -23,6 +23,11 @@ function PANEL:Init()
 	end
 
 	for name,classes in pairs(cg) do
+		if landis.AdminCategories[name] then
+			if not (LocalPlayer():IsAdmin()) then
+				continue
+			end
+		end
 		local c = vgui.Create("DPanel", self.TabHolder)
 		self.TabHolder:AddSheet(name,c)
 		c.Paint = function() end

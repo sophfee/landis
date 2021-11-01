@@ -20,6 +20,6 @@ surface.CreateFont("DebugHUD18", {
 
 hook.Add("HUDPaint", "DebugHud_LANDIS", function()
 	if not DVBUILD then return end
-	draw.DrawText(DISPLAY .. " - " .. VERSION, "DebugHUD24", 5, 5, Color( 230, 230, 230, 150 ))
-	draw.DrawText(XTNOTES, "DebugHUD18", 5, 29, Color( 230, 230, 230, 150 ))
+	draw.DrawText(DISPLAY .. " - " .. VERSION, "DebugHUD24", ScrW()-5, 5, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
+	draw.DrawText(XTNOTES, "DebugHUD18", ScrW()-5, 29, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
 end)

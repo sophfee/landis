@@ -18,6 +18,7 @@ surface.CreateFont("landis_base_main_menu_btn", {
 	shadow = true
 })
 menuOpen = false
+GlobalAlpha = 255
 function PANEL:Init()
 	hook.Add("CalcView", "landisMAINMENUCALCVIEW", function()
 		return {
@@ -39,7 +40,7 @@ function PANEL:Init()
 	 hook.Add("HUDShouldDraw", "removeall", function(name)
 		if not( name == "CHudGMod" )then return false end
 	end)
-	local GlobalAlpha = 255
+	GlobalAlpha = 255
 	local fadeOut = false
 	self:Dock(LEFT)
 	self:SetSize(ScrW(),ScrH())
@@ -48,34 +49,14 @@ function PANEL:Init()
 			GlobalAlpha = math.Clamp(GlobalAlpha-FrameTime()*255, 0, 255)
 		end
 		local mainColor = landis.Config.MainColor
-		draw.SimpleTextOutlined(SCHEMA.Name, "landis_base_main_menu_title", ScrW()/2, ScrH()/2-82, HSVToColor( (CurTime()*50) % 360, 1, 1 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+		local GlowColor = HSVToColor( (CurTime()*24) % 360, 1, 1 )
+		GlowColor.a = GlobalAlpha
+		draw.SimpleTextOutlined(SCHEMA.Name or "Empty", "landis_base_main_menu_title", ScrW()/2, ScrH()/2-82, GlowColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 		if not SCHEMA.IsPreview then return end
 		draw.SimpleTextOutlined("Preview Build", "landis_base_main_menu_btn", ScrW()/2, ScrH()/2-20, Color(255,255,0,GlobalAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 	end
-	self.PlayBtn = vgui.Create("DButton", self, "landis_base-playbutton")
-	self.PlayBtn:SetText("") // override the text for painted text
-	self.OffsetPlayBtn = 0
-	self.PlayBtn.HoveredSound = false
-	self.PlayBtn.Paint = function(curPanel,w,h)
-	local mainColor = landis.Config.MainColor
-		if curPanel:IsHovered() then
-			if not curPanel.HoveredSound then
-				surface.PlaySound(Sound("ui/buttonrollover.wav"))
-				curPanel.HoveredSound = true
-			end
-			self.OffsetPlayBtn = math.Clamp( self.OffsetPlayBtn + (64*FrameTime()), 0, 12)
-		else
-			curPanel.HoveredSound = false
-			self.OffsetPlayBtn = math.Clamp( self.OffsetPlayBtn - (64*FrameTime()), 0, 12)
-		end
-		
-		local r = Lerp((self.OffsetPlayBtn/12), 255, mainColor.r)
-		local g = Lerp((self.OffsetPlayBtn/12), 255, mainColor.g)
-		local b = Lerp((self.OffsetPlayBtn/12), 255, mainColor.b)
-		draw.SimpleTextOutlined("Play", "landis_base_main_menu_btn", 100, h/2, Color( r, g, b, GlobalAlpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color( 0, 0, 0, GlobalAlpha ))
-	end
-	function self.PlayBtn:DoClick()
-		surface.PlaySound(Sound("ui/buttonclickrelease.wav"))
+	self.PlayBtn = vgui.Create("landisMainMenuButton", self, "landis_base-playbutton")
+	function self.PlayBtn:WhenPressed()
 		hook.Remove("HUDShouldDraw", "removeall")
 		menuOpen = false
 		MainMenu = nil
@@ -91,39 +72,43 @@ function PANEL:Init()
 			self:GetParent():Remove()
 		end)
 	end
-	self.PlayBtn:SetSize(200,30)
 	self.PlayBtn:SetPos(ScrW()/2-100,ScrH()/2+2)
+	self.PlayBtn:SetDisplayText("Play")
 
-	self.OptBtn = vgui.Create("DButton", self, "landis_base-optbutton")
-	self.OptBtn:SetText("") // override the text for painted text
-	self.OffsetOptBtn = 0
-	self.OptBtn.HoveredSound = false
-	self.OptBtn.Paint = function(curPanel,w,h)
-		local mainColor = landis.Config.MainColor
-		if self.OptBtn:IsHovered() then
-			if not curPanel.HoveredSound then
-				surface.PlaySound(Sound("ui/buttonrollover.wav"))
-				curPanel.HoveredSound = true
-			end
-			self.OffsetOptBtn = math.Clamp( self.OffsetOptBtn + (64*FrameTime()), 0, 12)
-		else
-			curPanel.HoveredSound = false
-			self.OffsetOptBtn = math.Clamp( self.OffsetOptBtn - (64*FrameTime()), 0, 12)
-		end
-		local r = Lerp((self.OffsetOptBtn/12), 255, mainColor.r)
-		local g = Lerp((self.OffsetOptBtn/12), 255, mainColor.g)
-		local b = Lerp((self.OffsetOptBtn/12), 255, mainColor.b)
-		
-		draw.SimpleTextOutlined("Options", "landis_base_main_menu_btn", 100, h/2, Color( r, g, b, GlobalAlpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color( 0, 0, 0, GlobalAlpha ))
-	end
-	function self.OptBtn:DoClick()
-		surface.PlaySound(Sound("ui/buttonclickrelease.wav"))
+	self.OptBtn = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.OptBtn:WhenPressed()
 		local optPanel = vgui.Create("landisBaseSettings")
 		optPanel:SetBackgroundBlur(true)
-
 	end
-	self.OptBtn:SetSize(200,30)
+	self.OptBtn:SetDisplayText("Settings")
 	self.OptBtn:SetPos(ScrW()/2-100,ScrH()/2+34)
+
+	self.Credits = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.Credits:WhenPressed()
+		Derma_Message("made by Nick :D (@urnotnick on github)","Credits!","epic!")
+	end
+	self.Credits:SetDisplayText("Credits")
+	self.Credits:SetPos(ScrW()/2-100,ScrH()/2+68)
+
+	
+	self.github = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.github:WhenPressed()
+		gui.OpenURL("https://github.com/urnotnick/landis")
+	end
+	self.github:SetDisplayText("GitHub")
+	self.github:SetPos(ScrW()/2-100,ScrH()/2+102)
+
+
+	self.Disconnect = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.Disconnect:WhenPressed()
+		RunConsoleCommand("disconnect")
+	end
+	self.Disconnect:SetDisplayText("Disconnect")
+	self.Disconnect:SetPos(ScrW()/2-100,ScrH()/2+140)
 
 	self:MakePopup()
 

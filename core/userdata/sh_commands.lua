@@ -34,7 +34,14 @@ local banCommand = {
 		table.remove(p, 1) // shifts
 		local duration = args[2] or 0
 		local reason = table.concat( p, " " ) or "Violation of Community Guidelines."
-		if IsValid(user) then
+		if IsValid(user) and not (user == ply) then
+
+			for v,k in ipairs(player.GetHumans()) do
+				if k:IsLeadAdmin() then
+					k:AddChatText(Color(10,130,255),"[Admin] ",Color(240,240,0),ply:Nick(),color_white," banned ",Color(240,240,0),user:Nick(),color_white," for ",Color(240,240,0),tostring(duration))
+				end
+			end
+
 			sql.Query("INSERT INTO landis_bans VALUES(" .. sql.SQLStr( user:SteamID64() ) .. ", " .. sql.SQLStr( ply:SteamID64() ) .. ", " .. sql.SQLStr( reason ) .. ", " .. tostring(os.time()) .. ", " .. tostring(os.time() + (duration*60)) .. ")")
 			ply:Notify("Successfully banned " .. user:Nick())
 			user:Kick("You have been banned.")

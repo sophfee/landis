@@ -27,11 +27,20 @@ category     = "Other"
 
 landis.Settings = {}
 
+landis.AdminCategories = {
+	"mod"
+}
+
 if CLIENT then
 
 	landis.lib.SettingsPanels = {}
 
 	landis.lib.SettingsPanels["tickbox"] = function( parent,data )
+		if data.adminOnly then
+			if not LocalPlayer():IsAdmin() then
+				return
+			end
+		end
 		local PANEL = vgui.Create("DCheckBoxLabel", parent)
 		PANEL:DockMargin(5, 5, 5, 5)
 		PANEL:Dock(TOP)
@@ -44,6 +53,11 @@ if CLIENT then
 	end
 
 	landis.lib.SettingsPanels["dropdown"] = function( parent,data )
+		if data.adminOnly then
+			if not LocalPlayer():IsAdmin() then
+				return
+			end
+		end
 		local DropDown = vgui.Create("DComboBox", parent)
 		DropDown:DockMargin(5, 5, 5, 5)
 		DropDown:Dock(TOP)
@@ -61,6 +75,11 @@ if CLIENT then
 	end
 
 	landis.lib.SettingsPanels["slider"] = function( parent,data )
+		if data.adminOnly then
+			if not LocalPlayer():IsAdmin() then
+				return
+			end
+		end
 		local PANEL = vgui.Create("DNumSlider", parent)
 		PANEL:DockMargin(5, 5, 5, 5)
 		PANEL:Dock(TOP)
@@ -288,8 +307,18 @@ end
 for name,data in pairs(DefaultSettings) do
 	landis.lib.DefineSetting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
 end
+landis.lib.DefineSetting("mod-esp",{
+	type         = "tickbox",
+	printName    = "Enable Noclip ESP",
+	category     = "mod",
+	activeValue  = false
+}) 
+if SERVER then
+	
+	return 
+end
 
-if SERVER then return end
+
 
 local saveDataName = "settings.json"
 
@@ -316,6 +345,7 @@ function landis.lib.SaveSettings()
 end
 
 landis.lib.LoadSettings()
+
 
 -- rename to draw gBaseSettings
 

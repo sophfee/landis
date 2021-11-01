@@ -1,5 +1,5 @@
 local SKIN = {}
-PrintTable(derma.SkinList.Default)
+
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
 SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)

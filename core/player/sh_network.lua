@@ -212,11 +212,13 @@ end
 
 if CLIENT then
 	function GM:StartChat(isTeam)
+		LocalPlayer():SetNWBool("IsTyping",true)
 		net.Start("landisStartChat")
 			net.WriteBool(isTeam)
 		net.SendToServer()
 	end
 	function GM:FinishChat(isTeam)
+		LocalPlayer():SetNWBool("IsTyping",false)
 		net.Start("landisFinishChat")
 		net.SendToServer()
 	end

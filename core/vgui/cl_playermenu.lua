@@ -45,10 +45,9 @@ function PANEL:Init()
 	teamPanel:Dock(FILL)
 	--self.TeamPanels.teamPanel.Paint = function() end
 	
-	for v,k in pairs(landis.Teams.Data) do
-		print("balls")
+	for v,k in ipairs(landis.Teams.Data) do
 		local a = vgui.Create("landisTeam", self.TeamTab)
-		a:SetText(k.DisplayName)
+		a:SetTeam(v)
 		teamPanel:AddItem(a)
 		a:Dock(TOP)
 	end 

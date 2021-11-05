@@ -29,3 +29,18 @@ hook.Add("PhysgunDrop", "dropPlayer", function(ply, ent)
 	end
 end)
 
+util.AddNetworkString("landis_RequestTeamJoin")
+
+net.Receive("landis_RequestTeamJoin", function(len,ply)
+	local teamIndex = net.ReadInt(32)
+	if teamIndex then
+		local limit = landis.Teams.Data[teamIndex].Limit
+		if limit then
+			if #team.GetPlayers(teamIndex) < limit then
+				hook.Run("PlayerJoinTeam", ply, teamIndex)
+			end
+		else
+			hook.Run("PlayerJoinTeam", ply, teamIndex)
+		end
+	end
+end)

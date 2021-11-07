@@ -38,9 +38,15 @@ function PANEL:SetMessage( ... )
 
 		elseif type( k ) == "string" then
 
+			
 			self.text       = self.text .. k
-			MsgC( curColor, k )
+			
 			self.rawText    = self.rawText .. k
+
+			k = string.Replace(k, "&lt;", "<")
+			k = string.Replace(k, "&gt;", ">")
+			MsgC( curColor, k )
+
 
 		elseif k:IsPlayer() then
 

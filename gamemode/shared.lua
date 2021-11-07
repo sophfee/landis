@@ -16,11 +16,36 @@ landis.Config.BGColorDark      = Color( 44,  44,  46  )
 landis.Config.BGColorLight     = Color( 229, 229, 234  )
 landis.Config.ConsolePrefix    = "[landis]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
+
+
 function landis.ConsoleMessage(...)
 	local mColor = landis.Config.MainColor
-	local prefix = landis.Config.ConsolePrefix .. " "
+	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
-	MsgC(mColor,prefix,textCo,...,"\n") // \n to prevent same line console messages
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") // \n to prevent same line console messages
+	end
+	return MsgC(mColor,prefix,Color(255,59,48),"[Server] ",textCo,...,"\n")
+end
+
+function landis.Warn(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix
+	local textCo = landis.Config.DefaultTextColor
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") // \n to prevent same line console messages
+	end
+	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Warn] ",textCo,...,"\n")
+end
+
+function landis.Error(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix
+	local textCo = landis.Config.DefaultTextColor
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") // \n to prevent same line console messages
+	end
+	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
 end
 
 function landis.lib.includeDir( scanDirectory, core )
@@ -101,19 +126,19 @@ end
 
 if SERVER then
 	// load core plugins/extensions
-	landis.ConsoleMessage("loading libraries")
-	landis.lib.includeDir( "landis/gamemode/lib"  )
+	//landis.ConsoleMessage("loading libraries")
+	//landis.lib.includeDir( "landis/gamemode/lib"  )
 
-	//landis.ConsoleMessage("loading extensions")
+	landis.ConsoleMessage("loading extensions")
 	landis.lib.includeDir( "landis/core"  )
 
-	//landis.ConsoleMessage("loading plugins")
+	landis.ConsoleMessage("loading plugins")
 	landis.lib.includeDir( "landis/plugins" )
 end
 if CLIENT then 
 	// load core plugins/extensions
-	landis.ConsoleMessage("loading libraries")
-	landis.lib.includeDir( "landis/gamemode/lib"  )
+	//landis.ConsoleMessage("loading libraries")
+	//landis.lib.includeDir( "landis/gamemode/lib"  )
 
 	landis.ConsoleMessage("loading extensions")
 	landis.lib.includeDir( "landis/core"  )

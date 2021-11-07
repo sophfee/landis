@@ -69,7 +69,7 @@ function landis.chatbox.buildBox()
 	landis.chatbox.entry:SetHighlightColor( Color(52, 152, 219) )
 	landis.chatbox.entry:SetPos( 45, landis.chatbox.frame:GetTall() - landis.chatbox.entry:GetTall() - 5 )
 	landis.chatbox.entry.Paint = function( self, w, h )
-		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
+		draw.RoundedBox( landis.Config.CornerRadius, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 		derma.SkinHook( "Paint", "TextEntry", self, w, h )
 	end
 
@@ -120,7 +120,7 @@ function landis.chatbox.buildBox()
 	landis.chatbox.chatLog:SetSize( landis.chatbox.frame:GetWide() - 10, landis.chatbox.frame:GetTall() - 60 )
 	landis.chatbox.chatLog:SetPos( 5, 30 )
 	landis.chatbox.chatLog.Paint = function( self, w, h )
-		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
+		draw.RoundedBox( landis.Config.CornerRadius, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 	end
 	landis.chatbox.chatLog.Think = function( self )
 		if landis.chatbox.lastMessage then
@@ -175,7 +175,7 @@ function landis.chatbox.buildBox()
 	say:SetPos( 5, landis.chatbox.frame:GetTall() - landis.chatbox.entry:GetTall() - 5 )
 	
 	say.Paint = function( self, w, h )
-		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
+		draw.RoundedBox( landis.Config.CornerRadius, 0, 0, w, h, Color( 30, 30, 30, 100 ) )
 		draw.DrawText( text, "landis.chatbox_18", 2, 1, color_white )
 	end
 

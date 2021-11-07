@@ -62,4 +62,7 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 		ply:Notify("The command \"" .. command .. "\" doesn't exist." )
 		return ""
 	end
+	text = string.Replace(text, "<", "&lt;")
+	text = string.Replace(text, ">", "&gt;")
+	return text
 end)

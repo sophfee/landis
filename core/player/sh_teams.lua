@@ -7,7 +7,7 @@ landis.Teams.Data = landis.Teams.Data or {}
 -- 
 
 function landis.Teams.Define(self)
-	hook.Add("CreateTeams", self.UniqueID, function()
+	
 		if landis.Teams.Data[self.UniqueID] then
 			landis.ConsoleMessage("Tried to define already existing team!")
 			return nil
@@ -22,19 +22,27 @@ function landis.Teams.Define(self)
 		end
 		team.SetUp(teamIndex, self.DisplayName, self.TeamColor, true)
 		landis.Teams.Data[teamIndex] = self
-	end)
+
 	return teamIndex
 end
 
-TEAM_PETER_GRIFFIN = landis.Teams.Define({
-	UniqueID = "peter",
-	DisplayName = "Peter Griffin",
-	Limit = 1,
-	TeamColor = Color(255,0,0)
-})
+hook.Add("CreateTeams", "landis_SetupTestTeams", function()
 
-TEAM_LOWIS = landis.Teams.Define({
-	UniqueID = "lowis",
-	DisplayName = "Lowis",
-	TeamColor = Color(0,255,0)
-})
+	TEAM_TEST_1 = landis.Teams.Define({
+		UniqueID = "test_one",
+		Description = "This is team 1, we are red.",
+		DisplayName = "Team 1",
+		Limit = 1,
+		Model = "models/player/group01/male_02.mdl",
+		TeamColor = Color(255,0,0)
+	})
+
+	TEAM_TEST_2 = landis.Teams.Define({
+		UniqueID = "test_two",
+		Description = "This is team 2, we are blue.",
+		DisplayName = "Team 2",
+		Model = "models/player/group01/male_07.mdl",
+		TeamColor = Color(0,0,255)
+	})
+
+end)

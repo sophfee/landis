@@ -11,6 +11,11 @@ function PANEL:Init()
 	self:SetText("")
 	self:SetCursor("arrow")
 end
+CommandColors = {}
+CommandColors[PERMISSION_LEVEL_USER] = Color(10,132,255,255)
+CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
+CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
+CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
 function PANEL:SetMessage( ... )
 
@@ -33,11 +38,27 @@ function PANEL:SetMessage( ... )
 
 		elseif type( k ) == "string" then
 
+			
 			self.text       = self.text .. k
-			MsgC( curColor, k )
+			
 			self.rawText    = self.rawText .. k
 
+			k = string.Replace(k, "&lt;", "<")
+			k = string.Replace(k, "&gt;", ">")
+			MsgC( curColor, k )
+
+
 		elseif k:IsPlayer() then
+
+			if SCHEMA:ShowRankInChat( k, k:GetUserGroup() ) then
+
+				local teamColor = CommandColors[k:GetPermissionLevel()]
+				local ka = Color(230,230,230)
+
+				self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
+				self.text       = self.text .. "[" .. k:GetRankName() .. "] "
+
+			end
 
 			local teamColor = team.GetColor( k:Team() )
 			MsgC( teamColor, k:Nick() )
@@ -56,6 +77,7 @@ function PANEL:SetMessage( ... )
 	local w   = landis.chatbox.chatLog:GetWide() - 5
 	self.message = markup.Parse( self.text, landis.chatbox.chatLog:GetWide() )
 	self:SetSize( w, self.message:GetHeight() )
+	self.startTime = CurTime() + 5
 	MsgC("\n")
 	--self:GetParent():GetVBar():AnimateTo(0, 0.2)
 
@@ -93,7 +115,9 @@ function PANEL:Paint( w, h )
 
 	if self.message then
 
-		self.message:Draw( 0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 255 )
+		local alpha = LocalPlayer():IsTyping() and 255 or math.Clamp(255 - ((CurTime() - self.startTime)*64),0,255)
+
+		self.message:Draw( 0, 0, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, alpha )
 
 	end
 

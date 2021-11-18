@@ -40,6 +40,7 @@ function landis.chat.RegisterCommand(className,struct)
 end
 
 hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
+	ply:SetNWBool("IsTyping",false)
 	if string.Left(text, 1) == "/" then
 		local arr = string.Split(text, " ")
 		local command = string.lower(table.Copy(arr)[1])
@@ -62,4 +63,7 @@ hook.Add("PlayerSay", "chat-plugin-runner", function(ply,text)
 		ply:Notify("The command \"" .. command .. "\" doesn't exist." )
 		return ""
 	end
+	text = string.Replace(text, "<", "&lt;")
+	text = string.Replace(text, ">", "&gt;")
+	return text
 end)

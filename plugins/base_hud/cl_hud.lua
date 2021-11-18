@@ -4,7 +4,8 @@ local hiddenElements = {
 	CHudCrosshair = true,
 	CHudAmmo = true,
 	CHudSecondaryAmmo = true,
-	CHudSquadStatus = true
+	CHudSquadStatus = true,
+	CHudWeaponSelection = true
 }
 
 hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
@@ -173,7 +174,7 @@ end
 
 local ply = LocalPlayer()
 local r,gC,b = color_white:Unpack()
-
+local isAlive = false
 local whiteColor = Vector(255,255,255)
 local redColor   = Vector(255,0,0)
 
@@ -187,55 +188,118 @@ surface.CreateFont("DEAD", {
 
 local youAreDeadAlpha = 0
 
+concommand.Add("fix_death", function()
+	topText:Remove()
+end)
+
+tweenInTable = {alpha=0}
+tweenOutTable = {alpha=1}
+local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
+local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
+
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
 		return 
 	end
 
-	--if ply:NoClipping
+	if ply:InNoclip() then
 
-	if not ply:Alive() then
-		youAreDeadAlpha = math.Clamp( youAreDeadAlpha + FrameTime() * 50, 0, 255 )
-		draw.SimpleText("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, youAreDeadAlpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-		return 
-	end
+		draw.DrawText("Moderation View", "landis-24", 5, 5, Color( 230, 230, 230, 180 ))
 
-	surface.SetDrawColor( 255, 255, 255 )
-	local centerW = ScrW()/2
-	local centerH = ScrH()/2
-	local len     = landis.lib.GetSetting("crosshairLength")
-	local gap     = landis.lib.GetSetting("crosshairGap")
-	surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
-	surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
-	surface.DrawRect( centerW, centerH - gap - len, 1, len)
-	surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+		local msg = [[Playercount: ]]
+		msg=msg..tostring(player.GetCount())
 
-	
-	drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50})
-	//drawBar("Stamina",ply:GetNWFloat("Stamina"),Color(50,173,230),{x=25,y=ScrH()-100})
-	if ply:Armor() > 0 then drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100}) end
-	local wep = ply:GetActiveWeapon()
-	if IsValid(wep) then
-		if wep.DrawAmmo then
+		draw.DrawText(msg, "landis-18", 5, 29, Color( 230, 230, 230, 180 ))
 
-			local str = "<font=hud36><colour=90,90,90>"
-			for i=1, 3-( #tostring( wep:Clip1() ) ) do str = str .. "0" end
-			local colV = wep:Clip1() / wep:GetMaxClip1() < 0.334 and LerpVector(math.sin(math.abs(CurTime()*8))/math.pi, redColor, whiteColor) or whiteColor
-			--print(colV)
-			local floor = math.floor
-			local col = floor(colV.x) .. "," .. floor(colV.y) .. "," .. floor(colV.z)
-			--print(col)
-			str = str .. "</colour><colour="..col..">" ..  wep:Clip1() .. "</colour><colour=255,255,255>/" .. "</colour><colour=90,90,90>" 
-			for i=1, 3-( #tostring( wep:Ammo1() ) ) do str = str .. "0" end
-			str = str .. "</colour><colour=255,255,255>" ..  wep:Ammo1() .. "</colour></font>" 
-
-			local markupObj = markup.Parse( str )
-			markupObj:Draw(ScrW()-25, ScrH()-25,TEXT_ALIGN_RIGHT,TEXT_ALIGN_BOTTOM,255)
-
-			--draw.SimpleText( "000/000" , "hud36", ScrW()-25, ScrH()-25, Color( 90, 90, 90, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-			--draw.SimpleText( string.sub(tostring(wep:Clip1() + 1000),2,4) .. "/" .. string.sub(tostring(wep:Ammo1() + 1000),2,4) , "hud36", ScrW()-25, ScrH()-25, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-
+		if landis.lib.GetSetting("mod-esp") then
+			for v,k in ipairs(player.GetAll()) do
+				if k == LocalPlayer() then continue end
+				local viewData = (k:OBBCenter()+k:GetPos()):ToScreen()
+				if viewData.visible then
+					draw.SimpleText(k:Nick(), "entname", viewData.x, viewData.y, team.GetColor(k:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				end
+			end
 		end
 	end
+
+	
+
+	if SCHEMA:ShouldDrawElement( "Crosshair" ) then
+		surface.SetDrawColor( 255, 255, 255 )
+		local centerW = ScrW()/2
+		local centerH = ScrH()/2
+		local len     = landis.lib.GetSetting("crosshairLength")
+		local gap     = landis.lib.GetSetting("crosshairGap")
+		surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
+		surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
+		surface.DrawRect( centerW, centerH - gap - len, 1, len)
+		surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+	end
+	
+	if SCHEMA:ShouldDrawElement( "Health" ) then drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) end
+
+	if SCHEMA:ShouldDrawElement( "Armor" ) then if ply:Armor() > 0 then drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100}) end end
+
+	if SCHEMA:ShouldDrawElement( "Ammo") then
+		local wep = ply:GetActiveWeapon()
+		if IsValid(wep) then
+			if wep.DrawAmmo then
+
+				local str = "<font=hud36><colour=90,90,90>"
+				for i=1, 3-( #tostring( wep:Clip1() ) ) do str = str .. "0" end
+				local colV = wep:Clip1() / wep:GetMaxClip1() < 0.334 and LerpVector(math.sin(math.abs(CurTime()*8))/math.pi, redColor, whiteColor) or whiteColor
+			
+				local floor = math.floor
+				local col = floor(colV.x) .. "," .. floor(colV.y) .. "," .. floor(colV.z)
+			
+				str = str .. "</colour><colour="..col..">" ..  wep:Clip1() .. "</colour><colour=255,255,255>/" .. "</colour><colour=90,90,90>" 
+				for i=1, 3-( #tostring( wep:Ammo1() ) ) do str = str .. "0" end
+				str = str .. "</colour><colour=255,255,255>" ..  wep:Ammo1() .. "</colour></font>" 
+
+				local markupObj = markup.Parse( str )
+				markupObj:Draw(ScrW()-25, ScrH()-25,TEXT_ALIGN_RIGHT,TEXT_ALIGN_BOTTOM,255)
+
+			end
+		end
+	end
+	--if not ply:Alive() == isAlive then tweenIn:set(0) end
+	--if not ply:Alive() == isAlive then tweenOut:set(1) end
+	if not ply:Alive() then
+		if not ply:Alive() == isAlive then 
+			tweenIn:set(0) 
+			timer.Simple(0.6, function()
+				for i=1,30 do
+					landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
+				end
+			end)
+		end
+		tweenIn:update(FrameTime())
+
+		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenInTable.alpha, team.GetColor(LocalPlayer():Team()))
+		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenInTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenInTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenInTable.alpha)) 
+
+		hiddenElements["CHudDamageIndicator"] = true 
+		draw.SimpleText(tweenInTable.alpha,"BudgetLabel")
+
+	else
+
+		if not ply:Alive() == isAlive then 
+			tweenOut:set(0) 
+		end
+
+		tweenOut:update(FrameTime())
+
+		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenOutTable.alpha, team.GetColor(LocalPlayer():Team()))
+		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenOutTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenOutTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenOutTable.alpha))
+
+		hiddenElements["CHudDamageIndicator"] = nil
+		draw.SimpleText(math.floor(tweenOutTable.alpha),"BudgetLabel")
+
+	end
+	isAlive = ply:Alive()
 end)

@@ -35,3 +35,4 @@ if CLIENT then
 end
 
 landis.chat.RegisterCommand("/icontool",iconToolCommand)
+

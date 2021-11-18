@@ -31,16 +31,30 @@ function PANEL:SetMessage(text)
 	
 	
 	self.Paint = function ( self, w, h )
-		blurDerma( self, 200, 10, 20 )
-		surface.SetDrawColor(30, 30, 30,180)
-		surface.DrawRect(0, 0, w, h)
-		r:Draw(10,10,TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP)
-		surface.SetDrawColor(255, 255, 255)
-		surface.DrawRect(0, h-3, ( ( self.removeTime - CurTime() ) / self.duration ) * w, 3)
-		if CurTime() > self.removeTime then
-			self:Remove()
-			table.RemoveByValue(landis.Notifications, self)
+		--blurDerma( self, 200, 10, 20 )
+		draw.RoundedBoxEx(16, 0, 0, w, h, Color(30,30,30,self.alpha),true,false,true,false)
+		--surface.SetDrawColor(30, 30, 30,180)
+		--surface.DrawRect(0, 0, w, h)
+		r:Draw(10,10,TEXT_ALIGN_LEFT,TEXT_ALIGN_TOP,self.alpha)
+		local mainColor = landis.Config.MainColor
+
+		draw.RoundedBoxEx(0, w-4, 0, 16, h, Color(mainColor.r, mainColor.g, mainColor.b, self.alpha),true,false,true,false)
+		--surface.SetDrawColor(255, 255, 255)
+		--surface.DrawRect(0, h-3, ( ( self.removeTime - CurTime() ) / self.duration ) * w, 3)
+		if CurTime() > self.removeTime and not self.fadingOut then
+			self.fadingOut = true
+			surface.PlaySound("landis/ui/notification.mp3")
+			for i=1,255 do
+				timer.Simple(i/510, function()
+					self.alpha = 255-i
+				end)
+			end
+			timer.Simple(0.5, function()
+				self:Remove()
+				table.RemoveByValue(landis.Notifications, self)
+			end)
 		end
+		
 	end
 
 	local yoffset = 0
@@ -65,11 +79,22 @@ function PANEL:Init()
 	self:SetSize(320,80)
 	//self:SetPos(ScrW()-200,ScrH()-100)
 
-	surface.PlaySound(Sound("buttons/blip1.wav"))
+	surface.PlaySound(Sound("landis/ui/beep.wav"))
 	self.removeTime = CurTime() + 5
 	self.duration   = 5
+	self.alpha = 0
+	self.fadingOut = false
+	for i=1,255 do
+		timer.Simple(i/510, function()
+			self.alpha = i
+		end)
+	end
 
 	//self.message = vgui.Create("DLabel", self)
 end
 
 vgui.Register("landisNotify",PANEL, "DPanel")
+
+function GM:AddDeathNotice(att,attTeam,inflitor,victim,victimTeam)
+	LocalPlayer():Notify(att.." killed "..victim.."!")
+end

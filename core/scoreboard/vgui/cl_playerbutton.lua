@@ -22,16 +22,12 @@ function PANEL:Paint(w,h)
 
 	if not IsValid(self.Owner) then return end
 
-	surface.SetMaterial(Material("vgui/gradient-l"))
+	--surface.SetMaterial(Material("vgui/gradient-l"))
 
 	local r, gC, b = self.Color:Unpack()
 
-	surface.SetDrawColor(r,gC,b,255)
-
-	surface.DrawRect(0, 0, w, h)
-
-	surface.SetDrawColor(r/2,gC/2,b/2,150)
-	surface.DrawTexturedRect(0, 0, w, h)
+	local cornerRadius = landis.Config.CornerRadius
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( r, gC, b, 120 ))
 
 
 	if not self.Owner then return end
@@ -46,7 +42,7 @@ function PANEL:SetPlayer(ply)
 	self.Owner = ply
 	self.Color = team.GetColor( ply:Team() )
 	self.Icon:SetModel(ply:GetModel())
-	self.Icon:SetFOV(3.4)
+	self.Icon:SetFOV(4.4)
 	self.Icon:SetLookAt(Vector(0, -0, 66.1))
 	self.Icon:SetCamPos(Vector(190,-50,71))
 	self.Icon:SetAnimSpeed( 4 )

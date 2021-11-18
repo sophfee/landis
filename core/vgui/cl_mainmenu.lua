@@ -18,94 +18,118 @@ surface.CreateFont("landis_base_main_menu_btn", {
 	shadow = true
 })
 menuOpen = false
+GlobalAlpha = 255
 function PANEL:Init()
+	hook.Add("CalcView", "landisMAINMENUCALCVIEW", function()
+		return {
+			origin = SCHEMA.MenuCamPos,
+			angles = SCHEMA.MenuCamAng,
+			fov = 70,
+			drawviewer = true
+		}
+	end)
 	if menuOpen then 
 		self:Remove()
 		return
 	end
+	SCHEMA:SetHUDElement("Crosshair",false)
+	SCHEMA:SetHUDElement("Health",false)
+	SCHEMA:SetHUDElement("Armor",false)
+	SCHEMA:SetHUDElement("Ammo",false)
 	menuOpen = true
 	 hook.Add("HUDShouldDraw", "removeall", function(name)
 		if not( name == "CHudGMod" )then return false end
 	end)
+	GlobalAlpha = 255
+	local fadeOut = false
 	self:Dock(LEFT)
-	self:SetSize(ScrW()/2,ScrH())
+	self:SetSize(ScrW(),ScrH())
 	self.Paint = function()
-		local mainColor = landis.Config.MainColor
-		draw.SimpleTextOutlined("landis Dev", "landis_base_main_menu_title", 10, ScrH()/2-82, mainColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,255))
-	end
-	self.PlayBtn = vgui.Create("DButton", self, "landis_base-playbutton")
-	self.PlayBtn:SetText("") // override the text for painted text
-	self.OffsetPlayBtn = 0
-	self.PlayBtn.HoveredSound = false
-	self.PlayBtn.Paint = function(curPanel,w,h)
-	local mainColor = landis.Config.MainColor
-		if curPanel:IsHovered() then
-			if not curPanel.HoveredSound then
-				surface.PlaySound(Sound("helix/ui/rollover.wav"))
-				curPanel.HoveredSound = true
-			end
-			self.OffsetPlayBtn = math.Clamp( self.OffsetPlayBtn + (64*FrameTime()), 0, 12)
-		else
-			curPanel.HoveredSound = false
-			self.OffsetPlayBtn = math.Clamp( self.OffsetPlayBtn - (64*FrameTime()), 0, 12)
+		if fadeOut then
+			GlobalAlpha = math.Clamp(GlobalAlpha-FrameTime()*255, 0, 255)
 		end
-		surface.SetDrawColor(mainColor.r, mainColor.g, mainColor.b, (self.OffsetPlayBtn/12)*255)
-		surface.SetMaterial(Material("vgui/gradient-l"))
-		surface.DrawTexturedRect(0, 0, w, h)
-		draw.SimpleTextOutlined("Play", "landis_base_main_menu_btn", 8, h/2, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, Color( 0, 0, 0, 255 ))
+		local mainColor = landis.Config.MainColor
+		local GlowColor = HSVToColor( (CurTime()*24) % 360, 1, 1 )
+		GlowColor.a = GlobalAlpha
+		draw.SimpleTextOutlined(SCHEMA.Name or "Empty", "landis_base_main_menu_title", ScrW()/2, ScrH()/2-82, GlowColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+		if not SCHEMA.IsPreview then return end
+		draw.SimpleTextOutlined("Preview Build", "landis_base_main_menu_btn", ScrW()/2, ScrH()/2-20, Color(255,255,0,GlobalAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 	end
-	function self.PlayBtn:DoClick()
-		surface.PlaySound(Sound("helix/ui/press.wav"))
+	self.PlayBtn = vgui.Create("landisMainMenuButton", self, "landis_base-playbutton")
+	function self.PlayBtn:WhenPressed()
 		hook.Remove("HUDShouldDraw", "removeall")
 		menuOpen = false
-		self:GetParent():Remove()
+		MainMenu = nil
+		fadeOut = true
+		LocalPlayer():ScreenFade(SCREENFADE.OUT, Color(0,0,0), 1, 0.25)
+		timer.Simple(1.125, function()
+			LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0,0,0), 1, 0)
+			SCHEMA:SetHUDElement("Crosshair",true)
+			SCHEMA:SetHUDElement("Health",true)
+			SCHEMA:SetHUDElement("Armor",true)
+			SCHEMA:SetHUDElement("Ammo",true)
+			hook.Remove("CalcView", "landisMAINMENUCALCVIEW")
+			self:GetParent():Remove()
+		end)
 	end
-	self.PlayBtn:SetSize(200,30)
-	self.PlayBtn:SetPos(10,ScrH()/2+2)
+	self.PlayBtn:SetPos(ScrW()/2-100,ScrH()/2+2)
+	self.PlayBtn:SetDisplayText("Play")
 
-	self.OptBtn = vgui.Create("DButton", self, "landis_base-optbutton")
-	self.OptBtn:SetText("") // override the text for painted text
-	self.OffsetOptBtn = 0
-	self.OptBtn.HoveredSound = false
-	self.OptBtn.Paint = function(curPanel,w,h)
-		local mainColor = landis.Config.MainColor
-		if self.OptBtn:IsHovered() then
-			if not curPanel.HoveredSound then
-				surface.PlaySound(Sound("helix/ui/rollover.wav"))
-				curPanel.HoveredSound = true
-			end
-			self.OffsetOptBtn = math.Clamp( self.OffsetOptBtn + (64*FrameTime()), 0, 12)
-		else
-			curPanel.HoveredSound = false
-			self.OffsetOptBtn = math.Clamp( self.OffsetOptBtn - (64*FrameTime()), 0, 12)
-		end
-		surface.SetDrawColor(mainColor.r, mainColor.g, mainColor.b, (self.OffsetOptBtn/12)*255)
-		surface.SetMaterial(Material("vgui/gradient-l"))
-		surface.DrawTexturedRect(0, 0, w, h)
-		draw.SimpleTextOutlined("Options", "landis_base_main_menu_btn", 8, h/2, Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, 1, Color( 0, 0, 0, 255 ))
-	end
-	function self.OptBtn:DoClick()
-		surface.PlaySound(Sound("helix/ui/press.wav"))
+	self.OptBtn = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.OptBtn:WhenPressed()
 		local optPanel = vgui.Create("landisBaseSettings")
 		optPanel:SetBackgroundBlur(true)
-
 	end
-	self.OptBtn:SetSize(200,30)
-	self.OptBtn:SetPos(10,ScrH()/2+34)
+	self.OptBtn:SetDisplayText("Settings")
+	self.OptBtn:SetPos(ScrW()/2-100,ScrH()/2+34)
+
+	self.Credits = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.Credits:WhenPressed()
+		Derma_Message("made by Nick :D (@urnotnick on github)","Credits!","epic!")
+	end
+	self.Credits:SetDisplayText("Credits")
+	self.Credits:SetPos(ScrW()/2-100,ScrH()/2+68)
+
+	
+	self.github = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.github:WhenPressed()
+		gui.OpenURL("https://github.com/urnotnick/landis")
+	end
+	self.github:SetDisplayText("GitHub")
+	self.github:SetPos(ScrW()/2-100,ScrH()/2+102)
+
+
+	self.Disconnect = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
+
+	function self.Disconnect:WhenPressed()
+		RunConsoleCommand("disconnect")
+	end
+	self.Disconnect:SetDisplayText("Disconnect")
+	self.Disconnect:SetPos(ScrW()/2-100,ScrH()/2+140)
 
 	self:MakePopup()
+
+	
 
 end
 
 vgui.Register("landisMainMenu", PANEL, "DPanel")
 
+MainMenu = MainMenu or nil
+
+net.Receive("landisStartMenu", function()
+	Derma_Message("Hello! Welcome to Landis Development Build 0.2\n\nThis is an experimental version of the Landis framework, things may tend to destroy themselves.\nBugs may occur! This is normal for a development build. Make sure to report them!\n\nOverall, have fun toying with the new tools!\n\nEnjoy!\n- Nick","Welcome to the Landis Framework!","Let me play now!")
+	surface.PlaySound(Sound("music/hl2_intro.mp3"))
+	MainMenu = MainMenu or vgui.Create("landisMainMenu")
+end)
+
 hook.Add("PlayerButtonDown", "landisMenuOpener", function(_,btn)
 	if not menuOpen then
-		if input.GetKeyName(btn) == "F1" then
-			local p = vgui.Create("landisMainMenu")
-			//p:SetBackgroundBlur(true)
+		if btn == KEY_F1 then
+			MainMenu = MainMenu or vgui.Create("landisMainMenu")
 		end
 	end
 end)
-
-//local foo = vgui.Create("landisbaseMainMenu")

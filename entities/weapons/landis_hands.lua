@@ -6,6 +6,7 @@ if CLIENT then
 	SWEP.SlotPos = 1
 	SWEP.DrawAmmo = false
 	SWEP.DrawCrosshair = true
+	SWEP.Instructions = [[Your bare hands.]]
 end
 
 SWEP.ViewModel = Model("models/weapons/v_hands.mdl")

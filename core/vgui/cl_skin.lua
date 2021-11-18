@@ -1,9 +1,11 @@
 local SKIN = {}
-PrintTable(derma.SkinList.Default)
+
+PrintTable(derma.GetDefaultSkin())
+
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
 SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)
-
+SKIN.fontFrame = "landis-24"
 SKIN.Colours.Button.Normal = Color(255, 255, 255)
 SKIN.Colours.Button.Hover = Color(255, 255, 255)
 SKIN.Colours.Button.Down = Color(180, 180, 180)
@@ -11,6 +13,8 @@ SKIN.Colours.Button.Disabled = Color(0, 0, 0, 100)
 
 SKIN.Colours.Label.Highlight = Color(90, 200, 250, 255)
 
+landis.Config.CornerRadius = 8
+landis.Config.PillButtons = false
 
 landis.Config.ButtonColorOff      = Color(72,72,74,255)
 landis.Config.ButtonColorHovered  = Color(99,99,102,255)
@@ -22,6 +26,9 @@ landis.Config.ButtonColorHoveredV  = Vector(99,99,102,255)
 landis.Config.ButtonColorOnV       = Vector(142,142,147,255)
 landis.Config.CloseButtonColorV    = Vector(255,69,58,255)
 
+landis.Config.ClickSound = "landis/ui/notification.mp3"
+landis.Config.HoverSound = "landis/ui/scroll.mp3"
+
 surface.CreateFont("landis_base-default-14", {
 	font = "Arial",
 	weight = 2500,
@@ -32,12 +39,6 @@ surface.CreateFont("landis_base-default-20", {
 	font = "Arial",
 	weight = 2500,
 	size = 20
-})
-
-surface.CreateFont("close_button", {
-	font = "Lucida Console",
-	weight = 2500,
-	size = 16
 })
 
 local blur = Material("pp/blurscreen")
@@ -55,15 +56,70 @@ function blurDerma(panel,alpha,layers,density)
 end
 
 
+function SKIN:PaintVScrollBar(panel, w, h)
+	local col = landis.Config.ButtonColorOff
+    surface.SetDrawColor(col.r,col.g,col.b,200)
+    surface.DrawRect(0, 0, w, h)
+end
+
+function SKIN:PaintScrollBarGrip(panel, w, h)
+	--local rad = landis.Config.CornerRadius > 0 and (w-2)/2 or 0
+	if panel:IsSelected() or panel.Depressed then
+		return draw.RoundedBox(0, 0, 0, w, h, landis.Config.ButtonColorOn)
+	end
+
+	if panel:IsHovered() then
+		return draw.RoundedBox(0, 0, 0, w, h, landis.Config.ButtonColorHovered)
+	end
+    draw.RoundedBox(0, 0, 0, w, h, landis.Config.ButtonColorOff)
+end
+
+function SKIN:PaintButtonDown(panel, w, h)
+	if !panel.m_bBackground then return end
+
+	if panel.Depressed or panel:IsSelected() then
+		return self.tex.Scroller.DownButton_Down( 0, 0, w, h, landis.Config.ButtonColorOn )
+	end
+
+	if panel.Hovered then
+		return self.tex.Scroller.DownButton_Hover(0, 0, w, h, landis.Config.ButtonColorHovered)
+	end
+
+	self.tex.Scroller.DownButton_Normal(0, 0, w, h, landis.Config.ButtonColorOff)
+end
+
+function SKIN:PaintButtonUp( panel, w, h )
+
+	if ( !panel.m_bBackground ) then return end
+
+	if ( panel.Depressed or panel:IsSelected() ) then
+		return self.tex.Scroller.UpButton_Down( 0, 0, w, h, landis.Config.ButtonColorOn )
+	end
+
+	if ( panel.Hovered ) then
+		return self.tex.Scroller.UpButton_Hover( 0, 0, w, h, landis.Config.ButtonColorHovered)
+	end
+
+	self.tex.Scroller.UpButton_Normal(0, 0, w, h, landis.Config.ButtonColorOff) -- 
+
+end
+
 function SKIN:PaintFrame( self,w,h )
+	self.lblTitle:SetFont("landis-20-B")
 	blurDerma(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )
-	surface.DrawRect( 0, 0, w, h )
-	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
-	surface.DrawRect( 0, 0, w, 23 )
-	surface.DrawOutlinedRect( 0, 23, w, h-23, 2 )
+	local cornerRadius = landis.Config.CornerRadius
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color(bgColor.r, bgColor.g, bgColor.b, 220))
+	draw.RoundedBoxEx(cornerRadius, 0, 0, w, 23, Color(mainColor.r, mainColor.g, mainColor.b, 255),true, true)
+	
+	--
+	--surface.DrawRect( 0, 0, w, 23 )
+	if cornerRadius == 0 then
+		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
+		surface.DrawOutlinedRect( 0, 23, w, h-23, 2 )
+	end
+	--
 	if self:GetSizable() then
 		surface.SetDrawColor(0, 0, 0)
 		draw.NoTexture()
@@ -91,21 +147,40 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 	end
 	local mainColor = landis.Config.CloseButtonColor
 	local bgColor   = landis.Config.ButtonColorOff
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
-	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
-	surface.DrawRect(0, 0, w, h)
-	if self:IsHovered() then
+	local cornerRadius = landis.Config.CornerRadius
+	if 	self:IsHovered() then
 		self.ButtonHoldAlpha = math.Clamp(self.ButtonHoldAlpha+(((1/60)*FrameTime()))*50000,0,255)
 	else
 		self.ButtonHoldAlpha = math.Clamp(self.ButtonHoldAlpha-(((1/60)*FrameTime()))*50000,0,255)
 	end
-	surface.SetDrawColor(255, 255, 255)
-	draw.NoTexture()
-	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
-	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
-	--surface.DrawLine(w/2-h/2+6, 6, w/2+h/2-6, h-6)
-	//draw.SimpleText("X", "close_button", w/2, h/2, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	if cornerRadius == 0 then
+
+		surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
+		surface.DrawRect(0, 0, w, h)
+		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
+		surface.DrawRect(0, 0, w, h)
+			
+		surface.SetDrawColor(255, 255, 255)
+		draw.NoTexture()
+	
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
+	else
+
+
+
+		surface.SetDrawColor(255,255,255,255)
+		draw.NoTexture()
+
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
+
+		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
+		draw.NoTexture()
+
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
+		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
+	end
 end
 
 function SKIN:PaintPropertySheet(self,w,h)
@@ -119,7 +194,7 @@ function SKIN:PaintPropertySheet(self,w,h)
 end
 
 function SKIN:PaintTab(self,w,h)
-	
+	self:SetFont("landis-14-B")
 	if not self.hSND then
 		self.hSND = false
 	end
@@ -130,24 +205,23 @@ function SKIN:PaintTab(self,w,h)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 		end
 		bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 		end
 		bgColor = landis.Config.ButtonColorOn
 	else self.pSND = false end
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	local mainColor = landis.Config.MainColor
 	if self:IsActive() then
-		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
+		bgColor = landis.Config.MainColor
 	end
-	surface.DrawRect(0, 0, w, 20)
+	draw.RoundedBoxEx(landis.Config.CornerRadius, 0, 0, w, 20, Color( bgColor.r, bgColor.g, bgColor.b, 255 ), true, true)
+	--surface.DrawRect(0, 0, w, 20)
 end
 
 --[[function SKIN:PaintScrollBarGrip(self,w,h)
@@ -162,14 +236,14 @@ end
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 		end
 		//bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	/*if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 		end
 		bgColor = landis.Config.ButtonColorOn
@@ -190,14 +264,14 @@ function SKIN:PaintButtonUp(self,w,h)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 		end
 		bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 		end
 		bgColor = landis.Config.ButtonColorOn
@@ -234,6 +308,7 @@ function SKIN:PaintVScrollBar(self,w,h)
 end*/]]
 
 function SKIN:PaintButton(self,w,h)
+	self:SetFont("landis-14")
 	if !self.m_bBackground then return end
 	
 	if not self.hSND then
@@ -254,7 +329,7 @@ function SKIN:PaintButton(self,w,h)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/rollover.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 			self.LerpPos = 0
 		end
@@ -263,7 +338,7 @@ function SKIN:PaintButton(self,w,h)
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(Sound("helix/ui/press.wav")) end
+			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 			self.LerpPos = 0
 		end
@@ -280,15 +355,19 @@ function SKIN:PaintButton(self,w,h)
 	else
 		self.no = false
 	end
-
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
+	local cornerRadius = landis.Config.CornerRadius
+	--local isPill = landis.Config.PillButtons
+	--if false then
+		--draw.RoundedBox(h/2.2, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
+	--else
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
+	--end
 end
 
 function SKIN:PaintTooltip(self,w,h)
 	local bgColor = landis.Config.BGColorLight
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
+	local cornerRadius = landis.Config.CornerRadius
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
 end
 
 local oldPaintMenuOption = derma.SkinList.Default.PaintMenuOption
@@ -320,8 +399,8 @@ function SKIN:PaintComboBox(self,w,h)
 	if self:IsDown() then
 		bgColor = landis.Config.ButtonColorOn
 	end
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
+	local cornerRadius = landis.Config.CornerRadius
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
 end
 
 

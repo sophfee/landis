@@ -7,7 +7,7 @@ function meta:DoRagdollCamera()
 	local ragdoll = self:GetRagdollEntity()
 	if not IsValid(ragdoll) then return end
 	hookRunning = true
-	surface.PlaySound(Sound("landis/player_death_sound.mp3"))
+	surface.PlaySound(Sound("ui/critical_event_1.wav"))
 	hook.Add("CalcView", "ragdoll_camera", function(_,__,__,fov,znear,zfar)
 		if not IsValid(ragdoll) then
 			hookRunning = false
@@ -19,7 +19,7 @@ function meta:DoRagdollCamera()
 		local camData = {
 			origin = data.Pos or Vector(),
 			angles = data.Ang or Angle(),
-			fov = fov,
+			fov = 70,
 			znear = znear,
 			zfar = zfar,
 			drawviewer = false

@@ -126,8 +126,8 @@ end
 
 if SERVER then
 	// load core plugins/extensions
-	//landis.ConsoleMessage("loading libraries")
-	//landis.lib.includeDir( "landis/gamemode/lib"  )
+	landis.ConsoleMessage("loading libraries")
+	AddCSLuaFile("landis/gamemode/lib/tween.lua")
 
 	landis.ConsoleMessage("loading extensions")
 	landis.lib.includeDir( "landis/core"  )
@@ -137,7 +137,8 @@ if SERVER then
 end
 if CLIENT then 
 	// load core plugins/extensions
-	//landis.ConsoleMessage("loading libraries")
+	landis.ConsoleMessage("loading libraries")
+	include("landis/gamemode/lib/tween.lua")
 	//landis.lib.includeDir( "landis/gamemode/lib"  )
 
 	landis.ConsoleMessage("loading extensions")

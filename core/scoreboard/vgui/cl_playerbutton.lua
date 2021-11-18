@@ -42,7 +42,7 @@ function PANEL:SetPlayer(ply)
 	self.Owner = ply
 	self.Color = team.GetColor( ply:Team() )
 	self.Icon:SetModel(ply:GetModel())
-	self.Icon:SetFOV(3.4)
+	self.Icon:SetFOV(4.4)
 	self.Icon:SetLookAt(Vector(0, -0, 66.1))
 	self.Icon:SetCamPos(Vector(190,-50,71))
 	self.Icon:SetAnimSpeed( 4 )

@@ -185,17 +185,28 @@ function meta:IsTyping()
 end
 
 if SERVER then
+	--meta.LastChatTime = CurTime()
+	--meta.DDoSRiskAmmount = 0
 	util.AddNetworkString("landisStartChat")
-	util.AddNetworkString("landisFinishChat")
+	--util.AddNetworkString("landisFinishChat")
 	hook.Add("PlayerSpawn","setuphands", function(ply)
 		ply:SetupHands()
 	end)
 	hook.Add("PlayerDeathSound","mutebeep",function() return true end)
 	net.Receive("landisStartChat", function(len,ply)
-		ply:SetNWBool("IsTyping", true)
-	end)
-	net.Receive("landisFinishChat", function(len,ply)
-		ply:SetNWBool("IsTyping", false)
+		--landis.Warn(ply:Nick().. " is sending too many net messages! (Risk Level: "..ply.DDoSRiskAmmount..")")
+		--ply:AddChatText(tostring(ply.RiskAmount))
+		if (ply.LastChatTime or 0) < CurTime() then
+			ply:SetNWBool("IsTyping", true)
+		else
+			ply.RiskAmount = (ply.RiskAmount or 0) + 1
+			landis.Warn(ply:Nick().. " is sending too many net messages!")
+			
+			if ply.RiskAmount > 15 then
+				ply:Kick("NET Overflow Intervention")
+			end 
+		end
+		ply.LastChatTime = CurTime()+0.075
 	end)
 	function meta:AddChatText(...)
 		local t = {...}
@@ -211,17 +222,7 @@ if SERVER then
 end
 
 if CLIENT then
-	function GM:StartChat(isTeam)
-		LocalPlayer():SetNWBool("IsTyping",true)
-		net.Start("landisStartChat")
-			net.WriteBool(isTeam)
-		net.SendToServer()
-	end
-	function GM:FinishChat(isTeam)
-		LocalPlayer():SetNWBool("IsTyping",false)
-		net.Start("landisFinishChat")
-		net.SendToServer()
-	end
+	
 	function GM:HUDDrawTargetID()
 	end
 end

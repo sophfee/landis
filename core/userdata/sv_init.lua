@@ -1,3 +1,5 @@
+-- This is largely outdated and uses code from the old file-based data storing system.
+
 landis.userdata = {}
 
 file.CreateDir("user_data")
@@ -40,7 +42,10 @@ end
 // Internal - Do not use.
 function meta:SetupNewUser()
 	local userData = baseData
-	file.Write(self:GetDataDir(), util.TableToJSON(userData))
+	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64())..", "..tostring(0)..", "..sql.SQLStr("user")..")")
+	print(a)
+	landis.ConsoleMessage("Created new data successfully!")
+	--[[file.Write(self:GetDataDir(), util.TableToJSON(userData))
 	self.log_warns = table.Copy(userData["warns"]) or {}
 	self.bans  = userData["bans"] or {}
 	self.log_bans  = table.Copy( userData["bans"] ) or {}
@@ -48,16 +53,20 @@ function meta:SetupNewUser()
 	self.log_xp = self.xp + 0 or 0
 	self.isAdmin = self:IsAdmin()
 	self.isLeadAdmin = self:IsLeadAdmin()
-	self.isSuperAdmin = self:IsSuperAdmin()
+	self.isSuperAdmin = self:IsSuperAdmin()]]
 end
 
 // Internal - Do not use.
 function meta:SetupData()
+	landis.ConsoleMessage("Setting up data for User: "..self:Nick())
 	local userData = sql.Query("SELECT * FROM landis_user WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
 	if not userData then
+		landis.ConsoleMessage("No existing data found for user! Creating new data...")
 		self:SetupNewUser()
 		return
 	end
+	self:SetUserGroup(userData[1].usergroup)
+	--[[
 	local fileClass = file.Open(self:GetDataDir(), "r", "DATA")
 	local userData = util.JSONToTable( fileClass:ReadLine() )
 	self.warns = userData["warns"] or {}
@@ -81,7 +90,7 @@ function meta:SetupData()
 	end
 	if self.isSuperAdmin then
 		self:SetUserGroup("superadmin")
-	end
+	end]]
 end
 
 // Internal - Do not use

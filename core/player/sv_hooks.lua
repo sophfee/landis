@@ -1,7 +1,7 @@
 util.AddNetworkString("ragdoll_camera")
 
 function GM:PlayerSpawn(ply)
-	ply:SetModel("models/player/Group01/male_06.mdl")
+	ply:SetModel(landis.Teams.Data[ply:Team()].Model)
 	if ply:IsAdmin() then
 		ply:Give("weapon_physgun")
 	end
@@ -9,6 +9,7 @@ function GM:PlayerSpawn(ply)
 		ply:Give("gmod_tool")
 	end
 	ply:Give("landis_hands")
+	hook.Run("PlayerLoadout", ply)
 end
 
 hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
@@ -44,3 +45,9 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 		end
 	end
 end)
+
+hook.Add( "PlayerCanHearPlayersVoice", "Maximum Range", function( listener, talker )
+    if listener:GetPos():DistToSqr( talker:GetPos() ) > 250000 then
+		return false
+	end
+end )

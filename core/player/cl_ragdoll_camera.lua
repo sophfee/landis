@@ -19,7 +19,7 @@ function meta:DoRagdollCamera()
 		local camData = {
 			origin = data.Pos or Vector(),
 			angles = data.Ang or Angle(),
-			fov = fov,
+			fov = 70,
 			znear = znear,
 			zfar = zfar,
 			drawviewer = false

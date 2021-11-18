@@ -1,9 +1,11 @@
 local SKIN = {}
 
+PrintTable(derma.GetDefaultSkin())
+
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
 SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)
-
+SKIN.fontFrame = "landis-24"
 SKIN.Colours.Button.Normal = Color(255, 255, 255)
 SKIN.Colours.Button.Hover = Color(255, 255, 255)
 SKIN.Colours.Button.Down = Color(180, 180, 180)
@@ -103,6 +105,7 @@ function SKIN:PaintButtonUp( panel, w, h )
 end
 
 function SKIN:PaintFrame( self,w,h )
+	self.lblTitle:SetFont("landis-20-B")
 	blurDerma(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark
@@ -191,6 +194,7 @@ function SKIN:PaintPropertySheet(self,w,h)
 end
 
 function SKIN:PaintTab(self,w,h)
+	self:SetFont("landis-14-B")
 	if not self.hSND then
 		self.hSND = false
 	end
@@ -304,6 +308,7 @@ function SKIN:PaintVScrollBar(self,w,h)
 end*/]]
 
 function SKIN:PaintButton(self,w,h)
+	self:SetFont("landis-14")
 	if !self.m_bBackground then return end
 	
 	if not self.hSND then

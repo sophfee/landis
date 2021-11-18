@@ -4,7 +4,8 @@ local hiddenElements = {
 	CHudCrosshair = true,
 	CHudAmmo = true,
 	CHudSecondaryAmmo = true,
-	CHudSquadStatus = true
+	CHudSquadStatus = true,
+	CHudWeaponSelection = true
 }
 
 hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
@@ -173,7 +174,7 @@ end
 
 local ply = LocalPlayer()
 local r,gC,b = color_white:Unpack()
-
+local isAlive = false
 local whiteColor = Vector(255,255,255)
 local redColor   = Vector(255,0,0)
 
@@ -187,21 +188,14 @@ surface.CreateFont("DEAD", {
 
 local youAreDeadAlpha = 0
 
-surface.CreateFont("landis-24",{
-	font = "Arial",
-	size = 24,
-	weight = 1000,
-	antialias = true,
-	extended
-})
+concommand.Add("fix_death", function()
+	topText:Remove()
+end)
 
-surface.CreateFont("landis-18",{
-	font = "Arial",
-	size = 18,
-	weight = 1000,
-	antialias = true,
-	extended
-})
+tweenInTable = {alpha=0}
+tweenOutTable = {alpha=1}
+local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
+local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
@@ -229,12 +223,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		end
 	end
 
-	if not ply:Alive() then
-		youAreDeadAlpha = math.Clamp( youAreDeadAlpha + FrameTime() * 255, 0, 255 )
-		draw.RoundedBox(0, 0, 0, ScrW(), ScrH(), Color(0,0,0,youAreDeadAlpha))
-		draw.SimpleText("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, youAreDeadAlpha ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-		return 
-	end
+	
 
 	if SCHEMA:ShouldDrawElement( "Crosshair" ) then
 		surface.SetDrawColor( 255, 255, 255 )
@@ -274,4 +263,43 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 			end
 		end
 	end
+	--if not ply:Alive() == isAlive then tweenIn:set(0) end
+	--if not ply:Alive() == isAlive then tweenOut:set(1) end
+	if not ply:Alive() then
+		if not ply:Alive() == isAlive then 
+			tweenIn:set(0) 
+			timer.Simple(0.6, function()
+				for i=1,30 do
+					landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
+				end
+			end)
+		end
+		tweenIn:update(FrameTime())
+
+		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenInTable.alpha, team.GetColor(LocalPlayer():Team()))
+		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenInTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenInTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenInTable.alpha)) 
+
+		hiddenElements["CHudDamageIndicator"] = true 
+		draw.SimpleText(tweenInTable.alpha,"BudgetLabel")
+
+	else
+
+		if not ply:Alive() == isAlive then 
+			tweenOut:set(0) 
+		end
+
+		tweenOut:update(FrameTime())
+
+		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenOutTable.alpha, team.GetColor(LocalPlayer():Team()))
+		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenOutTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenOutTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenOutTable.alpha))
+
+		hiddenElements["CHudDamageIndicator"] = nil
+		draw.SimpleText(math.floor(tweenOutTable.alpha),"BudgetLabel")
+
+	end
+	isAlive = ply:Alive()
 end)

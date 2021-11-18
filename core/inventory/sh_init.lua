@@ -28,12 +28,15 @@ landis.items.base = {
 }
 
 -- Setup the item class
-function landis.items.RegisterItem( UniqueID, meta )
+function landis.lib.RegisterItem( UniqueID, meta )
 	local self = table.Inherit( meta, landis.items.base )
 
-	function self:OnEquip( ply )
+	self.OnEquip = function ( self, ply )
 		if self.equipData.type == EQUIP_WEAPON then
 			
 		end
 	end
 end
+
+-- register test item for testing.
+--landis.lib.RegisterItem( "" )

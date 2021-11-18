@@ -5,9 +5,11 @@ function PANEL:Init()
 	self:SetSize(100,50)
 	self.Model = vgui.Create("DModelPanel", self)
 	self.Model.LayoutEntity = function() end
-	self.Model:SetLookAt(Vector(-0,0,65))
-	self.Model:SetFOV(15)
-	self.Model:SetCamPos(Vector(40,-20,70))
+	self.Model:SetFOV(4.4)
+	self.Model:SetLookAt(Vector(0, -0, 66.1))
+	self.Model:SetCamPos(Vector(190,-50,71))
+	self.Model:SetAnimSpeed( 4 )
+	self.Model:SetDisabled( true )
 	self.Model:SetSize(self:GetTall(),self:GetTall())
 	self.Team = 0
 end

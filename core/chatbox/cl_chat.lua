@@ -238,6 +238,7 @@ function landis.chatbox.hideBox()
 	
 	-- We are done chatting
 	gamemode.Call("FinishChat")
+	--hook.Run("landisFinishChat")
 	
 	-- Clear the text entry
 	landis.chatbox.entry:SetText( "" )
@@ -271,7 +272,8 @@ function landis.chatbox.showBox()
 	landis.chatbox.chatLog:GetVBar():SetVisible(true)
 	
 	-- Make sure other addons know we are chatting
-	gamemode.Call("StartChat")
+	gamemode.Call("StartChat") -- this runs too much so we are circumventing this with a custom hook
+	--hook.Run("landisStartChat")
 end
 
 --// Opens the settings panel
@@ -429,7 +431,7 @@ function chat.AddText(...)
 	landis.chatbox.lastMessage = CurTime()
 	landis.chatbox.chatLog:SetVisible( true )
 
-	chat.PlaySound()
+	--chat.PlaySound()
 	timer.Simple(0.05,function()
 		landis.chatbox.chatLog:ScrollToChild(msg)
 	end)
@@ -456,6 +458,10 @@ end)
 hook.Remove("PlayerBindPress", "landis.chatbox_hijackbind")
 hook.Add("PlayerBindPress", "landis.chatbox_hijackbind", function(ply, bind, pressed)
 	if string.sub( bind, 1, 11 ) == "messagemode" then
+		if pressed then
+			net.Start("landisStartChat")
+			net.SendToServer()
+		end
 		if bind == "messagemode2" then 
 			landis.chatbox.ChatType = "teamchat"
 		else

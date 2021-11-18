@@ -62,6 +62,7 @@ function PANEL:Init()
 		MainMenu = nil
 		fadeOut = true
 		LocalPlayer():ScreenFade(SCREENFADE.OUT, Color(0,0,0), 1, 0.25)
+		self:SetEnabled(false) -- prevent multiple clicking
 		timer.Simple(1.125, function()
 			LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0,0,0), 1, 0)
 			SCHEMA:SetHUDElement("Crosshair",true)

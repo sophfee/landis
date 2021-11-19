@@ -47,7 +47,5 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 end)
 
 hook.Add( "PlayerCanHearPlayersVoice", "Maximum Range", function( listener, talker )
-    if listener:GetPos():DistToSqr( talker:GetPos() ) > 250000 then
-		return false
-	end
+    return true
 end )

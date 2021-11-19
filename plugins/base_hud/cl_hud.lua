@@ -196,6 +196,7 @@ tweenInTable = {alpha=0}
 tweenOutTable = {alpha=1}
 local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
 local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
+local deathTime = 0
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
@@ -265,24 +266,31 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	end
 	--if not ply:Alive() == isAlive then tweenIn:set(0) end
 	--if not ply:Alive() == isAlive then tweenOut:set(1) end
+
 	if not ply:Alive() then
 		if not ply:Alive() == isAlive then 
 			tweenIn:set(0) 
-			timer.Simple(0.6, function()
+			deathTime = 0
+			timer.Simple(1.6, function()
 				for i=1,30 do
 					landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
 				end
 			end)
 		end
-		tweenIn:update(FrameTime())
-
-		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenInTable.alpha, team.GetColor(LocalPlayer():Team()))
-		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenInTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
-
-		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenInTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenInTable.alpha)) 
-
+		deathTime = deathTime + FrameTime()
 		hiddenElements["CHudDamageIndicator"] = true 
-		draw.SimpleText(tweenInTable.alpha,"BudgetLabel")
+		if deathTime > 1 then
+			tweenIn:update(FrameTime())
+			local flatAlpha = math.Clamp(tweenInTable.alpha, 0, 255)
+
+			draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*flatAlpha, team.GetColor(LocalPlayer():Team()))
+			draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*flatAlpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+			draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, flatAlpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,flatAlpha)) 
+
+			
+			draw.SimpleText(flatAlpha,"BudgetLabel")
+		end
 
 	else
 

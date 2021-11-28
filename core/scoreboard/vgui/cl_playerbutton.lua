@@ -32,9 +32,9 @@ function PANEL:Paint(w,h)
 
 	if not self.Owner then return end
 
-	draw.SimpleText(self.Owner:Nick(), "pCardName", 69, 5)
+	draw.SimpleText(self.Owner:Nick(), "landis-36-B", 69, 5)
 
-	draw.SimpleText( self.Owner:Ping(), "pCardMisc", w-5, 5, color_white, TEXT_ALIGN_RIGHT )
+	draw.SimpleText( self.Owner:Ping(), "landis-24", w-5, 5, color_white, TEXT_ALIGN_RIGHT )
 
 end
 function PANEL:SetPlayer(ply)
@@ -57,7 +57,7 @@ function PANEL:SetPlayer(ply)
 		local icon = k.icon
 		local btn  = vgui.Create( "DButton", self)
 		btn:SetSize(16,16)
-		btn:SetPos(69+(i-1)*16,29)
+		btn:SetPos(69+(i-1)*16,41)
 		btn:SetText("")
 		btn.Paint = function(self,w,h)
 			surface.SetMaterial(Material(icon))

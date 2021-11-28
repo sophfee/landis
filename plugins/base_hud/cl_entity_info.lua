@@ -59,8 +59,8 @@ hook.Add( "HUDPaint", "drawEntityInformation", function()
 
 			
 
-			draw.DrawText( name, "entname", pos.x, pos.y-20-heightOffset, Color(col.r,col.g,col.b,alpha),TEXT_ALIGN_CENTER)
-			draw.DrawText( desc, "entdata", pos.x, pos.y-heightOffset, Color( 255, 255, 255, alpha ),TEXT_ALIGN_CENTER)
+			draw.DrawText( name, "landis-36-B", pos.x, pos.y-20-heightOffset, Color(col.r,col.g,col.b,alpha),TEXT_ALIGN_CENTER)
+			draw.DrawText( desc, "landis-24", pos.x, pos.y-heightOffset, Color( 255, 255, 255, alpha ),TEXT_ALIGN_CENTER)
 
 			if hitEnt == k then
 				drawAlpha[v] = math.Clamp( drawAlpha[v] + ft * 512, 0, 255 ) 

@@ -182,6 +182,20 @@ DefaultSettings = {
 		category     = "Misc.",
 		activeValue  = false
 	},
+	["chatfontSize"] = {
+		type         = "slider",
+		options      = {max=48,min=8,dec=0},
+		printName    = "Chat Font Size (Requires reconnect)",
+		category     = "Chatbox",
+		activeValue  = 18
+	},
+	["Font"] = {
+		type         = "dropdown",
+		options      = {"Segoe UI","Segoe UI Light","Arial","Tahoma"},
+		printName    = "[BETA] Default Font [REQUIRES RECONNECT]",
+		category     = "UI",
+		activeValue  = ""
+	},
 	["ThirdpersonFOV"] = {
 		type         = "slider",
 		options      = {max=90,min=80,dec=0},

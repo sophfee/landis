@@ -13,7 +13,7 @@ SKIN.Colours.Button.Disabled = Color(0, 0, 0, 100)
 
 SKIN.Colours.Label.Highlight = Color(90, 200, 250, 255)
 
-landis.Config.CornerRadius = 8
+landis.Config.CornerRadius = 0
 landis.Config.PillButtons = false
 
 landis.Config.ButtonColorOff      = Color(72,72,74,255)
@@ -105,7 +105,7 @@ function SKIN:PaintButtonUp( panel, w, h )
 end
 
 function SKIN:PaintFrame( self,w,h )
-	self.lblTitle:SetFont("landis-20-B")
+	self.lblTitle:SetFont("landis-20")
 	blurDerma(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark

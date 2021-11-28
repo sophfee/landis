@@ -1,11 +1,9 @@
 DeriveGamemode("sandbox")
 landis = landis or {}
 landis.lib = landis.lib or {}
-landis.__VERSION = "DEV-0.2"
-landis.__DISPLAY = "Landis Base"
-landis.__XTNOTES = [[This gamemode is in development.
-Nothing seen is considered final.
-(c) 2021 Nick S]]
+landis.__VERSION = "DEV-0.3"
+landis.__DISPLAY = "Landis Framework"
+landis.__XTNOTES = "PREVIEW BUILD:\n" .. GetGlobalString(1)
 landis.__DVBUILD = true
 
 // fallback configurations

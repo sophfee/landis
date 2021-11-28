@@ -17,21 +17,23 @@ landis.chatbox.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
 landis.chatbox.CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
 surface.CreateFont( "landis.chatbox_18", {
-	font = "Arial",
+	font = "Segoe UI Regular",
 	size = 18,
 	weight = 3500,
 	antialias = true,
 	shadow = true,
 	extended = true,
+	outline = false
 } )
 
 surface.CreateFont( "landis.chatbox_16", {
-	font = "Arial",
+	font = "Segoe UI Regular",
 	size = 16,
 	weight = 3500,
 	antialias = true,
 	shadow = true,
 	extended = true,
+	outline = false
 } )
 
 

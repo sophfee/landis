@@ -14,6 +14,10 @@ end
 
 hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
 	ply:CreateRagdoll()
+	ply:SetNWBool("CanRespawn",false)
+	timer.Simple(10, function()
+		ply:Spawn()
+	end)
 end)
 
 hook.Add( "PhysgunPickup", "pickupPlayer", function( ply, ent )

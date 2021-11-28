@@ -10,7 +10,7 @@ landis.__DVBUILD = true
 
 // fallback configurations
 landis.Config =  {}
-landis.Config.MainColor        = Color( 10,  132, 255 )
+landis.Config.MainColor        = Color( 255, 69, 58 )
 landis.Config.DefaultTextColor = Color( 245, 245, 245 )
 landis.Config.BGColorDark      = Color( 44,  44,  46  )
 landis.Config.BGColorLight     = Color( 229, 229, 234  )

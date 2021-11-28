@@ -1,3 +1,5 @@
+local deathTime = 0
+
 local hiddenElements = {
 	CHudHealth = true,
 	CHudBattery = true,
@@ -15,7 +17,7 @@ hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
 end)
 
 surface.CreateFont("hud24", {
-	font = "Arial",
+	font = "Segoe UI Semibold",
 	shadow = false,
 	size = 24,
 	weight = 6000,
@@ -25,22 +27,24 @@ surface.CreateFont("hud24", {
 })
 
 surface.CreateFont("hud18", {
-	font = "Arial",
+	font = "Segoe UI",
 	shadow = false,
 	size = 18,
 	weight = 6000,
 	antialias = true,
 	extended = true,
-	italic = true
+	italic = false
 })
 
 surface.CreateFont("hud36", {
-	font = "Arial",
+	font = "Segoe UI Semibold",
 	shadow = false,
 	size = 36,
 	weight = 6000,
 	antialias = true,
 	extended = true,
+	outline = false,
+	shadow = false,
 	italic = false
 })
 
@@ -61,14 +65,14 @@ local function drawBar(label,val,col,pos)
 	}
 	local r,g,b = col:Unpack()
 
-	surface.SetDrawColor(80/2, 80/2, 80/2,255)
+	surface.SetDrawColor(80/2, 80/2, 80/2,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vertOutline)
 
-	surface.SetDrawColor(80,80,80,255)
+	surface.SetDrawColor(80,80,80,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vert)
 
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, g/3, b/3,120)
+	surface.SetDrawColor(r/3, g/3, b/3,math.floor(120-(deathTime*120)))
 
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
 
@@ -87,18 +91,18 @@ local function drawBar(label,val,col,pos)
 		{ x = pos.x, y = pos.y + 25 }
 	}
 
-	surface.SetDrawColor( r / 3, g / 3, b / 3, 255 )
+	surface.SetDrawColor( r / 3, g / 3, b / 3, math.floor(255-(deathTime*255)) )
 	surface.DrawPoly( vertOutline )
-	surface.SetDrawColor( r, g, b, 255 )
+	surface.SetDrawColor( r, g, b, math.floor(255-(deathTime*255)) )
 	surface.DrawPoly( vert )
 	surface.SetMaterial( Material( "vgui/gradient-l" ) )
-	surface.SetDrawColor( r / 2, g / 2, b / 2, 100 )
+	surface.SetDrawColor( r / 2, g / 2, b / 2, math.floor(100-(deathTime*100)) )
 	surface.DrawTexturedRect( pos.x, pos.y, value, 25 )
 
-	draw.DrawText( tostring( math.Round( val, 0 ) ), "hud24", pos.x + 5, pos.y + 2, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT )
-	draw.DrawText( tostring( math.Round( val, 0 )), "hud24", pos.x + 3, pos.y + 1, color_white, TEXT_ALIGN_LEFT )
-	draw.SimpleText( label, "hud18", pos.x + 2, pos.y, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
-	draw.SimpleText( label, "hud18", pos.x, pos.y - 1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.DrawText( tostring( math.Round( val, 0 ) ), "hud24", pos.x + 5, pos.y + 2, Color( r / 8, g / 8, b / 8, math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT )
+	draw.DrawText( tostring( math.Round( val, 0 )), "hud24", pos.x + 3, pos.y + 1, Color( math.floor(255-r/90), math.floor(255-g/90), math.floor(255-b/90), math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT )
+	draw.SimpleText( label, "hud18", pos.x + 2, pos.y, Color( r / 8, g / 8, b / 8, math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.SimpleText( label, "hud18", pos.x, pos.y - 1, Color( math.floor(255-r/90), math.floor(255-g/90), math.floor(255-b/90), math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	draw.NoTexture()
 
 end
@@ -132,12 +136,12 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x,y=pos.y+25}
 	}
 	local r,gC,b = col:Unpack()
-	surface.SetDrawColor(80/2, 80/2, 80/2,255)
+	surface.SetDrawColor(80/2, 80/2, 80/2,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vertOutline)
-	surface.SetDrawColor(80,80,80,255)
+	surface.SetDrawColor(80,80,80,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, gC/3, b/3,120)
+	surface.SetDrawColor(r/3, gC/3, b/3,math.floor(120-(deathTime*120)))
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
 	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT)
 	//draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
@@ -158,12 +162,12 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x,y=pos.y+25}
 	}
 	local r,gC,b = col:Unpack()
-	surface.SetDrawColor(r/3, gC/3, b/3,255)
+	surface.SetDrawColor(r/3, gC/3, b/3,math.floor(255-(deathTime*255)))
 	//surface.DrawPoly(vertOutline)
 	surface.SetDrawColor(r,gC,b,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-r"))
-	surface.SetDrawColor(r/2, gC/2, b/2,100)
+	surface.SetDrawColor(r/2, gC/2, b/2,math.floor(100-(deathTime*100)))
 	//surface.DrawTexturedRect(pos.x,pos.y,value,25)
 	draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT)
 	draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
@@ -179,7 +183,7 @@ local whiteColor = Vector(255,255,255)
 local redColor   = Vector(255,0,0)
 
 surface.CreateFont("DEAD", {
-	font = "Arial",
+	font = "Segoe UI Black",
 	size = 80,
 	weight = 1000,
 	antialias = true,
@@ -196,7 +200,7 @@ tweenInTable = {alpha=0}
 tweenOutTable = {alpha=1}
 local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
 local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
-local deathTime = 0
+
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
@@ -206,12 +210,12 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 
 	if ply:InNoclip() then
 
-		draw.DrawText("Moderation View", "landis-24", 5, 5, Color( 230, 230, 230, 180 ))
+		draw.DrawText("Moderation View", "landis-48-B", 5, 5, Color( 230, 230, 230, 180 ))
 
 		local msg = [[Playercount: ]]
 		msg=msg..tostring(player.GetCount())
 
-		draw.DrawText(msg, "landis-18", 5, 29, Color( 230, 230, 230, 180 ))
+		draw.DrawText(msg, "landis-36", 5, 53, Color( 230, 230, 230, 180 ))
 
 		if landis.lib.GetSetting("mod-esp") then
 			for v,k in ipairs(player.GetAll()) do
@@ -227,7 +231,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	
 
 	if SCHEMA:ShouldDrawElement( "Crosshair" ) then
-		surface.SetDrawColor( 255, 255, 255 )
+		surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
 		local centerW = ScrW()/2
 		local centerH = ScrH()/2
 		local len     = landis.lib.GetSetting("crosshairLength")
@@ -273,13 +277,13 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 			deathTime = 0
 			timer.Simple(1.6, function()
 				for i=1,30 do
-					landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
+					--landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
 				end
 			end)
 		end
 		deathTime = deathTime + FrameTime()
 		hiddenElements["CHudDamageIndicator"] = true 
-		if deathTime > 1 then
+		if deathTime > 10-3 then
 			tweenIn:update(FrameTime())
 			local flatAlpha = math.Clamp(tweenInTable.alpha, 0, 255)
 
@@ -297,6 +301,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		if not ply:Alive() == isAlive then 
 			tweenOut:set(0) 
 		end
+		
+		deathTime = math.Clamp(deathTime - FrameTime(),0,1)
 
 		tweenOut:update(FrameTime())
 
@@ -309,5 +315,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		draw.SimpleText(math.floor(tweenOutTable.alpha),"BudgetLabel")
 
 	end
+
 	isAlive = ply:Alive()
+
 end)

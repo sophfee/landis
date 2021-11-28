@@ -8,8 +8,10 @@ function meta:DoRagdollCamera()
 	if not self:IsPlayer() then return end
 	local ragdoll = self:GetRagdollEntity()
 	if not IsValid(ragdoll) then return end
+	local startPos = self:EyePos()
 	ragdollCameraTime = 0
 	hookRunning = true
+	local ang = self:EyeAngles()
 	surface.PlaySound(Sound("ui/critical_event_1.wav"))
 	hook.Add("CalcView", "ragdoll_camera", function(_,origin,__,fov,znear,zfar)
 		if not IsValid(ragdoll) then
@@ -20,10 +22,11 @@ function meta:DoRagdollCamera()
 		ragdollCameraTime = ragdollCameraTime + FrameTime()
 		local eye = ragdoll:LookupAttachment("eyes")
 		local data = ragdoll:GetAttachment(eye)
+		ang = LerpAngle(FrameTime()*1,ang,(ragdoll:GetPos()-startPos):GetNormalized():Angle())
 		local camData = {
-			origin = ragdoll:GetPos() + Vector(0,0,10+(ragdollCameraTime*125)) or Vector(),
-			angles = Angle(90,(ragdollCameraTime*90),0),
-			fov = 70+(ragdollCameraTime*5),
+			origin = startPos, --ragdoll:GetPos() + Vector(0,0,10+(ragdollCameraTime*125)) or Vector(),
+			angles = ang,
+			fov = math.Clamp(70-(ragdollCameraTime*4),5,70),
 			znear = znear,
 			zfar = zfar,
 			drawviewer = true

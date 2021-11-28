@@ -1,6 +1,6 @@
 local SKIN = {}
 
-PrintTable(derma.GetDefaultSkin())
+--PrintTable(derma.GetDefaultSkin())
 
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
@@ -30,15 +30,15 @@ landis.Config.ClickSound = "landis/ui/notification.mp3"
 landis.Config.HoverSound = "landis/ui/scroll.mp3"
 
 surface.CreateFont("landis_base-default-14", {
-	font = "Arial",
+	font = "Segoe UI Light",
 	weight = 2500,
-	size = 14
+	size = 24
 })
 
 surface.CreateFont("landis_base-default-20", {
-	font = "Arial",
-	weight = 2500,
-	size = 20
+	font = "Segoe UI Light",
+	weight = 500,
+	size = 24
 })
 
 local blur = Material("pp/blurscreen")

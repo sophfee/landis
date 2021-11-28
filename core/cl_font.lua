@@ -1,17 +1,17 @@
 for i=8,64 do
 	surface.CreateFont("landis-"..i, {
-		font = "Arial",
+		font = "Segoe UI Light",
 		size = i,
-		weight = 500,
+		weight = 3000,
 		antialias = true
 	})
 end
 
 for i=8,64 do
 	surface.CreateFont("landis-"..i.."-S", {
-		font = "Arial",
+		font = "Segoe UI Light",
 		size = i,
-		weight = 1000,
+		weight = 3000,
 		antialias = true,
 		shadow = true
 	})
@@ -19,7 +19,7 @@ end
 
 for i=8,64 do
 	surface.CreateFont("landis-"..i.."-B", {
-		font = "Arial",
+		font = "Segoe UI",
 		size = i,
 		weight = 3000,
 		antialias = true,
@@ -29,9 +29,9 @@ end
 
 for i=8,64 do
 	surface.CreateFont("landis-"..i.."-S-B", {
-		font = "Arial",
+		font = "Segoe UI",
 		size = i,
-		weight = 1000,
+		weight = 3000,
 		antialias = true,
 		shadow = true
 	})

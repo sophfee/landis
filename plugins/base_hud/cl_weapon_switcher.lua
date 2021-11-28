@@ -22,7 +22,46 @@ hook.Add("HUDPaint", "landisDrawWepSelect", function()
 		end
 		local c = table.Copy(landis.Config.MainColor)
 		c.a = math.floor(slotAlpha.a *255)
-		draw.SimpleText(weps[curSlot]:GetPrintName(), "landis-24-S-B", ScrW()/2+24, ScrH()/2, c,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER,1,Color( 1, 1, 1, math.floor(slotAlpha.a *255) ))
+		draw.SimpleText(
+			weps[curSlot]:GetPrintName(), 
+			"landis-48", 
+			ScrW()/2+26, 
+			ScrH()/2, 
+			Color(
+				math.floor(c.r/2),
+				math.floor(c.g/2),
+				math.floor(c.b/2),
+				math.floor(slotAlpha.a *255)
+			),
+			TEXT_ALIGN_LEFT,
+			TEXT_ALIGN_CENTER,
+			1,
+			Color(
+				math.floor(c.r/2),
+				math.floor(c.g/2),
+				math.floor(c.b/2),
+				math.floor(slotAlpha.a *255)
+			)
+		)
+		draw.SimpleText(
+			weps[curSlot]:GetPrintName(), 
+			"landis-48", 
+			ScrW()/2+24, 
+			ScrH()/2, 
+			c,
+			TEXT_ALIGN_LEFT,
+			TEXT_ALIGN_CENTER,
+			1,
+			Color( 1, 1, 1, math.floor(slotAlpha.a *255) ),
+			0,
+			Color(
+				c.r/1.25,
+				c.g/1.25,
+				c.b/1.25,
+				0
+			)
+		)
+		
 		draw.DrawText((weps[curSlot].Instructions or "") .. (weps[curSlot].Purpose or ""), "landis-20-S", ScrW()/2+24, ScrH()/2+17, Color( 255, 255, 255, math.floor(slotAlpha.a *255) ))
 		if #weps == 1 then return end
 		c.a = math.floor(slotAlpha.a *80)

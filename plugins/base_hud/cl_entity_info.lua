@@ -1,8 +1,8 @@
 local drawEnts = {}
 local drawAlpha = {}
 surface.CreateFont("entdata", {
-	font = "Arial",
-	size = 18,
+	font = "Segoe UI Light",
+	size = 24,
 	weight = 3500,
 	antialias = true,
 	extended = true,
@@ -10,8 +10,8 @@ surface.CreateFont("entdata", {
 })
 
 surface.CreateFont("entname", {
-	font = "Arial",
-	size = 20,
+	font = "Segoe UI Light",
+	size = 24,
 	weight = 3500,
 	antialias = true,
 	extended = true,

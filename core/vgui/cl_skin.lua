@@ -115,10 +115,10 @@ function SKIN:PaintFrame( self,w,h )
 	
 	--
 	--surface.DrawRect( 0, 0, w, 23 )
-	if cornerRadius == 0 then
+	--[[if cornerRadius == 0 then
 		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b )
 		surface.DrawOutlinedRect( 0, 23, w, h-23, 2 )
-	end
+	end]]
 	--
 	if self:GetSizable() then
 		surface.SetDrawColor(0, 0, 0)
@@ -153,34 +153,17 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 	else
 		self.ButtonHoldAlpha = math.Clamp(self.ButtonHoldAlpha-(((1/60)*FrameTime()))*50000,0,255)
 	end
-	if cornerRadius == 0 then
+	surface.SetDrawColor(255,255,255,255)
+	draw.NoTexture()
 
-		surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-		surface.DrawRect(0, 0, w, h)
-		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
-		surface.DrawRect(0, 0, w, h)
-			
-		surface.SetDrawColor(255, 255, 255)
-		draw.NoTexture()
-	
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
-	else
+	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
+	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
 
+	surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
+	draw.NoTexture()
 
-
-		surface.SetDrawColor(255,255,255,255)
-		draw.NoTexture()
-
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
-
-		surface.SetDrawColor( mainColor.r, mainColor.g, mainColor.b, self.ButtonHoldAlpha )
-		draw.NoTexture()
-
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
-		surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
-	end
+	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, 45)
+	surface.DrawTexturedRectRotated(w/2, h/2, h/2, 2, -45)
 end
 
 function SKIN:PaintPropertySheet(self,w,h)
@@ -402,8 +385,6 @@ function SKIN:PaintComboBox(self,w,h)
 	local cornerRadius = landis.Config.CornerRadius
 	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
 end
-
-
 
 
 

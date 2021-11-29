@@ -1,7 +1,7 @@
 util.AddNetworkString("ragdoll_camera")
 
 function GM:PlayerSpawn(ply)
-	ply:SetModel(landis.Teams.Data[ply:Team()].Model)
+	ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
 	if ply:IsAdmin() then
 		ply:Give("weapon_physgun")
 	end

@@ -1,7 +1,8 @@
 local meta = FindMetaTable("Player")
 
 landis.Teams = landis.Teams or {}
-landis.Teams.Data = landis.Teams.Data or {}
+landis.Teams.Data = {}
+landis.TeamIndex = landis.TeamIndex or 1
 
 -- provide table for team data
 -- 
@@ -9,20 +10,14 @@ landis.Teams.Data = landis.Teams.Data or {}
 -- Must be hooked into CreateTeams or bugs out
 function landis.Teams.Define(self)
 	
-		if landis.Teams.Data[self.UniqueID] then
-			landis.ConsoleMessage("Tried to define already existing team!")
-			return nil
-		end
-		landis.ConsoleMessage("Registering team \""..self.UniqueID.."\"")
-		local teamIndex
-		for i=1,1000 do
-			if not team.Valid(i) then
-				teamIndex = i
-				break
-			end
-		end
-		team.SetUp(teamIndex, self.DisplayName, self.TeamColor, true)
-		landis.Teams.Data[teamIndex] = self
+	if landis.Teams.Data[self.UniqueID] then
+		landis.ConsoleMessage("Tried to define already existing team!")
+		return nil
+	end
+	landis.ConsoleMessage("Registering team \""..self.UniqueID.."\"")
+	team.SetUp(landis.TeamIndex, self.DisplayName, self.TeamColor, true)
+	landis.Teams.Data[landis.TeamIndex] = self
+	landis.TeamIndex = landis.TeamIndex + 1
 
 	return teamIndex
 end
@@ -51,3 +46,5 @@ if SERVER then
 		end
 	end)
 end
+
+local VENDOR = landis.lib.CreateVendorTable()

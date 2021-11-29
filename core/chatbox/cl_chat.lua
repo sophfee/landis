@@ -27,8 +27,8 @@ surface.CreateFont( "landis.chatbox_18", {
 } )
 
 surface.CreateFont( "landis.chatbox_16", {
-	font = "Segoe UI",
-	size = 24,
+	font = "Segoe UI Light",
+	size = 16,
 	weight = 3500,
 	antialias = true,
 	shadow = false,
@@ -41,7 +41,7 @@ surface.CreateFont( "landis.chatbox_16", {
 function landis.chatbox.buildBox()
 	landis.chatbox.frame = vgui.Create("DFrame")
 	landis.chatbox.frame:SetSize( ScrW()*0.375, ScrH()*0.25 )
-	landis.chatbox.frame:SetTitle("")
+	landis.chatbox.frame:SetTitle("Chat")
 	landis.chatbox.frame:ShowCloseButton( false )
 	//landis.chatbox.frame:SetDraggable( true )
 	//landis.chatbox.frame:SetSizable( true )
@@ -56,11 +56,7 @@ function landis.chatbox.buildBox()
 	end
 	
 	local serverName = vgui.Create("DLabel", landis.chatbox.frame)
-	serverName:SetText( GetHostName() )
-	serverName:SetFont( "landis.chatbox_18")
-	serverName:SizeToContents()
-	serverName:SetPos( 5, 4 )
-	
+	serverName:SetText( "" )
 	landis.chatbox.entry = vgui.Create("DTextEntry", landis.chatbox.frame) 
 	landis.chatbox.entry:SetSize( landis.chatbox.frame:GetWide() - 50, 20 )
 	landis.chatbox.entry:SetTextColor( color_white )

@@ -230,7 +230,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 
 	
 
-	if SCHEMA:ShouldDrawElement( "Crosshair" ) then
+	if SCHEMA:ShouldDrawElement( "Crosshair" ) and landis.Radial.Close then
 		surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
 		local centerW = ScrW()/2
 		local centerH = ScrH()/2

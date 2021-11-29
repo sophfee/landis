@@ -145,3 +145,16 @@ if CLIENT then
 	landis.ConsoleMessage("loading plugins")
 	landis.lib.includeDir( "landis/plugins" )
 end
+
+function landis.Reload()
+	landis.Warn("A file has been refreshed! This may cause unexpected bugs!")
+	if CLIENT then
+		landis.chatbox.buildBox()
+	end
+	
+	
+end
+
+function GM:OnReloaded()
+	
+end

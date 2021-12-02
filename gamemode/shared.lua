@@ -150,39 +150,9 @@ end
 
 function landis.Reload()
 	landis.Warn("A file has been refreshed! This may cause unexpected bugs!")
-	
-
-	/*if CLIENT then 
-
-		landis.ConsoleMessage("loading libraries")
-		include("landis/gamemode/lib/tween.lua")
-
-		landis.ConsoleMessage("loading extensions")
-		landis.lib.includeDir( "landis/core"  )
-
-		landis.ConsoleMessage("loading plugins")
-		landis.lib.includeDir( "landis/plugins" )
-
+	if CLIENT then 
 		landis.chatbox.buildBox()
-
 	end
-
-	if SERVER then
-		// load core plugins/extensions
-		landis.ConsoleMessage("loading libraries")
-		AddCSLuaFile("landis/gamemode/lib/tween.lua")
-
-		landis.ConsoleMessage("loading extensions")
-		landis.lib.includeDir( "landis/core"  )
-
-		landis.ConsoleMessage("loading plugins")
-		landis.lib.includeDir( "landis/plugins" )
-	end*/
-
-	--landis.Teams.Data = {}
-
-	--landis.Schema.Boot( GM.FolderName )
-
 end
 
 function GM:OnReloaded()

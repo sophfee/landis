@@ -44,10 +44,10 @@ function PANEL:Init()
 	local teamPanel = vgui.Create("DScrollPanel", self.TeamTab)
 	teamPanel:Dock(FILL)
 	--self.TeamPanels.teamPanel.Paint = function() end
-	
+
 	for v,k in ipairs(landis.Teams.Data) do
 		local a = vgui.Create("landisTeam", self.TeamTab)
-		a:SetTeam(v)
+		a:SetTeam( v )
 		teamPanel:AddItem(a)
 		a:Dock(TOP)
 	end 

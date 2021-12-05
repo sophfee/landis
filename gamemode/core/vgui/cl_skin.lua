@@ -290,28 +290,51 @@ function SKIN:PaintVScrollBar(self,w,h)
 	surface.DrawRect(0, 0, w, h)
 end*/]]
 
-function SKIN:PaintCollapsibleCategory(self,w,h)
-	self:SetFont("landis-14-B")
+function SKIN:PaintCategoryHeader(self,w,h)
+	self:SetFont("landis-24-B")
+end
+
+function SKIN:PaintCategoryList(self,w,h)
 	local cornerRadius = landis.Config.CornerRadius
 	local mainColor    = landis.Config.MainColor 
-	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
-	draw.RoundedBox(cornerRadius, w-h+2,2,h-4,h-4, Color(40,40,40,255))
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, mainColor)
+	draw.RoundedBox(cornerRadius, 2,2,w-4,h-4, Color(40,40,40,255))
+end
+
+function SKIN:PaintTree(self,w,h)
+	local cornerRadius = landis.Config.CornerRadius
+	local mainColor    = landis.Config.MainColor 
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, mainColor)
+	draw.RoundedBox(cornerRadius, 2,2,w-4,h-4, Color(40,40,40,255))
+end
+
+function SKIN:PaintTree_Node(self,w,h)
+	self:SetFont("landis-12-S")
+	self:SetTextColor(color_white)
+end
+
+function SKIN:PaintCollapsibleCategory(self,w,h)
+	self.Header:SetFont("landis-16-B")
+	local cornerRadius = landis.Config.CornerRadius
+	local mainColor    = landis.Config.MainColor 
+	draw.RoundedBox(cornerRadius, 0, 0, w, 20, mainColor)
+	draw.RoundedBox(cornerRadius, w-18,2,16,16, Color(40,40,40,255))
 	if ( self:GetExpanded() ) then
 		draw.SimpleText(
 			"-",
-			"landis-14-B",
-			w-h/2-2,
-			h/2+2,
+			"landis-20-B",
+			w-11,
+			9,
 			color_white,
 			TEXT_ALIGN_CENTER,
 			TEXT_ALIGN_CENTER
 		)
 	else
 		draw.SimpleText(
-			"-",
-			"landis-14-B",
-			w-h/2-2,
-			h/2+2,
+			"+",
+			"landis-20-B",
+			w-11,
+			9,
 			color_white,
 			TEXT_ALIGN_CENTER,
 			TEXT_ALIGN_CENTER

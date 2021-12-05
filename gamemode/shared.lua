@@ -126,6 +126,7 @@ if SERVER then
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
 	AddCSLuaFile("landis/gamemode/lib/tween.lua")
+	AddCSLuaFile("landis/gamemode/lib/outline.lua")
 
 	landis.ConsoleMessage("loading extensions")
 	landis.lib.includeDir( "landis/gamemode/core"  )
@@ -138,6 +139,7 @@ if CLIENT then
 
 	landis.ConsoleMessage("loading libraries")
 	include("landis/gamemode/lib/tween.lua")
+	include("landis/gamemode/lib/outline.lua")
 
 	landis.ConsoleMessage("loading extensions")
 	landis.lib.includeDir( "landis/gamemode/core"  )

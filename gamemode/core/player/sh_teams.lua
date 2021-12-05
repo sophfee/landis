@@ -50,4 +50,15 @@ if SERVER then
 	end)
 end
 
-
+if CLIENT then
+	hook.Add("PreDrawHalos", "landisTeamOutline", function()
+		local ply = LocalPlayer()
+		local playerTeam = ply:Team()
+		local teamData = landis.Teams.Data[playerTeam] 
+		if teamData then
+			if teamData["OutlineTeamMates"] then
+				outline.Add(team.GetPlayers(playerTeam),team.GetColor(playerTeam),teamData.OutlineMode)
+			end
+		end
+	end)
+end

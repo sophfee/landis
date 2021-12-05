@@ -45,3 +45,14 @@ function landis.DrawText(text, fontData, alignment, color)
   if fontData.bold then font = font .. "-B" end
   -- finish this
 end
+
+
+concommand.Add("landis_outline_test", function()
+	local aiment = LocalPlayer():GetEyeTrace()
+	if aiment.Entity then
+		local deez = aiment.Entity
+		hook.Add("PreDrawHalos", deez, function()
+			outline.Add(deez,HSVToColor( (CurTime()*24) % 360, 1, 1 ),OUTLINE_MODE_NOTVISIBLE)
+		end)
+	end
+end)

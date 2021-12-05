@@ -290,6 +290,35 @@ function SKIN:PaintVScrollBar(self,w,h)
 	surface.DrawRect(0, 0, w, h)
 end*/]]
 
+function SKIN:PaintCollapsibleCategory(self,w,h)
+	self:SetFont("landis-14-B")
+	local cornerRadius = landis.Config.CornerRadius
+	local mainColor    = landis.Config.MainColor 
+	draw.RoundedBox(cornerRadius, 0, 0, w, h, Color( bgColor.r, bgColor.g, bgColor.b, 255 ))
+	draw.RoundedBox(cornerRadius, w-h+2,2,h-4,h-4, Color(40,40,40,255))
+	if ( self:GetExpanded() ) then
+		draw.SimpleText(
+			"-",
+			"landis-14-B",
+			w-h/2-2,
+			h/2+2,
+			color_white,
+			TEXT_ALIGN_CENTER,
+			TEXT_ALIGN_CENTER
+		)
+	else
+		draw.SimpleText(
+			"-",
+			"landis-14-B",
+			w-h/2-2,
+			h/2+2,
+			color_white,
+			TEXT_ALIGN_CENTER,
+			TEXT_ALIGN_CENTER
+		)
+	end
+end
+
 function SKIN:PaintButton(self,w,h)
 	self:SetFont("landis-14")
 	if !self.m_bBackground then return end

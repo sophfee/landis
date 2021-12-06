@@ -36,7 +36,7 @@ local baseFontData = {
   shadow = false
 }
 
-function landis.DrawText(text, fontData, alignment, color)
+function landis.DrawText(text, x, y, fontData, alignment, color)
   fontData = table.inherit(fontData, baseFontData)
   local font = "landis-"
   -- attributes
@@ -44,8 +44,15 @@ function landis.DrawText(text, fontData, alignment, color)
   if fontData.shadow then font = font .. "-S" end
   if fontData.bold then font = font .. "-B" end
   -- finish this
+
 end
 
+-- Provide a 3D CONTEXT not A 2D CONTEXT!!!!
+function landis.DrawText3D(text,pos,direction,fontData,alignment,color)
+	cam.Start3D2D(pos,direction,0.1)
+		landis.DrawText(text,0,0,fontData,alignment,color)
+	cam.End3D2D()
+end
 
 concommand.Add("landis_outline_test", function()
 	local aiment = LocalPlayer():GetEyeTrace()

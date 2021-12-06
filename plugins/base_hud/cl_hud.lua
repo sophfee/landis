@@ -1,4 +1,4 @@
-local deathTime = 0
+deathTime = 0
 
 local hiddenElements = {
 	CHudHealth = true,

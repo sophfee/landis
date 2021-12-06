@@ -43,7 +43,10 @@ function landis.Error(...)
 	if CLIENT then
 		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") // \n to prevent same line console messages
 	end
-	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
+	MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
+	print("======[STACK TRACEBACK]=====")
+	debug.Trace()
+	print("======[ENDOF TRACEBACK]=====")
 end
 
 function landis.lib.includeDir( scanDirectory, core )

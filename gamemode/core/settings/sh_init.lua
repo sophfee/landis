@@ -182,6 +182,12 @@ DefaultSettings = {
 		category     = "Misc.",
 		activeValue  = false
 	},
+	["debugHUD"] = {
+		type         = "tickbox",
+		printName    = "Enable Debug HUD",
+		category     = "Debug",
+		activeValue  = false
+	},
 	["chatfontSize"] = {
 		type         = "slider",
 		options      = {max=48,min=8,dec=0},

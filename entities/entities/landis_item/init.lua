@@ -33,6 +33,10 @@ function ENT:Use(caller)
 	if IsValid(caller) then
 		if caller:IsPlayer() then
 			if caller:CanPickupItem(self:GetItemClass()) then
+				net.Start("landisPickupItem")
+					net.WriteEntity(caller)
+					net.WriteString(self:GetItemClass())
+				net.Broadcast()
 				caller.Inventory[#caller.Inventory+1] = landis.items.data[self:GetItemClass()]
 				self:Remove()
 			end

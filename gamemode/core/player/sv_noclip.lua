@@ -5,7 +5,7 @@ hook.Add( "PlayerNoClip", "FeelFreeToTurnItOff", function( ply, desiredState )
 		ply:GodDisable()
 		ply:SetNWBool("InNoclip",false)
 		return true -- always allow
-	elseif ( ply:IsSuperAdmin() ) then
+	elseif ( ply:IsAdmin() ) then
 		ply:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 		ply:AddEffects(EF_NODRAW)
 		ply:GodEnable()

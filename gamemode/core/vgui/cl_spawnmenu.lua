@@ -1,5 +1,5 @@
 hook.Add( "SpawnMenuOpen", "SpawnMenuWhitelist", function()
-	return LocalPlayer():IsAdmin()
+	return true
 end )
 
 surface.CreateFont("entdesc",{

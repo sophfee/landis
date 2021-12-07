@@ -37,13 +37,14 @@ local baseFontData = {
 }
 
 function landis.DrawText(text, x, y, fontData, alignment, color)
-  fontData = table.inherit(fontData, baseFontData)
+  fontData = table.Inherit(fontData, baseFontData)
   local font = "landis-"
   -- attributes
   font = font .. fontData.size
   if fontData.shadow then font = font .. "-S" end
   if fontData.bold then font = font .. "-B" end
   -- finish this
+  draw.SimpleText(text, font, x, y, color or color_white, alignment.x, alignment.y)
 
 end
 

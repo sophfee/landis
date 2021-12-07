@@ -1,6 +1,7 @@
 landis.ConsoleMessage("Loading Inventory/Items Plugin")
 
-landis.items = {}
+landis.items = landis.items or {}
+landis.items.data = landis.items.data or {}
 
 EQUIP_WEAPON = 1
 EQUIP_ARMOR  = 2
@@ -8,12 +9,15 @@ EQUIP_COS    = 3
 
 landis.items.base = {
 	UniqueID  = nil,
+	DisplayName = "Unset Item",
+	Description = "Missing description",
 	Model     = "models/props_lab/huladoll.mdl",
 	iconCam   = {
 		pos    = Vector( 72.349167, 60.546150, 47.260101 ),
 		fov    = 6,
 		lookAt = Vector()
 	},
+	weight    = 0,
 	canUse    = false,
 	onUse     = function() end,
 	useText   = "Use",
@@ -28,7 +32,12 @@ landis.items.base = {
 }
 
 -- Setup the item class
-function landis.lib.RegisterItem( UniqueID, meta )
+function landis.lib.RegisterItem( meta )
+
+	if SERVER then
+		landis.ConsoleMessage("Registering new item: " .. meta.UniqueID)
+	end
+
 	local self = table.Inherit( meta, landis.items.base )
 
 	self.OnEquip = function ( self, ply )
@@ -36,7 +45,11 @@ function landis.lib.RegisterItem( UniqueID, meta )
 			
 		end
 	end
+
+	landis.items.data[self.UniqueID] = self
 end
 
 -- register test item for testing.
---landis.lib.RegisterItem( "" )
+local testing = table.Copy(landis.items.base)
+testing.UniqueID = "testitem"
+landis.lib.RegisterItem( testing )

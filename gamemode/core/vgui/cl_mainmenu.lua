@@ -45,26 +45,31 @@ function PANEL:Init()
 	self:Dock(LEFT)
 	self:SetSize(ScrW(),ScrH())
 	self.Paint = function()
+		
 		if fadeOut then
 			GlobalAlpha = math.Clamp(GlobalAlpha-FrameTime()*255, 0, 255)
 		end
-		local mainColor = landis.Config.MainColor
+		if SCHEMA.MenuHideTitle then return end
+		local mainColor = table.Copy(landis.Config.MainColor)
+		mainColor.a = GlobalAlpha
 		local GlowColor = HSVToColor( (CurTime()*24) % 360, 1, 1 )
 		GlowColor.a = GlobalAlpha
-		draw.SimpleTextOutlined(SCHEMA.Name or "Empty", "landis_base_main_menu_title", ScrW()/2, ScrH()/2-82, GlowColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+		draw.SimpleTextOutlined(SCHEMA.Name or "Empty", "landis_base_main_menu_title", ScrW()/2, ScrH()/2-82, mainColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 		if not SCHEMA.IsPreview then return end
 		draw.SimpleTextOutlined("Preview Build", "landis_base_main_menu_btn", ScrW()/2, ScrH()/2-20, Color(255,255,0,GlobalAlpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 	end
 	self.PlayBtn = vgui.Create("landisMainMenuButton", self, "landis_base-playbutton")
 	function self.PlayBtn:WhenPressed()
 		hook.Remove("HUDShouldDraw", "removeall")
-		menuOpen = false
+		
 		MainMenu = nil
 		fadeOut = true
 		LocalPlayer():ScreenFade(SCREENFADE.OUT, Color(0,0,0), 1, 0.25)
 		self:SetEnabled(false) -- prevent multiple clicking
 		timer.Simple(1.125, function()
+			menuOpen = false
 			LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0,0,0), 1, 0)
+			
 			SCHEMA:SetHUDElement("Crosshair",true)
 			SCHEMA:SetHUDElement("Health",true)
 			SCHEMA:SetHUDElement("Armor",true)

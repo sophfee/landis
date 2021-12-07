@@ -3,7 +3,7 @@ landis = landis or {}
 landis.lib = landis.lib or {}
 landis.__VERSION = "DEV-0.3"
 landis.__DISPLAY = "Landis Framework"
-landis.__XTNOTES = "PREVIEW BUILD:\n" .. GetGlobalString(1)
+landis.__XTNOTES = "PREVIEW BUILD: " .. GetGlobalString(1)
 landis.__DVBUILD = true
 
 // fallback configurations

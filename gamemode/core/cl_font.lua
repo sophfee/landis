@@ -1,4 +1,4 @@
-for i=8,64 do
+for i=8,256 do
 	surface.CreateFont("landis-"..i, {
 		font = "Segoe UI Light",
 		size = i,
@@ -7,7 +7,7 @@ for i=8,64 do
 	})
 end
 
-for i=8,64 do
+for i=8,256 do
 	surface.CreateFont("landis-"..i.."-S", {
 		font = "Segoe UI Light",
 		size = i,
@@ -17,7 +17,7 @@ for i=8,64 do
 	})
 end
 
-for i=8,64 do
+for i=8,256 do
 	surface.CreateFont("landis-"..i.."-B", {
 		font = "Segoe UI",
 		size = i,
@@ -27,7 +27,7 @@ for i=8,64 do
 	})
 end
 
-for i=8,64 do
+for i=8,256 do
 	surface.CreateFont("landis-"..i.."-S-B", {
 		font = "Segoe UI",
 		size = i,

@@ -8,7 +8,7 @@ landis.Radial.RadiusTween = tween.new(0.5,landis.Radial,{Radius=255},"outBack")
 
 landis.Radial.Time = 0
 
-landis.Radial.Close = false
+landis.Radial.Close = true
 
 landis.Radial.Opts = {}
 

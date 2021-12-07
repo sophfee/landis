@@ -1,23 +1,5 @@
 local PANEL = {}
 
-surface.CreateFont("card_header", {
-	font = "Arial",
-	weight = 4500,
-	antialias = true,
-	shadow = true,
-	extended = true,
-	size = 32
-})
-
-surface.CreateFont("card_subtitle", {
-	font = "Arial",
-	weight = 4500,
-	antialias = true,
-	shadow = true,
-	extended = true,
-	size = 24
-})
-
 function PANEL:SetPlayer( ply )
 	if not IsValid(ply) then return end
 	if not ply:IsPlayer() then return end

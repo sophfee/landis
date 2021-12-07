@@ -1,0 +1,2 @@
+function GM:HUDDrawTargetID()
+end

@@ -1,11 +1,6 @@
 local PLAYER = FindMetaTable("Player")
-function meta:Notify(message,duration)
+function PLAYER:Notify(message,duration)
 	local panel = vgui.Create("landisNotify")
 	panel:SetDuration(duration or 5)
 	panel:SetMessage(message)
 end
-net.Receive("landisNotify", function()
-	local message = net.ReadString()
-	local duration = net.ReadInt(32)
-  LocalPlayer():Notify(message,duration)
-end)

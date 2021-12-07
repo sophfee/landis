@@ -1,3 +1,9 @@
+hook.Add("PlayerSpawn","landisSetupHands", function(ply)
+	ply:SetupHands()
+end)
+
+hook.Add("PlayerDeathSound","landisMuteDeathsound",function() return true end)
+
 hook.Add("PlayerSpawnNPC", "landisSchemaSpawnNPC", function(ply,npc_type,weapon)
 	if SCHEMA.PlayerSpawnNPC then
 		return SCHEMA:PlayerSpawnNPC(ply,npc_type,weapon)

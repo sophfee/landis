@@ -1,0 +1,5 @@
+net.Receive("landisNotify", function()
+	local message = net.ReadString()
+	local duration = net.ReadInt(32)
+  LocalPlayer():Notify(message,duration)
+end)

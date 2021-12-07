@@ -35,3 +35,17 @@ function PLAYER:GetPermissionLevel()
 	end
 	return PERMISSION_LEVEL_USER
 end
+
+function PLAYER:IsWeaponRaised()
+	local weapon = self:GetActiveWeapon()
+
+	if IsValid(weapon) then
+		if weapon.IsAlwaysRaised or false then
+			return true
+		elseif weapon.IsAlwaysLowered then
+			return false
+		end
+	end
+
+	return self:GetNWBool("weaponRaised", true)
+end

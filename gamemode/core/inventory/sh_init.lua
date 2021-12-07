@@ -40,16 +40,23 @@ function landis.lib.RegisterItem( meta )
 
 	local self = table.Inherit( meta, landis.items.base )
 
-	self.OnEquip = function ( self, ply )
+	self.OnEquip = function ( self, ply, i )
 		if self.equipData.type == EQUIP_WEAPON then
+			ply.Inventory[i].Equipped = ply.Inventory[i].Equipped or false
+			ply.Inventory[i].Equipped = !ply.Inventory[i].Equipped -- invert value
+			if SERVER then
+				local t = ply.Inventory[i].Equipped and "equipped" or "unequipped"
+				landis.ConsoleMessage(ply:Nick(), " has ", t, " a ", self.UniqueID
+			
+				if ply.Inventory[i].Equipped then
+					ply:Give(self.equipData.class)
+				else
+					ply:StripWeapon(self.equipData.class)
+				end
+			end
 			
 		end
 	end
 
 	landis.items.data[self.UniqueID] = self
 end
-
--- register test item for testing.
-local testing = table.Copy(landis.items.base)
-testing.UniqueID = "testitem"
-landis.lib.RegisterItem( testing )

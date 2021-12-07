@@ -1,4 +1,6 @@
 include("shared.lua")
+util.AddNetworkString("landisPickupItem")
+
 function ENT:SetItem(class)
 
     if not landis.items.data[class] then
@@ -21,8 +23,19 @@ function ENT:Initialize()
 	self:SetModel( Model("models/player/impulse_zelpa/female_02.mdl") )
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
-    self:SetItem("testitem")
+    self:SetItem("wep_mp7")
 end
 
 function ENT:Think()
+end
+
+function ENT:Use(caller)
+	if IsValid(caller) then
+		if caller:IsPlayer() then
+			if caller:CanPickupItem(self:GetItemClass()) then
+				caller.Inventory[#caller.Inventory+1] = landis.items.data[self:GetItemClass()]
+				self:Remove()
+			end
+		end
+	end
 end

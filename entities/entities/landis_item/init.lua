@@ -36,7 +36,7 @@ function ENT:Use(caller)
 				net.Start("landisPickupItem")
 					net.WriteEntity(caller)
 					net.WriteString(self:GetItemClass())
-				net.Broadcast()
+				net.Send(caller)
 				caller.Inventory[#caller.Inventory+1] = landis.items.data[self:GetItemClass()]
 				self:Remove()
 			end

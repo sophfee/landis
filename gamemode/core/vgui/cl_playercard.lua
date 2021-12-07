@@ -89,9 +89,9 @@ function PANEL:Init()
 		-- prevent death
 		if not IsValid( self.Player ) then return end
 
-		draw.SimpleText(self.Player:Nick(), "card_header", 79, 35)
+		draw.SimpleText(self.Player:Nick(), "landis-32-B", 79, 35)
 		local localTeam = self.Player:Team()
-		draw.SimpleText(team.GetName( localTeam ), "card_subtitle", 79, 67, team.GetColor( localTeam))
+		draw.SimpleText(team.GetName( localTeam ), "landis-24", 79, 67, team.GetColor( localTeam))
 
 	end
 	self:Center()

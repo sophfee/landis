@@ -3,7 +3,7 @@ MsgC(Color(10,132,255),"[landis] Initializing core elements...\n")
 -- Just a little badge file, nothing special
 resource.AddSingleFile("materials/badges/smile.png")
 
-INCLUDE_VERSION_DATA = true -- Keep off unless you have the git cloned!
+INCLUDE_VERSION_DATA = false -- Keep off unless you have the git cloned!
 
 if INCLUDE_VERSION_DATA then
 local root = GM.FolderName

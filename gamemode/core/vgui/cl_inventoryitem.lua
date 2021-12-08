@@ -6,7 +6,9 @@ function PANEL:Init()
 
     self.Name  = ""
     self.Desc  = ""
-    self.Model = nil
+    self.Model = vgui.Create("DModelPanel",self,"ItemModelDisplay")
+    self.Model:SetPos(0,0)
+    self.Model:SetSize(80,80)
     self.Index = 0
 
     self:Dock(TOP)

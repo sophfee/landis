@@ -195,5 +195,11 @@ if CLIENT then
 		return vm_origin, vm_angles
 	end
 end
--- eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
--- eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
+
+function PLAYER:GetTeamData()
+	return landis.Teams.Data[self:Team()]
+end
+
+function PLAYER:GetLoadout()
+	return self:GetTeamData().loadout or nil
+end

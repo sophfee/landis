@@ -1,3 +1,10 @@
+-- Prevent family shared accounts from joining (alt account detection)
+function GM:PlayerAuthed(ply,steamID)
+	if not (ply:OwnerSteamID64() == ply:SteamID64()) then
+		landis.ConsoleMessage("Kicked " .. steamID .. " for joining on a Family Shared account.")
+		game.KickID(steamID, "Sorry! Family Shared accounts cannot join.\n\nPlease connect on an account that owns Garry's Mod.")
+	end
+end
 
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]

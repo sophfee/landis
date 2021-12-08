@@ -1,3 +1,46 @@
+
+function GM:PlayerSpawn(ply)
+	local teamData = landis.Teams.Data[ply:Team()]
+	if teamData then
+		ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
+	end
+	if ply:IsAdmin() then
+		ply:Give("weapon_physgun")
+	end
+	if ply:IsLeadAdmin() then
+		ply:Give("gmod_tool")
+	end
+	ply:Give("landis_hands")
+	hook.Run("PlayerLoadout", ply)
+end
+
+hook.Add( "PlayerCanHearPlayersVoice", "landisVoice3D", function( listener, talker )
+    if not talker:Alive() then return false end
+		return true,true
+end )
+
+hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
+	ply:CreateRagdoll()
+	ply:SetNWBool("CanRespawn",false)
+	timer.Simple(10, function()
+		ply:Spawn()
+	end)
+end)
+
+hook.Add( "PhysgunPickup", "pickupPlayer", function( ply, ent )
+	if ( ply:IsAdmin() and ent:IsPlayer() ) then
+		ent:SetMoveType(MOVETYPE_NONE)
+		//ent:Freeze( true )
+		return true
+	end
+end )
+hook.Add("PhysgunDrop", "dropPlayer", function(ply, ent)
+	if ent:IsPlayer() then
+		//ent:Freeze(false)
+		ent:SetMoveType(MOVETYPE_WALK)
+	end
+end)
+
 hook.Add("PlayerSpawn","landisSetupHands", function(ply)
 	ply:SetupHands()
 end)

@@ -37,7 +37,7 @@ function ENT:Use(caller)
 					net.WriteEntity(caller)
 					net.WriteString(self:GetItemClass())
 				net.Send(caller)
-				caller.Inventory[#caller.Inventory+1] = landis.items.data[self:GetItemClass()]
+				table.ForceInsert(caller.Inventory, landis.items.data[self:GetItemClass()])
 				self:Remove()
 			end
 		end

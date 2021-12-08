@@ -9,6 +9,7 @@ EQUIP_COS    = 3
 
 landis.items.base = {
 	UniqueID  = nil,
+	ID = 0,
 	DisplayName = "Unset Item",
 	Description = "Missing description",
 	Model     = "models/props_lab/huladoll.mdl",
@@ -46,7 +47,7 @@ function landis.lib.RegisterItem( meta )
 			ply.Inventory[i].Equipped = !ply.Inventory[i].Equipped -- invert value
 			if SERVER then
 				local t = ply.Inventory[i].Equipped and "equipped" or "unequipped"
-				landis.ConsoleMessage(ply:Nick(), " has ", t, " a ", self.UniqueID
+				landis.ConsoleMessage(ply:Nick(), " has ", t, " a ", self.UniqueID)
 			
 				if ply.Inventory[i].Equipped then
 					ply:Give(self.equipData.class)

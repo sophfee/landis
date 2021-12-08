@@ -33,7 +33,7 @@ landis.items.base = {
 }
 
 -- Setup the item class
-function landis.lib.RegisterItem( meta )
+function landis.RegisterItem( meta )
 
 	if SERVER then
 		landis.ConsoleMessage("Registering new item: " .. meta.UniqueID)

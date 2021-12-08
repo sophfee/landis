@@ -1,4 +1,8 @@
 util.AddNetworkString("landisStartChat")
+util.AddNetworkString("ragdoll_camera")
+util.AddNetworkString("landis_RequestTeamJoin")
+util.AddNetworkString("landis_spawn_vendor")
+
 net.Receive("landisStartChat", function(len,ply)
   if (ply.LastChatTime or 0) < CurTime() then
     ply:SetNWBool("IsTyping", true)
@@ -16,7 +20,7 @@ net.Receive("landisStartChat", function(len,ply)
 	ply.LastChatTime = CurTime()+0.075
 end)
 
-util.AddNetworkString("landis_spawn_vendor")
+
 
 net.Receive("landis_spawn_vendor", function(len,ply)
 	if (ply.limitSpawnVendor or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
@@ -31,4 +35,24 @@ net.Receive("landis_spawn_vendor", function(len,ply)
 	end
 	ply.limitSpawnVendor = CurTime() + 2 -- set the next time ply is allowed to spawn vendor to current time + 2 seconds
 
+end)
+
+net.Receive("landis_RequestTeamJoin", function(len,ply)
+	if (ply.teamWaitJoin or 0) > CurTime() then 
+		return
+	end
+
+	local teamIndex = net.ReadInt(32)
+	if teamIndex then
+		local limit = landis.Teams.Data[teamIndex].Limit
+		if limit then
+			if #team.GetPlayers(teamIndex) < limit then
+				hook.Run("PlayerJoinTeam", ply, teamIndex)
+			end
+		else
+			hook.Run("PlayerJoinTeam", ply, teamIndex)
+		end
+	end
+
+	ply.teamWaitJoin = CurTime() + 2
 end)

@@ -15,6 +15,23 @@ landis.Config.BGColorLight     = Color( 229, 229, 234  )
 landis.Config.ConsolePrefix    = "[landis]"
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 
+function landis.FindPlayer(term)
+	local match
+	local termLen = string.len(term)
+	term = string.upper(term)
+	local ezTest = player.GetBySteamID( term )
+	if ezTest then return ezTest end 
+	for _,ply in ipairs(player.GetAll()) do
+		local nick = string.upper( ply:Nick() )
+		for i=0,termLen do
+			local sub = string.sub(term, 0, termLen-i)
+			if i == termLen then break end
+			if string.match(nick,sub) then
+				return ply
+			end
+		end
+	end
+end
 
 function landis.ConsoleMessage(...)
 	local mColor = landis.Config.MainColor

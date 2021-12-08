@@ -1,7 +1,11 @@
 hook.Add("HUDPaint", "debug_inventory_hud", function()
 	local text = ""
-	for v,k in ipairs(LocalPlayer().Inventory) do
-		text = tostring(v) .. "-" .. k.UniqueID .. "\n"
+	for v,k in pairs(LocalPlayer().Inventory) do
+		text = text .. tostring(v) .. "-" .. k.UniqueID .. "\n"
 	end
-	draw.SimpleText(text, "BudgetLabel", 0, 100)
+	draw.DrawText(text, "BudgetLabel", 100, 100)
+end)
+
+concommand.Add("landis_inventory_dump",function()
+	PrintTable(LocalPlayer().Inventory)
 end)

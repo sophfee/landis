@@ -1,6 +1,11 @@
 --- Draw Helpers to prevent very very very long draw.SimpleText funcs & various other things
 
-local Gradient_Directions = {"left","right","up","down"}
+local Gradient_Directions = {
+  ["left"]=true,
+  ["right"]=true,
+  ["up"]=true,
+  ["down"]=true
+}
 local Gradient_Textures   = {
   ["left"] = "vgui/gradient-l",
   ["right"] = "vgui/gradient-r",

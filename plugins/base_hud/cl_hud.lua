@@ -208,7 +208,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		return 
 	end
 
-	if ply:InNoclip() then
+	if ply:InNoclip() and ply:IsAdmin() then
 
 		draw.DrawText("Moderation View", "landis-48-B", 5, 5, Color( 230, 230, 230, 180 ))
 
@@ -231,15 +231,32 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	
 
 	if SCHEMA:ShouldDrawElement( "Crosshair" ) and landis.Radial.Close then
-		surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
-		local centerW = ScrW()/2
-		local centerH = ScrH()/2
-		local len     = landis.lib.GetSetting("crosshairLength")
-		local gap     = landis.lib.GetSetting("crosshairGap")
-		surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
-		surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
-		surface.DrawRect( centerW, centerH - gap - len, 1, len)
-		surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+		local wep = ply:GetActiveWeapon()
+		if IsValid(wep) then
+			if wep.ShouldDrawCrosshair then
+				if wep:ShouldDrawCrosshair() then
+					surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
+					local centerW = ScrW()/2
+					local centerH = ScrH()/2
+					local len     = landis.lib.GetSetting("crosshairLength")
+					local gap     = landis.lib.GetSetting("crosshairGap")
+					surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
+					surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
+					surface.DrawRect( centerW, centerH - gap - len, 1, len)
+					surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+				end
+			else
+				surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
+				local centerW = ScrW()/2
+				local centerH = ScrH()/2
+				local len     = landis.lib.GetSetting("crosshairLength")
+				local gap     = landis.lib.GetSetting("crosshairGap")
+				surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
+				surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
+				surface.DrawRect( centerW, centerH - gap - len, 1, len)
+				surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+			end
+		end
 	end
 	
 	if SCHEMA:ShouldDrawElement( "Health" ) then drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) end

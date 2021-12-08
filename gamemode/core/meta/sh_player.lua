@@ -74,7 +74,7 @@ function PLAYER:IsWeaponRaised()
 		end
 	end
 
-	return self:GetNWBool("weaponRaised", true)
+	return self:GetNWBool("weaponRaised", false)
 end
 
 function PLAYER:IsWeaponRaised()
@@ -107,7 +107,7 @@ end
 -- code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!! -- oh BTW I got perms dw lmao, just doesnt work well
 -- !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!                               -- proof of permission: https://cdn.discordapp.com/attachments/822883467997872168/896128437939503164/unknown.png
 
---[[if SERVER then
+if SERVER then
 
 	hook.Add("CanPrimaryAttack", "noShootWeaponLowered1", function(self)
 		return false //self.Owner:IsWeaponRaised()
@@ -117,7 +117,11 @@ end
 		return false //self.Owner:IsWeaponRaised()
 	end)
 
-	function meta:SetWeaponRaised(state)
+	hook.Add("PlayerSwitchWeapon", "landisLowerWeapon",function(ply)
+		ply:SetWeaponRaised(false)
+	end)
+
+	function PLAYER:SetWeaponRaised(state)
 		self:SetNWBool("weaponRaised", state)
 
 		local weapon = self:GetActiveWeapon()
@@ -132,7 +136,7 @@ end
 		end
 	end
 
-	function meta:ToggleWeaponRaised()
+	function PLAYER:ToggleWeaponRaised()
 		self:SetWeaponRaised( !self:IsWeaponRaised() )
 	end
 
@@ -172,7 +176,7 @@ if CLIENT then
 		end
 
 		--The original code of the hook.
-		/*do
+		do
 			local func = weapon.GetViewModelPosition
 			if (func) then
 				local pos, ang = func( weapon, eyePos*1, eyeAngles*1 )
@@ -186,10 +190,10 @@ if CLIENT then
 				vm_origin = pos or vm_origin
 				vm_angles = ang or vm_angles
 			end
-		end*/
+		end
 
 		return vm_origin, vm_angles
 	end
-end--]]
+end
 -- eChat.CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
 -- eChat.CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)

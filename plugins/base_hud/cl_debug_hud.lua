@@ -29,6 +29,7 @@ local function GetDebugHUDText()
 	t=t.."radialMenuRadius: " .. landis.Radial.Radius .. "\n"
 	t=t.."deathTime: " .. deathTime .. "\n"
 	t=t.."teamIndex: " .. landis.TeamIndex
+	t=t.."inventoryItemCount: " .. #(LocalPlayer().Inventory)
 
 	return t
 end

@@ -15,3 +15,12 @@ net.Receive("landisStartChat", function(len,ply)
 	end
 	ply.LastChatTime = CurTime()+0.075
 end)
+
+util.AddNetworkString("landis_spawn_vendor")
+
+net.Receive("landis_spawn_vendor", function(len,ply)
+	if ply:IsSuperAdmin() then
+		landis.ConsoleMessage(ply:Nick() .. " has spawned a vendor.")
+		landis.SpawnVendor(net.ReadString(),ply:GetEyeTrace().HitPos or ply:GetPos())
+	end
+end)

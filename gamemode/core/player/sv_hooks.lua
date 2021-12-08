@@ -37,6 +37,10 @@ end)
 util.AddNetworkString("landis_RequestTeamJoin")
 
 net.Receive("landis_RequestTeamJoin", function(len,ply)
+	if (ply.teamWaitJoin or 0) > CurTime() then 
+		return
+	end
+
 	local teamIndex = net.ReadInt(32)
 	if teamIndex then
 		local limit = landis.Teams.Data[teamIndex].Limit
@@ -48,6 +52,8 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 			hook.Run("PlayerJoinTeam", ply, teamIndex)
 		end
 	end
+
+	ply.teamWaitJoin = CurTime() + 2
 end)
 
 hook.Add( "PlayerCanHearPlayersVoice", "Maximum Range", function( listener, talker )

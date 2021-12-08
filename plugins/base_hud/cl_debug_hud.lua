@@ -38,7 +38,7 @@ hook.Add("HUDPaint", "DebugHud_LANDIS", function()
 	if not DVBUILD then return end
 	draw.DrawText(DISPLAY .. " - " .. VERSION, "DebugHUD24", ScrW()-5, 5, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
 	draw.DrawText(XTNOTES, "DebugHUD18", ScrW()-5, 41, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
-	if landis.lib.GetSetting("debugHUD") then
+	if landis.GetSetting("debugHUD") then
 		draw.DrawText(GetDebugHUDText(), "BudgetLabel", 16, 16)
 	end
 end)

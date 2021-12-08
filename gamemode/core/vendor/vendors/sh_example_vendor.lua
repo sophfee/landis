@@ -4,7 +4,7 @@ Welcome to the Example Vendor class!
 
 ]]
 
-local VENDOR = landis.lib.CreateVendorTable()
+local VENDOR = landis.CreateVendorTable()
 
 VENDOR.UniqueID    = "example_vendor"
 VENDOR.Behavior    = "basic"
@@ -29,4 +29,4 @@ VENDOR.Model.Bodygroup[5] = 1
 
 VENDOR.Panel = "VendorPanel"
 
-landis.lib.RegisterVendor( VENDOR )
+landis.RegisterVendor( VENDOR )

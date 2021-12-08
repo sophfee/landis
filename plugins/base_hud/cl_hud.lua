@@ -217,7 +217,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 
 		draw.DrawText(msg, "landis-36", 5, 53, Color( 230, 230, 230, 180 ))
 
-		if landis.lib.GetSetting("mod-esp") then
+		if landis.GetSetting("mod-esp") then
 			for v,k in ipairs(player.GetAll()) do
 				if k == LocalPlayer() then continue end
 				local viewData = (k:OBBCenter()+k:GetPos()):ToScreen()
@@ -238,8 +238,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 					surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
 					local centerW = ScrW()/2
 					local centerH = ScrH()/2
-					local len     = landis.lib.GetSetting("crosshairLength")
-					local gap     = landis.lib.GetSetting("crosshairGap")
+					local len     = landis.GetSetting("crosshairLength")
+					local gap     = landis.GetSetting("crosshairGap")
 					surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
 					surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
 					surface.DrawRect( centerW, centerH - gap - len, 1, len)
@@ -249,8 +249,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 				surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
 				local centerW = ScrW()/2
 				local centerH = ScrH()/2
-				local len     = landis.lib.GetSetting("crosshairLength")
-				local gap     = landis.lib.GetSetting("crosshairGap")
+				local len     = landis.GetSetting("crosshairLength")
+				local gap     = landis.GetSetting("crosshairGap")
 				surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
 				surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
 				surface.DrawRect( centerW, centerH - gap - len, 1, len)

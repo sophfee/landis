@@ -1,4 +1,4 @@
-function landis.lib.SpawnVendor( class, pos, ang )
+function landis.SpawnVendor( class, pos, ang )
 	pos = pos or Vector()
 	ang = ang or Angle()
 

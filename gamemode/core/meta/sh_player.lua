@@ -203,3 +203,24 @@ end
 function PLAYER:GetLoadout()
 	return self:GetTeamData().loadout or nil
 end
+
+local adminGroups = {
+    ["admin"] = true,
+    ["leadadmin"] = true
+}
+
+function PLAYER:IsLeadAdmin()
+    return self:IsUserGroup("leadadmin") or self:IsSuperAdmin()
+end
+
+function PLAYER:IsAdmin()
+    if self:IsSuperAdmin() then
+        return true
+    end
+    
+    if adminGroups[self:GetUserGroup()] then
+        return true
+    end
+
+    return false
+end

@@ -13,5 +13,7 @@ function landis.lib.SpawnVendor( class, pos, ang )
 		entity:SetBodygroup( v, k )
 	end
 	entity:SetSkin( classData.Model.Skin )
+	entity:PhysicsInit( SOLID_BBOX )
+	entity:SetMoveType( MOVETYPE_NONE )
 	entity:SetSequence(2)
 end

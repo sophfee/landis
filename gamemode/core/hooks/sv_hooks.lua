@@ -14,6 +14,22 @@ function GM:PlayerSpawn(ply)
 	hook.Run("PlayerLoadout", ply)
 end
 
+hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
+	if ( desiredState == false ) then -- the player wants to turn noclip off
+		ply:RemoveEffects(EF_NODRAW)
+		ply:SetCollisionGroup(COLLISION_GROUP_PLAYER)
+		ply:GodDisable()
+		ply:SetNWBool("InNoclip",false)
+		return true -- always allow
+	elseif ( ply:IsAdmin() ) then
+		ply:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+		ply:AddEffects(EF_NODRAW)
+		ply:GodEnable()
+		ply:SetNWBool("InNoclip",true)
+		return true -- allow administrators to enter noclip
+	end
+end)
+
 hook.Add( "PlayerCanHearPlayersVoice", "landisVoice3D", function( listener, talker )
     if not talker:Alive() then return false end
 		return true,true

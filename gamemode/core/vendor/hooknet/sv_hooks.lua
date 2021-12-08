@@ -26,8 +26,8 @@ end)
 util.AddNetworkString("landis_spawn_vendor")
 
 net.Receive("landis_spawn_vendor", function(len,ply)
-	if ply:IsAdmin() then
+	if ply:IsSuperAdmin() then
 		landis.ConsoleMessage(ply:Nick() .. " has spawned a vendor.")
-		landis.lib.SpawnVendor(net.ReadString(),ply:GetEyeTrace().HitPos or ply:GetPos())
+		landis.SpawnVendor(net.ReadString(),ply:GetEyeTrace().HitPos or ply:GetPos())
 	end
 end)

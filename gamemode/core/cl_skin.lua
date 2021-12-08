@@ -188,14 +188,14 @@ function SKIN:PaintTab(self,w,h)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
+			if landis.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 		end
 		bgColor = landis.Config.ButtonColorHovered
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
+			if landis.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 		end
 		bgColor = landis.Config.ButtonColorOn
@@ -364,7 +364,7 @@ function SKIN:PaintButton(self,w,h)
 	local bgColor   = landis.Config.ButtonColorOff
 	if self:IsHovered() then
 		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
+			if landis.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
 			self.hSND = true
 			self.LerpPos = 0
 		end
@@ -373,7 +373,7 @@ function SKIN:PaintButton(self,w,h)
 	else self.hSND = false end
 	if self:IsDown() then
 		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
+			if landis.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
 			self.pSND = true
 			self.LerpPos = 0
 		end
@@ -440,10 +440,10 @@ end
 
 
 
-derma.DefineSkin("landis_base", "The default skin for landis.", SKIN)
+derma.DefineSkin("landis", "The default skin for landis.", SKIN)
 
 -- lol look at tthe identifier
 hook.Add("ForceDermaSkin", "foreskin", function()
-	return "landis_base"
+	return "landis"
 end)
 derma.RefreshSkins()

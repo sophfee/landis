@@ -4,7 +4,7 @@ Welcome to the Merchant Vendor class!
 
 ]]
 
-local VENDOR = landis.lib.CreateVendorTable()
+local VENDOR = landis.CreateVendorTable()
 
 VENDOR.UniqueID    = "example_merchant"
 VENDOR.Behavior    = "merchant"
@@ -42,4 +42,4 @@ VENDOR.Shop.Selling = {
 
 VENDOR.Panel = "merchantbase"
 
-landis.lib.RegisterVendor( VENDOR )
+landis.RegisterVendor( VENDOR )

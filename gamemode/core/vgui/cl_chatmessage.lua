@@ -21,7 +21,7 @@ function PANEL:SetMessage( ... )
 
 	local args = { ... }
 
-	self.text    = "<font=landis-" .. tostring(landis.lib.GetSetting("chatfontSize") or 18) .. (landis.lib.GetSetting("chatUseBold") and "-S-B" or "-S") .. "><colour=255,255,255>"
+	self.text    = "<font=landis-" .. tostring(math.Clamp(landis.GetSetting("chatfontSize"), 8, 48) or 18) .. (landis.GetSetting("chatUseBold") and "-S-B" or "-S") .. "><colour=255,255,255>"
 	self.colors  = {}
 	self.sender  = nil
 

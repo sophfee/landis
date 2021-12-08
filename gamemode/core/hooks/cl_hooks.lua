@@ -1,3 +1,5 @@
+local ply = LocalPlayer()
+
 function GM:HUDDrawTargetID()
 end
 
@@ -18,4 +20,15 @@ hook.Add("PlayerBindPress", "landisInventoryMenuOpen", function(ply, bind, press
             end
         end
     end
+end)
+
+hook.Add("Think", "startcam",function()
+	if not IsValid(ply) then ply = LocalPlayer() return end
+	if not ply:Alive() then
+		if not hookRunning then
+			ply:DoRagdollCamera()
+		end
+	else
+		hook.Remove("CalcView","ragdoll_camera")
+	end
 end)

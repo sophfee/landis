@@ -33,9 +33,9 @@ landis.AdminCategories = {
 
 if CLIENT then
 
-	landis.lib.SettingsPanels = {}
+	landis.SettingsPanels = {}
 
-	landis.lib.SettingsPanels["tickbox"] = function( parent,data )
+	landis.SettingsPanels["tickbox"] = function( parent,data )
 		if data.adminOnly then
 			if not LocalPlayer():IsAdmin() then
 				return
@@ -52,7 +52,7 @@ if CLIENT then
 		end
 	end
 
-	landis.lib.SettingsPanels["dropdown"] = function( parent,data )
+	landis.SettingsPanels["dropdown"] = function( parent,data )
 		if data.adminOnly then
 			if not LocalPlayer():IsAdmin() then
 				return
@@ -74,7 +74,7 @@ if CLIENT then
 		DropDown:SetSize(DropDown:GetWide()/3,DropDown:GetTall())
 	end
 
-	landis.lib.SettingsPanels["slider"] = function( parent,data )
+	landis.SettingsPanels["slider"] = function( parent,data )
 		if data.adminOnly then
 			if not LocalPlayer():IsAdmin() then
 				return
@@ -95,19 +95,19 @@ if CLIENT then
 		end
 	end
 
-	landis.lib.SettingsInit = {}
+	landis.SettingsInit = {}
 
-	landis.lib.SettingsInit["tickbox"] = function( data )
+	landis.SettingsInit["tickbox"] = function( data )
 		data:SetValueType("bool")
 		data.defaultValue = false
 	end
 
-	landis.lib.SettingsInit["dropdown"] = function( data )
+	landis.SettingsInit["dropdown"] = function( data )
 		data:SetValueType("string")
 		data.defaultValue = ""
 	end
 
-	landis.lib.SettingsInit["slider"] = function( data )
+	landis.SettingsInit["slider"] = function( data )
 		local t = data["options"]
 		
 
@@ -127,14 +127,14 @@ local baseStruct = {
 	-- In new versions this is INTERNAl, shouldn't be changed unless custom.
 	createPanel  = function(parent,data)
 		if SERVER then return end -- ensure that this never runs on the server.
-		local func = landis.lib.SettingsPanels[data.type]
+		local func = landis.SettingsPanels[data.type]
 		if func then
 			func(parent,data)
 		end
 	end,
 	init         = function(data)
 		if SERVER then return end -- ensure that this never runs on the server.
-		func = landis.lib.SettingsInit[data.type]
+		func = landis.SettingsInit[data.type]
 		if func then
 			func(data)
 		end
@@ -251,7 +251,7 @@ NUMBER_TYPES = {
 
 -- Function: Create Setting Class
 -- Info: This should be created on both client and server so server can verify settings and check for irregularities.
-function landis.lib.DefineSetting(className,struct)
+function landis.DefineSetting(className,struct)
 
 	local CSetting = table.Inherit(struct, baseStruct)
 	
@@ -325,9 +325,9 @@ function landis.lib.DefineSetting(className,struct)
 end
 
 for name,data in pairs(DefaultSettings) do
-	landis.lib.DefineSetting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
+	landis.DefineSetting(name,data) -- setup for cl & sv so they are sync'd, this sync check will be performed upon firing any functions, if something out of place, it'll perform auto-moderation dependant on how big the inconsistency is. (i.e. function change = insta ban)
 end
-landis.lib.DefineSetting("mod-esp",{
+landis.DefineSetting("mod-esp",{
 	type         = "tickbox",
 	printName    = "Enable Noclip ESP",
 	category     = "mod",
@@ -342,7 +342,7 @@ end
 
 local saveDataName = "settings.json"
 
-function landis.lib.GetSetting(className)
+function landis.GetSetting(className)
 	local data = landis.Settings[className]
 	if data then
 		return data:GetValue()
@@ -353,7 +353,7 @@ end
 --local dir = "landis"
 
 --file.CreateDir("landis")
-sql.Query("CREATE TABLE IF NOT EXISTS landis_settings")
+--sql.Query("CREATE TABLE IF NOT EXISTS landis_settings")
 
 -- INTERNAL
 function landis.lib.LoadSettings()
@@ -363,8 +363,6 @@ end
 function landis.lib.SaveSettings()
 	
 end
-
-landis.lib.LoadSettings()
 
 
 -- rename to draw gBaseSettings

@@ -1,5 +1,3 @@
-local meta = FindMetaTable("Player")
-
 landis.Teams = landis.Teams or {}
 landis.Teams.Data = landis.Teams.Data or {}
 landis.TeamIndex = landis.TeamIndex or 1
@@ -23,14 +21,6 @@ function landis.Teams.Define(self)
 	landis.TeamIndex = landis.TeamIndex + 1
 
 	return teamIndex
-end
-
-function meta:GetTeamData()
-	return landis.Teams.Data[self:Team()]
-end
-
-function meta:GetLoadout()
-	return self:GetTeamData().loadout or nil
 end
 
 if SERVER then

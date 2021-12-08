@@ -4,6 +4,31 @@ end)
 
 hook.Add("PlayerDeathSound","landisMuteDeathsound",function() return true end)
 
+hook.Add("landisOpenVendor", "landisBasicVendorFunc", function(ply,ent,class)
+	local ven = landis.GetVendor(class)
+	if ven then
+		if ven.Behavior == "basic" then
+
+			net.Start( "landisVendorOpen" )
+
+				net.WriteEntity( ent ) -- Entity Reference
+				net.WriteString( class or "example_vendor" ) -- Vendor Class
+				net.WriteTable( ven ) -- vendor data
+
+			net.Send( ply )
+
+		elseif ven.Behavior == "merchant" then
+			net.Start( "landisVendorOpen" )
+
+				net.WriteEntity( ent ) -- Entity Reference
+				net.WriteString( class or "example_vendor" ) -- Vendor Class
+				net.WriteTable( ven ) -- vendor data
+
+			net.Send( ply )
+		end
+	end
+end)
+
 hook.Add("PlayerSpawnNPC", "landisSchemaSpawnNPC", function(ply,npc_type,weapon)
 	if SCHEMA.PlayerSpawnNPC then
 		return SCHEMA:PlayerSpawnNPC(ply,npc_type,weapon)

@@ -12,7 +12,7 @@ landis.Vendor.Data = {} -- Registered Vendors
 --- Creates a basic structure for a new vendor.
 -- See the file itself for each value.
 -- @return Vendor Struct
-function landis.lib.CreateVendorTable()
+function landis.CreateVendorTable()
 	local class = {
 		UniqueID = "INVALID_VENDOR_CLASS", -- FUCKING CHANGE THIS DUMBASS 
 		Model = {
@@ -53,7 +53,7 @@ end
 --- Register a new vendor.
 -- Supply a proper Vendor Struct to this and it will allow it to be used
 -- @param meta The structure for the vendor. 
-function landis.lib.RegisterVendor( meta )
+function landis.RegisterVendor( meta )
 
 	landis.Vendor.Data[meta.UniqueID] = meta
 

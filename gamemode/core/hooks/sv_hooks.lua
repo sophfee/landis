@@ -37,12 +37,12 @@ hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
 	end
 end)
 
-hook.Add( "PlayerCanHearPlayersVoice", "landisVoice3D", function( listener, talker )
+function GM:PlayerCanHearPlayersVoice( listener, talker )
 	if not talker:Alive() then return false end
 	if listener:GetPos():DistToSqr( talker:GetPos() ) < ((landis.Config.VoiceRange*landis.Config.VoiceRange) or 600*600) then
 		return true,true
 	end
-end )
+end
 
 hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
 	ply:CreateRagdoll()

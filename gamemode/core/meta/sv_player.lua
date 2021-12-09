@@ -27,3 +27,10 @@ function PLAYER:AddChatText(...)
 	end
 	self:SendLua( "chat.AddText(" .. table.concat( t, ", " ) .. ")" )
 end
+
+local BlacklistedNames = {} -- add names
+
+function PLAYER:SetRPName(name)
+	sql.Query("UPDATE landis_user SET rpname = " .. sql.SQLStr(name) .. " WHERE steamid = " .. sql.SQLStr(self:SteamID64()))
+	self:SetNWString("RPName", name)
+end

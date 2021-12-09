@@ -2,6 +2,7 @@ util.AddNetworkString("landisStartChat")
 util.AddNetworkString("ragdoll_camera")
 util.AddNetworkString("landis_RequestTeamJoin")
 util.AddNetworkString("landis_spawn_vendor")
+util.AddNetworkString("landisItemEquip")
 
 net.Receive("landisStartChat", function(len,ply)
   if (ply.LastChatTime or 0) < CurTime() then
@@ -20,7 +21,22 @@ net.Receive("landisStartChat", function(len,ply)
 	ply.LastChatTime = CurTime()+0.075
 end)
 
+net.Receive("landisItemEquip", function(len,ply)
+	if (ply.limitItemEquip or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
+		return -- if the player's next allowed vendorspawn is greater than the current time we return
+	end
 
+	local itemIndex = net.ReadInt(32)
+	local itemData  = ply.Inventory[itemIndex]
+
+	if itemData then
+		if itemData.canEquip then
+			ply.Inventory[itemIndex].OnEquip(itemData,ply,itemIndex)
+		end
+	end
+
+	ply.limitItemEquip = CurTime() + 1
+end)
 
 net.Receive("landis_spawn_vendor", function(len,ply)
 	if (ply.limitSpawnVendor or 0) > CurTime() then -- or 0 returns 0 if the thing is nil

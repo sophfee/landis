@@ -64,11 +64,19 @@ function PANEL:DoClick()
     if I then
         local M = DermaMenu()
         if I.canUse then
-            M:AddOption(I.useText, I.onUse)
+            M:AddOption(I.useText, function()
+                I.onUse()
+            end)
         end
         if I.canEquip then
-            M:AddOption("Equip", I.OnEquip)
+            M:AddOption("Equip", function()
+                I.OnEquip(I,LocalPlayer(),self.Index)
+                net.Start("landisItemEquip")
+                    net.WriteInt(self.Index, 32)
+                net.SendToServer()
+            end)
         end
+        M:Open()
     end
 end
 

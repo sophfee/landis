@@ -1,3 +1,4 @@
+AddCSLuaFile("shared.lua")
 include("shared.lua")
 util.AddNetworkString("landisPickupItem")
 

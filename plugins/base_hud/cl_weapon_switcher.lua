@@ -4,6 +4,8 @@ local curTab  = 0
 local selecting = false
 local weps = {}
 
+
+
 local slotAlpha = {}
 slotAlpha.a = 0
 
@@ -14,7 +16,7 @@ local slotTweenOut = tween.new(0.07,slotAlpha,{a=0},"outQuad")
 
 hook.Add("HUDPaint", "landisDrawWepSelect", function()
 	local slots = {}
-	if weps[curSlot] and selecting then
+	if IsValid(weps[curSlot]) and selecting then
 		if easingIn then
 			slotTweenIn:update(FrameTime())
 		else
@@ -77,6 +79,11 @@ local function updateTable(slot)
 		end
 	end
 end
+
+net.Receive("landisRefreshTable", function()
+	updateTable(curSlot)
+end)
+
 hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 	for i=1,6 do
 		if (string.sub(bind, 0, 5) == "slot"..i) and pressed then

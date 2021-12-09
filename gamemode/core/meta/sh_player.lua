@@ -33,6 +33,9 @@ function PLAYER:CanPickupItem( item )
 	return !(weight + item.weight > 20)
 end
 
+function PLAYER:GetRPName()
+	return self:GetNWString("RPName",self:Nick())
+end
 
 function PLAYER:InNoclip()
 	return self:GetNWBool("InNoclip",false)

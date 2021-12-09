@@ -2,8 +2,9 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:SetupDataTables()
 	self:NetworkVar("Bool", 0, "IsTyping")
-	self:NetworkVar("Int",1,"XP")
-	self:NetworkVar("Bool",2,"InNoclip")
+	self:NetworkVar("Bool",1,"InNoclip")
+	self:NetworkVar("Int",2,"XP")
+	self:NetworkVar("String",3,"RPName")
 end
 
 PLAYER.Inventory = {}

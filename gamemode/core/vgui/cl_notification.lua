@@ -96,5 +96,7 @@ end
 vgui.Register("landisNotify",PANEL, "DPanel")
 
 function GM:AddDeathNotice(att,attTeam,inflitor,victim,victimTeam)
-	LocalPlayer():Notify(att.." killed "..victim.."!")
+	local tatt = att or "something"
+	local tvictim = victim or "placeholder"
+	LocalPlayer():Notify(tatt.." killed "..tvictim.."!")
 end

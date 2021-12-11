@@ -1,6 +1,6 @@
-/*
-** Badges is a sub-section of the Scoreboard system, it allows certain icons to appear for users that qualify.
-*/
+--
+-- Badges is a sub-section of the Scoreboard system, it allows certain icons to appear for users that qualify.
+--
 
 -- Please, do not edit these as they are for people who have contributed to the gamemode, they deserve credit!!!
 

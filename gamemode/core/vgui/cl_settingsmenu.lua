@@ -38,7 +38,6 @@ function PANEL:Init()
 		end
 	end
 
-	//PrintTable(cg)
 	self:Center()
 	self:MakePopup()
 

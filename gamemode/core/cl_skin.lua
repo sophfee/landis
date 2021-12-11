@@ -105,7 +105,7 @@ function SKIN:PaintButtonUp( panel, w, h )
 end
 
 function SKIN:PaintFrame( self,w,h )
-	self.lblTitle:SetFont("landis-20")
+	self.lblTitle:SetFont("landis-18-B")
 	blurDerma(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark
@@ -206,89 +206,6 @@ function SKIN:PaintTab(self,w,h)
 	draw.RoundedBoxEx(landis.Config.CornerRadius, 0, 0, w, 20, Color( bgColor.r, bgColor.g, bgColor.b, 255 ), true, true)
 	--surface.DrawRect(0, 0, w, 20)
 end
-
---[[function SKIN:PaintScrollBarGrip(self,w,h)
-	if not self.hSND then
-		self.hSND = false
-	end
-	if not self.pSND then
-		self.pSND = false
-	end
-	//if self:GetName() == "DNumberScratch" then return end
-	//self:SetTextColor(color_white)
-	local bgColor   = landis.Config.ButtonColorOff
-	if self:IsHovered() then
-		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
-			self.hSND = true
-		end
-		//bgColor = landis.Config.ButtonColorHovered
-	else self.hSND = false end
-	/*if self:IsDown() then
-		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
-			self.pSND = true
-		end
-		bgColor = landis.Config.ButtonColorOn
-	else self.pSND = false end*/
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
-end
-
-function SKIN:PaintButtonUp(self,w,h)
-	if not self.hSND then
-		self.hSND = false
-	end
-	if not self.pSND then
-		self.pSND = false
-	end
-	if self:GetName() == "DNumberScratch" then return end
-	self:SetTextColor(color_white)
-	local bgColor   = landis.Config.ButtonColorOff
-	if self:IsHovered() then
-		if not self.hSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.HoverSound) end
-			self.hSND = true
-		end
-		bgColor = landis.Config.ButtonColorHovered
-	else self.hSND = false end
-	if self:IsDown() then
-		if not self.pSND then
-			if landis.lib.GetSetting("buttonClicks") then surface.PlaySound(landis.Config.ClickSound) end
-			self.pSND = true
-		end
-		bgColor = landis.Config.ButtonColorOn
-	else self.pSND = false end
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
-	surface.SetDrawColor(255,255,255)
-	local arrow = {
-		{
-			x = self:GetX() + w/4,
-			y = self:GetY() + h/2
-		},
-		{
-			x = self:GetX() + w/2,
-			h = self:GetY() + h/4
-		},
-		{
-			x = self:GetX() + w-w/4,
-			h = self:GetY() + h/2
-		},
-		{
-			x = self:GetX() + w/4,
-			y = self:GetY() + h/2
-		}
-	}
-	draw.NoTexture()
-	surface.DrawPoly(arrow)
-end
-
-function SKIN:PaintVScrollBar(self,w,h)
-	local bgColor   = landis.Config.ButtonColorHovered
-	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 255 )
-	surface.DrawRect(0, 0, w, h)
-end*/]]
 
 function SKIN:PaintCategoryHeader(self,w,h)
 	self:SetFont("landis-24-B")

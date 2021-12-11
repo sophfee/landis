@@ -113,16 +113,18 @@ end
 
 if SERVER then
 
-	hook.Add("CanPrimaryAttack", "noShootWeaponLowered1", function(self)
-		return false //self.Owner:IsWeaponRaised()
-	end)
+	local AlwaysRaised = {
+		["weapon_physgun"] = true,
+		["gmod_tool"] = true,
+		["landis_hands"] = true
+	}
 
-	hook.Add("CanSecondaryAttack", "noShootWeaponLowered22", function(self)
-		return false //self.Owner:IsWeaponRaised()
-	end)
-
-	hook.Add("PlayerSwitchWeapon", "landisLowerWeapon",function(ply)
-		ply:SetWeaponRaised(false)
+	hook.Add("PlayerSwitchWeapon", "landisLowerWeapon",function(ply,_,wep)
+		if not AlwaysRaised[wep:GetClass()] then
+			ply:SetWeaponRaised(false)
+		else
+			ply:SetWeaponRaised(true)
+		end
 	end)
 
 	function PLAYER:SetWeaponRaised(state)
@@ -146,7 +148,9 @@ if SERVER then
 
 	hook.Add("PlayerButtonDown", "raise", function(self,btn)
 		if btn == KEY_G then
-			self:ToggleWeaponRaised()
+			if not AlwaysRaised[self:GetActiveWeapon():GetClass()] then
+				self:ToggleWeaponRaised()
+			end
 		end
 	end)
 

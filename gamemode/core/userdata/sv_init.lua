@@ -42,7 +42,7 @@ end
 // Internal - Do not use.
 function meta:SetupNewUser()
 	local userData = baseData
-	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64())..", "..tostring(0)..", "..sql.SQLStr("user")..")")
+	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. sql.SQLStr(self:Nick()) ..", ".. tostring(0)..", "..sql.SQLStr("user")..")")
 	print(a)
 	landis.ConsoleMessage("Created new data successfully!")
 	--[[file.Write(self:GetDataDir(), util.TableToJSON(userData))

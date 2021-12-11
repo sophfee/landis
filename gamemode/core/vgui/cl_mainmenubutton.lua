@@ -1,10 +1,13 @@
 local PANEL = {}
+local math = math
+local floor = math.floor
+local clamp = math.Clamp
 
 function PANEL:Init()
 	self.Colored = 0
 	self.DisplayText = ""
 	self.HoveredSound = false
-	self:SetSize(200,30)
+	self:SetSize(200,45)
 	self:SetText("")
 end
 
@@ -19,17 +22,40 @@ function PANEL:Paint(w,h)
 			surface.PlaySound(Sound("ui/buttonrollover.wav"))
 			self.HoveredSound = true
 		end
-		self.Colored = math.Clamp( self.Colored + (64*FrameTime()), 0, 12)
+		self.Colored = clamp( self.Colored + (64*FrameTime()), 0, 12)
 	else
 		self.HoveredSound = false
-		self.Colored = math.Clamp( self.Colored - (64*FrameTime()), 0, 12)
+		self.Colored = clamp( self.Colored - (64*FrameTime()), 0, 12)
 	end
 		
-	local r = Lerp((self.Colored/12), 255, mainColor.r)
-	local g = Lerp((self.Colored/12), 255, mainColor.g)
-	local b = Lerp((self.Colored/12), 255, mainColor.b)
+	local r = floor(Lerp((self.Colored/12), 255, mainColor.r))
+	local g = floor(Lerp((self.Colored/12), 255, mainColor.g))
+	local b = floor(Lerp((self.Colored/12), 255, mainColor.b))
+	local c = Color(r,g,b,GlobalAlpha)
 
-	draw.SimpleTextOutlined(self.DisplayText or "null", "landis_base_main_menu_btn", w/2, h/2, Color( r, g, b, GlobalAlpha or 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color( 0, 0, 0, GlobalAlpha ))
+	draw.SimpleText(
+		self.DisplayText, 
+		"landis-36", 
+		7, 
+		h/2, 
+		Color(
+			floor(c.r/2),
+			floor(c.g/2),
+			floor(c.b/2),
+			floor(GlobalAlpha)
+		),
+		TEXT_ALIGN_LEFT,
+		TEXT_ALIGN_CENTER
+	)
+	draw.SimpleText(
+		self.DisplayText, 
+		"landis-36", 
+		5, 
+		h/2, 
+		c,
+		TEXT_ALIGN_LEFT,
+		TEXT_ALIGN_CENTER
+	)
 end
 
 function PANEL:DoClick()

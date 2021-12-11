@@ -14,7 +14,7 @@ SCHEMA.HUD.Elements = {
 function landis.Schema.Boot( schemaName )
 	landis.ConsoleMessage("booting schema \"" .. schemaName .. "\"")
 	landis.Schema.Name = schemaName
-	landis.lib.includeDir(GM.FolderName .. "/schema")
+	landis.includeDir(GM.FolderName .. "/schema")
 end
 
 -- Default Hooks

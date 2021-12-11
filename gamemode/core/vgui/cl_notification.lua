@@ -11,7 +11,7 @@ surface.CreateFont("notifyText", {
 	extended = true
 })
 
-/*
+--[[]
 
 Call order:
 
@@ -19,7 +19,7 @@ create vgui
 set duration,
 set message
 
-*/
+]]
 
 function PANEL:SetMessage(text)
 
@@ -77,7 +77,7 @@ end
 
 function PANEL:Init()
 	self:SetSize(320,80)
-	//self:SetPos(ScrW()-200,ScrH()-100)
+	--self:SetPos(ScrW()-200,ScrH()-100)
 
 	surface.PlaySound(Sound("landis/ui/beep.wav"))
 	self.removeTime = CurTime() + 5
@@ -90,13 +90,8 @@ function PANEL:Init()
 		end)
 	end
 
-	//self.message = vgui.Create("DLabel", self)
+	--self.message = vgui.Create("DLabel", self)
 end
 
 vgui.Register("landisNotify",PANEL, "DPanel")
 
-function GM:AddDeathNotice(att,attTeam,inflitor,victim,victimTeam)
-	local tatt = att or "something"
-	local tvictim = victim or "placeholder"
-	LocalPlayer():Notify(tatt.." killed "..tvictim.."!")
-end

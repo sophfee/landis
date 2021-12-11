@@ -14,7 +14,7 @@ landis.Config.BGColorDark      = Color( 44,  44,  46  )
 landis.Config.BGColorLight     = Color( 229, 229, 234  )
 landis.Config.ConsolePrefix    = "[landis]"
 landis.Config.VoiceRange       = 600
-// instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
+-- instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 
 function landis.FindPlayer(term)
 	local match
@@ -39,7 +39,7 @@ function landis.ConsoleMessage(...)
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
 	return MsgC(mColor,prefix,Color(255,59,48),"[Server] ",textCo,...,"\n")
 end
@@ -49,7 +49,7 @@ function landis.Warn(...)
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
 	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Warn] ",textCo,...,"\n")
 end
@@ -59,7 +59,7 @@ function landis.Error(...)
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
 	MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
 	print("======[STACK TRACEBACK]=====")
@@ -67,7 +67,7 @@ function landis.Error(...)
 	print("======[ENDOF TRACEBACK]=====")
 end
 
-function landis.lib.includeDir( scanDirectory, core )
+function landis.includeDir( scanDirectory, core )
 	-- Null-coalescing for optional argument
 	core = core or false
 	
@@ -84,7 +84,7 @@ function landis.lib.includeDir( scanDirectory, core )
 			
 			-- Include files within this directory
 			for _, fileName in pairs( files ) do
-				//print(fileName)
+				
 				if fileName != "shared.lua" and fileName != "init.lua" and fileName != "cl_init.lua" then
 					-- print( "Found: ", fileName )
 					
@@ -94,6 +94,14 @@ function landis.lib.includeDir( scanDirectory, core )
 	
 					if core then
 						relativePath = string.gsub( directory .. "/" .. fileName, "landis/gamemode/", "" )
+					end
+
+					-- Include server files
+					if string.match( fileName, "^rq" ) then
+						if (SERVER) then
+							AddCSLuaFile(relativePath)
+						end
+						_G[string.sub(fileName, 3, string.len(fileName) - 4)] = include(relativePath)
 					end
 					
 					-- Include server files
@@ -146,27 +154,25 @@ end
 if SERVER then
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
-	AddCSLuaFile("landis/gamemode/lib/tween.lua")
-	AddCSLuaFile("landis/gamemode/lib/outline.lua")
+	landis.includeDir("landis/gamemode/lib")
 
 	landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( "landis/gamemode/core"  )
+	landis.includeDir("landis/gamemode/core")
 
 	landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( "landis/plugins" )
+	landis.includeDir("landis/plugins")
 end
 
 if CLIENT then 
 
 	landis.ConsoleMessage("loading libraries")
-	include("landis/gamemode/lib/tween.lua")
-	include("landis/gamemode/lib/outline.lua")
+	landis.includeDir("landis/gamemode/lib")
 
 	landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( "landis/gamemode/core"  )
+	landis.includeDir("landis/gamemode/core")
 
 	landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( "landis/plugins" )
+	landis.includeDir("landis/plugins")
 
 end
 

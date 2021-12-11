@@ -48,7 +48,6 @@ if CLIENT then
 		PANEL:SetValue(data:GetValue())
 		function PANEL:OnChange(bVal)
 			data:SetValue(bVal)
-			//PrintTable(data)
 		end
 	end
 
@@ -254,8 +253,6 @@ NUMBER_TYPES = {
 function landis.DefineSetting(className,struct)
 
 	local CSetting = table.Inherit(struct, baseStruct)
-	
-	//PrintTable(CSetting)
 
 	function CSetting:SetValueType(newType)
 		if not table.HasValue(validType, newType) then

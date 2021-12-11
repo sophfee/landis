@@ -3,6 +3,7 @@ util.AddNetworkString("ragdoll_camera")
 util.AddNetworkString("landis_RequestTeamJoin")
 util.AddNetworkString("landis_spawn_vendor")
 util.AddNetworkString("landisItemEquip")
+util.AddNetworkString("landisRPNameChange")
 
 net.Receive("landisStartChat", function(len,ply)
   if (ply.LastChatTime or 0) < CurTime() then
@@ -70,4 +71,12 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 			hook.Run("PlayerJoinTeam", ply, teamIndex)
 		end
 	end
+end)
+
+net.Receive("landisRPNameChange", function(len,ply)
+	if (ply.rpNameChangeWait or 0) > CurTime() then 
+		return
+	end
+	ply:SetRPName(net.ReadString())
+	ply.rpNameChangeWait = CurTime() + 2
 end)

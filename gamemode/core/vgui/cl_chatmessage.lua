@@ -61,13 +61,13 @@ function PANEL:SetMessage( ... )
 			end
 
 			local teamColor = team.GetColor( k:Team() )
-			MsgC( teamColor, k:Nick() )
+			MsgC( teamColor, k:GetRPName() )
 
 			self.text       = self.text .. "</colour><colour=" .. teamColor.r .. "," .. teamColor.g .. "," .. teamColor.b ..">"
-			self.text       = self.text .. k:Nick()
+			self.text       = self.text .. k:GetRPName()
 			self.sender     = k
 
-			self.rawText    = self.rawText .. k:Nick()
+			self.rawText    = self.rawText .. k:GetRPName()
 
 		end
 

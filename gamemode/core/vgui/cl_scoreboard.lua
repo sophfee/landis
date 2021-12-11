@@ -4,10 +4,10 @@ openPlayercard = false
 
 function PANEL:CreatePlayerList()
 
-	local players = table.Copy( player.GetHumans() ) // Bots tend to create errors when getting steam IDs and shit
+	local players = table.Copy( player.GetHumans() ) -- Bots tend to create errors when getting steam IDs and shit
 	local sorted  = {}
 
-	// Sort the list by teams
+	-- Sort the list by teams
 	for i,t in pairs(team.GetAllTeams()) do
 		for v,k in ipairs(players) do 
 			if k:Team() == t then
@@ -29,11 +29,11 @@ function PANEL:CreatePlayerList()
 end
 
 function PANEL:Init()
-	// Make sure it can still run on low-res
+	-- Make sure it can still run on low-res
 	self:SetDraggable(false)
 	self:ShowCloseButton(false)
 	self:SetTitle("Scoreboard")
-	//self:DockPadding()
+	
 	self:DockPadding(7, 30, 7, 7)
 	if ScrW() < 800 or ScrH() < 600 then
 		self:SetSize(640,480)
@@ -41,8 +41,6 @@ function PANEL:Init()
 		self:MakePopup()
 		self.Scroll = vgui.Create("DScrollPanel", self, "landis-baseScoreboardScrollPanel")
 		self.Scroll.Paint = function(self,w,h) 
-			//surface.SetDrawColor(255, 255, 255, 100)
-			//surface.DrawRect(0, 0, w, h)
 		end
 		self.Scroll:Dock(FILL)
 		self:CreatePlayerList()
@@ -52,8 +50,6 @@ function PANEL:Init()
 		self:MakePopup()
 		self.Scroll = vgui.Create("DScrollPanel", self, "landis-baseScoreboardScrollPanel")
 		self.Scroll.Paint = function(self,w,h) 
-			//surface.SetDrawColor(255, 255, 255, 100)
-			//surface.DrawRect(0, 0, w, h)
 		end
 		self.Scroll:Dock(FILL)
 		self:CreatePlayerList()
@@ -64,7 +60,7 @@ vgui.Register("landisScoreboard", PANEL, "DFrame")
 
 local activePanel
 
-// Remove default scoreboard
+-- Remove default scoreboard
 function GM:ScoreboardShow()
 	if not activePanel then
 		activePanel = vgui.Create("landisScoreboard",nil,"landisScoreboardPlayer")

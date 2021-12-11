@@ -207,7 +207,7 @@ function landis.chatbox.buildBox()
 	landis.chatbox.hideBox()
 end
 
---// Hides the chat box but not the messages
+-- Hides the chat box but not the messages
 function landis.chatbox.hideBox()
 	landis.chatbox.isOpen = false
 
@@ -274,7 +274,7 @@ function landis.chatbox.showBox()
 	--hook.Run("landisStartChat")
 end
 
---// Opens the settings panel
+-- Opens the settings panel
 function landis.chatbox.openSettings()
 	landis.chatbox.hideBox()
 	
@@ -365,7 +365,7 @@ function landis.chatbox.openSettings()
 	end
 end
 
---// Panel based blur function by Chessnut from NutScript
+-- Panel based blur function by Chessnut from NutScript
 local blur = Material( "pp/blurscreen" )
 function landis.chatbox.blur( panel, layers, density, alpha )
 	-- Its a scientifically proven fact that blur improves a script
@@ -429,7 +429,7 @@ function chat.AddText(...)
 	landis.chatbox.lastMessage = CurTime()
 	landis.chatbox.chatLog:SetVisible( true )
 
-	--chat.PlaySound()
+	chat.PlaySound()
 	timer.Simple(0.05,function()
 		landis.chatbox.chatLog:ScrollToChild(msg)
 	end)

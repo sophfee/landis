@@ -14,7 +14,7 @@ function PANEL:Init()
 	self.buy:SetPos(5+self:GetWide()/2,30)
 	self.buy:SetSize((self:GetWide()-20)/2,(self:GetTall()-35))
 	local a = vgui.Create("DButton", self.sell)
-	//self.buy:AddItem(a)
+	--self.buy:AddItem(a)
 	a:Dock(FILL)
 	a:SetText("BUYING")
 end

@@ -25,6 +25,8 @@ net.Receive("landisItemEquip", function(len,ply)
 	if (ply.limitItemEquip or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
 		return -- if the player's next allowed vendorspawn is greater than the current time we return
 	end
+	ply.limitItemEquip = CurTime() + 1
+
 
 	local itemIndex = net.ReadInt(32)
 	local itemData  = ply.Inventory[itemIndex]
@@ -34,22 +36,19 @@ net.Receive("landisItemEquip", function(len,ply)
 			ply.Inventory[itemIndex].OnEquip(itemData,ply,itemIndex)
 		end
 	end
-
-	ply.limitItemEquip = CurTime() + 1
 end)
 
 net.Receive("landis_spawn_vendor", function(len,ply)
 	if (ply.limitSpawnVendor or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
 		return -- if the player's next allowed vendorspawn is greater than the current time we return
 	end
+	ply.limitSpawnVendor = CurTime() + 2
 
-	-- rate limiting 101
 
 	if ply:IsSuperAdmin() then
 		landis.ConsoleMessage(ply:Nick() .. " has spawned a vendor.")
 		landis.SpawnVendor(net.ReadString(),ply:GetEyeTrace().HitPos or ply:GetPos())
 	end
-	ply.limitSpawnVendor = CurTime() + 2 -- set the next time ply is allowed to spawn vendor to current time + 2 seconds
 
 end)
 
@@ -57,7 +56,9 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 	if (ply.teamWaitJoin or 0) > CurTime() then 
 		return
 	end
-
+	ply.teamWaitJoin = CurTime() + 2
+	
+	
 	local teamIndex = net.ReadInt(32)
 	if teamIndex then
 		local limit = landis.Teams.Data[teamIndex].Limit
@@ -69,6 +70,4 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 			hook.Run("PlayerJoinTeam", ply, teamIndex)
 		end
 	end
-
-	ply.teamWaitJoin = CurTime() + 2
 end)

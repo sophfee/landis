@@ -13,6 +13,7 @@ landis.Config.DefaultTextColor = Color( 245, 245, 245 )
 landis.Config.BGColorDark      = Color( 44,  44,  46  )
 landis.Config.BGColorLight     = Color( 229, 229, 234  )
 landis.Config.ConsolePrefix    = "[landis]"
+landis.Config.VoiceRange       = 600
 // instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 
 function landis.FindPlayer(term)

@@ -154,7 +154,7 @@ end
 
 if CLIENT then
 
-	local loweredAngles = Angle(45, -0, -0)
+	local loweredAngles = Angle(17, -17, -8)
 
 	function GM:CalcViewModelView(weapon, viewmodel, oldEyePos, oldEyeAng, eyePos, eyeAngles)
 		if not IsValid(weapon) then return end

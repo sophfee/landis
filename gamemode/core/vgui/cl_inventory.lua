@@ -12,7 +12,7 @@ function PANEL:Init()
     self.Scroll = vgui.Create("DScrollPanel", self, "InventoryScrollMenu")
 
     self.Scroll:Dock(FILL)
-    self.Scroll:SetSpaceY(5)
+    --self.Scroll:SetSpaceY(5)
 
     for v,k in ipairs(LocalPlayer().Inventory) do
         local ITEM = vgui.Create("landisItem", self.Scroll, "ItemPanel")

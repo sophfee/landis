@@ -110,6 +110,50 @@ hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 			return true
 		end
 	end
+	if (string.sub(bind, 0, 7) == "invnext") then
+		slotTweenOut:set(0)
+		selecting = true
+		easingIn = false
+			
+		surface.PlaySound("landis/ui/scroll.mp3")
+		timer.Simple(0.07, function()
+			if curSlot + 1 > #weps then
+				if curTab + 1 > 5 then
+					curTab = 0
+				else
+					curTab = curTab + 1
+				end
+				updateTable(curTab)
+				curSlot = 1
+			else
+				curSlot = curSlot + 1
+			end
+			slotTweenIn:set(0)
+			easingIn = true
+		end)
+	end
+	if (string.sub(bind, 0, 7) == "invprev") then
+		slotTweenOut:set(0)
+		selecting = true
+		easingIn = false
+			
+		surface.PlaySound("landis/ui/scroll.mp3")
+		timer.Simple(0.07, function()
+			if curSlot - 1 < 1 then
+				if curTab - 1 < 0 then
+					curTab = 5
+				else
+					curTab = curTab - 1
+				end
+				updateTable(curTab)
+				curSlot = #weps
+			else
+				curSlot = curSlot - 1
+			end
+			slotTweenIn:set(0)
+			easingIn = true
+		end)
+	end
 	if (string.sub(bind, 0, 7) == "+attack") then
 		if selecting then
 			if weps[curSlot] then

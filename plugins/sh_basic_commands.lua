@@ -61,3 +61,41 @@ if CLIENT then
 end
 
 landis.chat.RegisterCommand("/icontool",iconToolCommand)
+
+local gotoCommand = {
+	RequireAlive    = false,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_ADMIN,
+	HelpDescription = "Teleport to a player",
+	onRun  = function(self,ply,args)
+		if ply:IsAdmin() then
+			local user = landis.FindPlayer(args[1])
+			if IsValid(user) then
+				if user:IsValid() then
+					ply:SetPos(user:GetPos()+Vector(100,0,0))
+				end
+			end
+		end
+	end
+}
+
+landis.chat.RegisterCommand("/goto",gotoCommand)
+
+local bringCommand = {
+	RequireAlive    = false,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_ADMIN,
+	HelpDescription = "Teleport to a player",
+	onRun  = function(self,ply,args)
+		if ply:IsAdmin() then
+			local user = landis.FindPlayer(args[1])
+			if IsValid(user) then
+				if user:IsValid() then
+					user:SetPos(ply:GetPos()+Vector(100,0,0))
+				end
+			end
+		end
+	end
+}
+
+landis.chat.RegisterCommand("/bring",bringCommand)

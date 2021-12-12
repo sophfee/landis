@@ -8,6 +8,11 @@ end
 
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]
+	ply:SetRPName(ply:GetSyncRPName())
+	ply:SetRunSpeed(200)
+	ply:SetWalkSpeed(120)
+	ply:SetSlowWalkSpeed(70)
+	ply:SetDuckSpeed(0.2)
 	if teamData then
 		ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
 	end
@@ -19,6 +24,10 @@ function GM:PlayerSpawn(ply)
 	end
 	ply:Give("landis_hands")
 	hook.Run("PlayerLoadout", ply)
+end
+
+function GM:PlayerDeathThink()
+	return false
 end
 
 hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
@@ -66,6 +75,7 @@ end)
 
 hook.Add("PlayerSpawn","landisSetupHands", function(ply)
 	ply:SetupHands()
+	ply:SetTeam(1)
 end)
 
 hook.Add("PlayerDeathSound","landisMuteDeathsound",function() return true end)

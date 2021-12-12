@@ -318,9 +318,6 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 			draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*flatAlpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
 
 			draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, flatAlpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,flatAlpha)) 
-
-			
-			draw.SimpleText(flatAlpha,"BudgetLabel")
 		end
 
 	else
@@ -339,7 +336,6 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenOutTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenOutTable.alpha))
 
 		hiddenElements["CHudDamageIndicator"] = nil
-		draw.SimpleText(math.floor(tweenOutTable.alpha),"BudgetLabel")
 
 	end
 

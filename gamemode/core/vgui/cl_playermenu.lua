@@ -26,6 +26,19 @@ function PANEL:Init()
 	self.EconTab:SetSize(pWidth-145,pHeight-65)
 	self.EconTab:SetDraggable(false)
 	self.EconTab:ShowCloseButton(false)
+
+	self.RPNameChange = vgui.Create("DButton", self.EconTab)
+	self.RPNameChange:SetText("Change RP Name")
+	self.RPNameChange:Dock(TOP)
+	self.RPNameChange.DoClick = function()
+		Derma_StringRequest("#landis.rpname.title","#landis.rpname.subtitle","",function(name)
+			net.Start("landisRPNameChange")
+				net.WriteString(name)
+			net.SendToServer()
+		end)
+	end
+
+
 	self.TeamPanels = {}
 	self.TeamTabButton = vgui.Create("DButton", self)
 	self.TeamTabButton:SetPos(15,75)

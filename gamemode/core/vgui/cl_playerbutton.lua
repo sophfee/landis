@@ -86,10 +86,10 @@ function PANEL:DoClick()
 	if not IsValid( self.Owner ) then return end
 	if openPlayercard then return end
 	openPlayercard = true
-	local __ = vgui.Create("landisPlayerCard")
-	__:Center()
-	__:MakePopup()
-	__:SetPlayer( self.Owner )
+	local pCard = vgui.Create("landisPlayerCard")
+	pCard:Center()
+	pCard:MakePopup()
+	pCard:SetPlayer( self.Owner )
 end
 
 vgui.Register("landisPlayerPanel", PANEL, "DButton")

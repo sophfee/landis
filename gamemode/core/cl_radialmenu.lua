@@ -77,7 +77,6 @@ local function HUD_Paint()
     --draw.Circle(ScrW()/2, ScrH()/2, landis.Radial.Radius, 6)
     surface.SetDrawColor(40, 40, 40)
     draw.Circle(ScrW()/2, ScrH()/2, landis.Radial.Radius, 8)
-    draw.SimpleText("radius:"..landis.Radial.Radius,"BudgetLabel",0,18)
 
     for i,k in ipairs(landis.Radial.Opts) do
         --DrawOption(i,k)

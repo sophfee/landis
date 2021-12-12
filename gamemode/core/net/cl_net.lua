@@ -27,3 +27,10 @@ net.Receive("landisVendorOpen", function()
 	end
 
 end)
+
+net.Receive("landisAddChatText", function()
+	local t = net.ReadTable()
+	if t then
+		chat.AddText(unpack(t))
+	end
+end)

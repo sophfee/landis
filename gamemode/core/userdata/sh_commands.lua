@@ -2,22 +2,27 @@ if SERVER then
 	util.AddNetworkString("moderation_ban")
 end
 
-function landis.FindPlayer(term)
-	local match
-	local termLen = string.len(term)
-	term = string.upper(term)
-	local ezTest = player.GetBySteamID( term )
-	if ezTest then return ezTest end 
-	for _,ply in ipairs(player.GetAll()) do
-		local nick = string.upper( ply:Nick() )
-		for i=0,termLen do
-			local sub = string.sub(term, 0, termLen-i)
-			if i == termLen then break end
-			if string.match(nick,sub) then
-				return ply
-			end
-		end
-	end
+function landis.FindPlayer(searchKey)
+    if not searchKey or searchKey == "" then return nil end
+    local searchPlayers = player.GetAll()
+    local lowerKey = string.lower(tostring(searchKey))
+
+    for k = 1, #searchPlayers do
+        local v = searchPlayers[k]
+
+        if searchKey == v:SteamID() then
+            return v
+        end
+
+        if string.find(string.lower(v:GetRPName()), lowerKey, 1, true) ~= nil then
+            return v
+        end
+
+        if string.find(string.lower(v:Nick()), lowerKey, 1, true) ~= nil then
+            return v
+        end
+    end
+    return nil
 end
 
 local banCommand = {

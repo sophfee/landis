@@ -209,7 +209,7 @@ function PLAYER:GetTeamData()
 end
 
 function PLAYER:GetLoadout()
-	return self:GetTeamData().loadout or nil
+	return self:GetTeamData()["loadout"] or nil
 end
 
 local adminGroups = {

@@ -150,7 +150,12 @@ if CLIENT then
 	--        Get ratio scale
 	LOW_RES = ScrH()*ScrW() < 1000000 and true or false
 end
-
+function landis.SafeString(s)
+	local pat = "[^0-9a-zA-Z%s]+"
+	local cln =s
+	cln = string.gsub(cln, pat, "")
+	return cln
+end
 if SERVER then
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
@@ -175,6 +180,7 @@ if CLIENT then
 	landis.includeDir("landis/plugins")
 
 end
+
 
 
 function landis.Reload()

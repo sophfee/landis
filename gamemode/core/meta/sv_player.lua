@@ -17,20 +17,22 @@ function PLAYER:Notify(message,duration)
 end
 
 function PLAYER:AddChatText(...)
-  local t = {...}
-  for v,k in ipairs(t) do
-		if type(k) == "string" then
-			t[v] = "\"" .. k .. "\""
-		elseif type(k) == "table" then
-			t[v] = "Color("..k.r..","..k.g..","..k.b..")"
-		end
-	end
-	self:SendLua( "chat.AddText(" .. table.concat( t, ", " ) .. ")" )
+	local t = {...}
+	net.Start("landisAddChatText")
+		net.WriteTable(t)
+	net.Send(self)
 end
 
 local BlacklistedNames = {} -- add names
 
-function PLAYER:SetRPName(name)
-	sql.Query("UPDATE landis_user SET rpname = " .. sql.SQLStr(name) .. " WHERE steamid = " .. sql.SQLStr(self:SteamID64()))
+function PLAYER:SetRPName(name,no_sync)
 	self:SetNWString("RPName", name)
+	if not no_sync then
+		sql.Query("UPDATE landis_user SET rpname = " .. sql.SQLStr(name) .. " WHERE steamid = " .. sql.SQLStr(self:SteamID64()))
+	end
+end
+
+function PLAYER:GetSyncRPName()
+	local T = sql.Query("SELECT rpname FROM landis_user WHERE steamid = " .. sql.SQLStr(tostring(self:SteamID64())))
+	return T[1].rpname
 end

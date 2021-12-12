@@ -4,6 +4,10 @@ local floor = math.floor
 
 MainMenuMusic = nil
 
+language.Add("landis.rpname.title", "landis")
+language.Add("landis.rpname.subtitle", "Please enter a valid RP name, must be longer than 6 letters, and less than 24 letters.\nIt cannot contain any special characters or numbers.")
+
+
 menuOpen = false
 GlobalAlpha = 255
 function PANEL:Init()
@@ -50,7 +54,7 @@ function PANEL:Init()
 	self.PlayBtn = vgui.Create("landisMainMenuButton", self, "landis_base-playbutton")
 	function self.PlayBtn:WhenPressed()
 		if LocalPlayer():GetRPName() == LocalPlayer():Nick() then
-			Derma_StringRequest("#landis.rpname.title","#landis.rpname.subtitle","#landis.rpname.default",function(name)
+			Derma_StringRequest("#landis.rpname.title","#landis.rpname.subtitle","",function(name)
 				net.Start("landisRPNameChange")
 					net.WriteString(name)
 				net.SendToServer()
@@ -112,7 +116,7 @@ function PANEL:Init()
 	self.Credits = vgui.Create("landisMainMenuButton", self, "landis_base-optbutton")
 
 	function self.Credits:WhenPressed()
-		Derma_Message("made by Nick :D (@urnotnick on github)","Credits!","epic!")
+		Derma_Message("made by Nick :D (@urnotnick on github)\n\nSpecial Thanks:\nXtra\nbuffington\nOneLonelyDog\nBusiness Cat\nMarsh","Credits!","epic!")
 	end
 	self.Credits:SetDisplayText("Credits")
 	self.Credits:SetPos(100,ScrH()/2+68)
@@ -133,7 +137,7 @@ function PANEL:Init()
 		RunConsoleCommand("disconnect")
 	end
 	self.Disconnect:SetDisplayText("Disconnect")
-	self.Disconnect:SetPos(100,ScrH()/2+140)
+	self.Disconnect:SetPos(100,ScrH()/2+136)
 
 	--self:ParentToHUD()
 	--gui.EnableScreenClicker(true)

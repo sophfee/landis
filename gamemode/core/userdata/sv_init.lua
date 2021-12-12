@@ -43,7 +43,7 @@ end
 function meta:SetupNewUser()
 	local userData = baseData
 	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. sql.SQLStr(self:Nick()) ..", ".. tostring(0)..", "..sql.SQLStr("user")..")")
-	print(a)
+	sql.Query("INSERT INTO landis_currency VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. tostring(0) ..", ".. tostring(0)..")")
 	landis.ConsoleMessage("Created new data successfully!")
 	--[[file.Write(self:GetDataDir(), util.TableToJSON(userData))
 	self.log_warns = table.Copy(userData["warns"]) or {}
@@ -66,6 +66,7 @@ function meta:SetupData()
 		return
 	end
 	self:SetUserGroup(userData[1].usergroup)
+	self:SetRPName(userData[1].rpname)
 	--[[
 	local fileClass = file.Open(self:GetDataDir(), "r", "DATA")
 	local userData = util.JSONToTable( fileClass:ReadLine() )

@@ -4,6 +4,8 @@ util.AddNetworkString("landis_RequestTeamJoin")
 util.AddNetworkString("landis_spawn_vendor")
 util.AddNetworkString("landisItemEquip")
 util.AddNetworkString("landisRPNameChange")
+util.AddNetworkString("landisRequestRank")
+util.AddNetworkString("landisAddChatText")
 
 net.Receive("landisStartChat", function(len,ply)
   if (ply.LastChatTime or 0) < CurTime() then
@@ -65,10 +67,22 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 		local limit = landis.Teams.Data[teamIndex].Limit
 		if limit then
 			if #team.GetPlayers(teamIndex) < limit then
-				hook.Run("PlayerJoinTeam", ply, teamIndex)
+				ply:SetNWInt("Rank",0)
+				ply:SetNWInt("Class",0)
+				ply:SetRPName(ply:GetSyncRPName())
+				ply:SetTeam(teamIndex)
+				local data = landis.Teams.Data[teamIndex]
+				ply:SetModel(data.Model)
+				ply:SetupHands()
 			end
 		else
-			hook.Run("PlayerJoinTeam", ply, teamIndex)
+			ply:SetNWInt("Rank",0)
+			ply:SetNWInt("Class",0)
+			ply:SetRPName(ply:GetSyncRPName())
+			ply:SetTeam(teamIndex)
+			local data = landis.Teams.Data[teamIndex]
+			ply:SetModel(data.Model)
+			ply:SetupHands()
 		end
 	end
 end)
@@ -77,6 +91,34 @@ net.Receive("landisRPNameChange", function(len,ply)
 	if (ply.rpNameChangeWait or 0) > CurTime() then 
 		return
 	end
-	ply:SetRPName(net.ReadString())
 	ply.rpNameChangeWait = CurTime() + 2
+
+	local name = net.ReadString()
+	name = landis.SafeString(name)
+	local len  = name:len()
+
+	if len >= 24 then
+		ply:Notify("Name too long! (max 24)")
+		return
+	end
+
+	if len <= 6 then
+		ply:Notify("Name too short! (min 6)")
+		return
+	end
+
+	ply:SetRPName(name)
+
+end)
+
+net.Receive("landisRequestRank", function(len,ply)
+	local rank = net.ReadInt(32)
+	local r = landis.Teams.Data[TEAM_CP].Ranks[rank].Name
+
+	local class = net.ReadInt(32)
+	local c = landis.Teams.Data[TEAM_CP].Classes[class].Name
+	
+	ply:SetNWInt("Rank", rank)
+	ply:SetNWInt("Class", class)
+	ply:SetRPName("C17:" .. r .. "."..c.."-"..math.random(0, 99),true)
 end)

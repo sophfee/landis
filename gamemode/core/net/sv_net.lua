@@ -113,12 +113,14 @@ end)
 
 net.Receive("landisRequestRank", function(len,ply)
 	local rank = net.ReadInt(32)
-	local r = landis.Teams.Data[TEAM_CP].Ranks[rank].Name
 
 	local class = net.ReadInt(32)
-	local c = landis.Teams.Data[TEAM_CP].Classes[class].Name
+	
 	
 	ply:SetNWInt("Rank", rank)
 	ply:SetNWInt("Class", class)
-	ply:SetRPName("C17:" .. r .. "."..c.."-"..math.random(0, 99),true)
+	
+	if SCHEMA.OnBecomeRank then
+		SCHEMA:OnBecomeRank(ply,rank,class)
+	end
 end)

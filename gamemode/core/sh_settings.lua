@@ -41,13 +41,13 @@ if CLIENT then
 				return
 			end
 		end
-		local PANEL = vgui.Create("DCheckBoxLabel", parent)
+		local PANEL = vgui.Create("DCheckBoxLabel", parent, data.className)
 		PANEL:DockMargin(5, 5, 5, 5)
 		PANEL:Dock(TOP)
 		PANEL:SetText(data:GetPrintName())
 		PANEL:SetValue(data:GetValue())
 		function PANEL:OnChange(bVal)
-			data:SetValue(bVal)
+			landis.Settings[self:GetName()]:SetValue(bVal)
 		end
 	end
 
@@ -57,7 +57,7 @@ if CLIENT then
 				return
 			end
 		end
-		local DropDown = vgui.Create("DComboBox", parent)
+		local DropDown = vgui.Create("DComboBox", parent, data.className)
 		DropDown:DockMargin(5, 5, 5, 5)
 		DropDown:Dock(TOP)
 
@@ -68,7 +68,7 @@ if CLIENT then
 		end
 
 		DropDown.OnSelect = function( self, _, val)
-			data:SetValue(val)
+			landis.Settings[self:GetName()]:SetValue(val)
 		end
 		DropDown:SetSize(DropDown:GetWide()/3,DropDown:GetTall())
 	end
@@ -79,7 +79,7 @@ if CLIENT then
 				return
 			end
 		end
-		local PANEL = vgui.Create("DNumSlider", parent)
+		local PANEL = vgui.Create("DNumSlider", parent, data.className)
 		PANEL:DockMargin(5, 5, 5, 5)
 		PANEL:Dock(TOP)
 		PANEL:SetText(data:GetPrintName())
@@ -90,7 +90,7 @@ if CLIENT then
 		PANEL:SetValue(data:GetValue())
 
 		function PANEL:OnValueChanged(bVal)
-			data:SetValue(math.Round(bVal,0))
+			landis.Settings[self:GetName()]:SetValue(bVal)
 		end
 	end
 
@@ -256,6 +256,8 @@ NUMBER_TYPES = {
 function landis.DefineSetting(className,struct)
 
 	local CSetting = table.Inherit(struct, baseStruct)
+	
+	CSetting.className = className
 
 	function CSetting:SetValueType(newType)
 		if not table.HasValue(validType, newType) then

@@ -16,6 +16,8 @@ landis.Config.ConsolePrefix    = "[landis]"
 landis.Config.VoiceRange       = 600
 -- instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 
+-- Credit to vin (vingard on github) ty for letting me use this :)
+-- originally belonged to impulse (created by vin)
 function landis.FindPlayer(term)
 	local match
 	local termLen = string.len(term)

@@ -6,8 +6,7 @@ local hiddenElements = {
 	CHudCrosshair = true,
 	CHudAmmo = true,
 	CHudSecondaryAmmo = true,
-	CHudSquadStatus = true,
-	CHudWeaponSelection = true
+	CHudSquadStatus = true
 }
 
 hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
@@ -201,7 +200,6 @@ tweenOutTable = {alpha=1}
 local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
 local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
 
-
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
@@ -219,7 +217,7 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 
 		if landis.GetSetting("mod-esp") then
 			for v,k in ipairs(player.GetAll()) do
-				if k == LocalPlayer() then continue end
+				if k == ply then continue end
 				local viewData = (k:OBBCenter()+k:GetPos()):ToScreen()
 				if viewData.visible then
 					draw.SimpleText(k:Nick(), "entname", viewData.x, viewData.y, team.GetColor(k:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -233,19 +231,8 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if SCHEMA:ShouldDrawElement( "Crosshair" ) and landis.Radial.Close then
 		local wep = ply:GetActiveWeapon()
 		if IsValid(wep) then
-			if wep.ShouldDrawCrosshair then
-				if wep:ShouldDrawCrosshair() then
-					surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
-					local centerW = ScrW()/2
-					local centerH = ScrH()/2
-					local len     = landis.GetSetting("crosshairLength")
-					local gap     = landis.GetSetting("crosshairGap")
-					surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
-					surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
-					surface.DrawRect( centerW, centerH - gap - len, 1, len)
-					surface.DrawRect( centerW - gap - len, centerH, len, 1 )
-				end
-			else
+			--print(ply:GetVelocity():LengthSqr())
+			if not (ply:IsSprinting() and (ply:GetVelocity():LengthSqr() > 30000)) and ply:IsWeaponRaised() then
 				surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
 				local centerW = ScrW()/2
 				local centerH = ScrH()/2
@@ -259,7 +246,10 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		end
 	end
 	
-	if SCHEMA:ShouldDrawElement( "Health" ) then drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) end
+	if SCHEMA:ShouldDrawElement( "Health" ) then 
+		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) 
+		landis.DrawText(ply:GetMoney().. " Credits",350,ScrH()-60,{size=36,bold=true},{x=TEXT_ALIGN_LEFT,y=TEXT_ALIGN_TOP},color_white)
+	end
 
 	if SCHEMA:ShouldDrawElement( "Armor" ) then 
 		if ply:Armor() > 0 then 

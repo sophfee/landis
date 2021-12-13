@@ -19,7 +19,7 @@ end
 function ENT:Use(caller)
 	if IsValid(caller) then
 		if caller:IsPlayer() then
-			caller:SetNWInt("Money",caller:GetNWInt("Money",0) + self:GetMoney())
+			caller:GiveMoney(self:GetNWInt("Money",0))
             self:Remove()
 		end
 	end

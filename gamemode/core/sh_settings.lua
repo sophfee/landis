@@ -149,6 +149,7 @@ DefaultSettings = {
 		type         = "tickbox",
 		printName    = "Enable Thirdperson",
 		category     = "Camera",
+		defaultValue = false,
 		activeValue  = false
 	},
 	["crosshairGap"] = {
@@ -179,12 +180,14 @@ DefaultSettings = {
 		type         = "tickbox",
 		printName    = "Enable Button Hover/Press Noise",
 		category     = "Misc.",
+		defaultValue = false,
 		activeValue  = false
 	},
 	["debugHUD"] = {
 		type         = "tickbox",
 		printName    = "Enable Debug HUD",
 		category     = "Debug",
+		defaultValue = false,
 		activeValue  = false
 	},
 	["chatfontSize"] = {
@@ -328,6 +331,7 @@ landis.DefineSetting("mod-esp",{
 	type         = "tickbox",
 	printName    = "Enable Noclip ESP",
 	category     = "mod",
+	defaultValue = false,
 	activeValue  = false
 }) 
 if SERVER then

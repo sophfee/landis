@@ -8,12 +8,9 @@ function PANEL:CreatePlayerList()
 	local sorted  = {}
 
 	-- Sort the list by teams
-	for i,t in pairs(team.GetAllTeams()) do
-		for v,k in ipairs(players) do 
-			if k:Team() == t then
-				table.ForceInsert(sorted, k)
-				table.RemoveByValue(players, k)
-			end
+	for i,t in ipairs(landis.Teams.Data) do
+		for v,k in ipairs(team.GetPlayers(#landis.Teams.Data-i+1)) do
+			table.ForceInsert(sorted, k)
 		end
 	end
 

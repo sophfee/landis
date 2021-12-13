@@ -1,3 +1,5 @@
+return -- dont like this, want to redesign it
+--[[
 -- Made this an entirely separate script due to lots of complexity
 local curSlot = 0
 local curTab  = 0
@@ -164,4 +166,4 @@ hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 			return true
 		end
 	end
-end)
+end)]]

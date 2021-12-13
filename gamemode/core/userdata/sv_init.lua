@@ -59,14 +59,25 @@ end
 // Internal - Do not use.
 function meta:SetupData()
 	landis.ConsoleMessage("Setting up data for User: "..self:Nick())
-	local userData = sql.Query("SELECT * FROM landis_user WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
-	if not userData then
-		landis.ConsoleMessage("No existing data found for user! Creating new data...")
-		self:SetupNewUser()
-		return
+	do 
+		local userData = sql.Query("SELECT * FROM landis_user WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
+		if not userData then
+			landis.ConsoleMessage("No existing core data found for user! Creating new data...")
+			self:SetupNewUser()
+			return
+		end
+		self:SetUserGroup(userData[1].usergroup)
+		self:SetRPName(userData[1].rpname)
 	end
-	self:SetUserGroup(userData[1].usergroup)
-	self:SetRPName(userData[1].rpname)
+	do
+		local userData = sql.Query("SELECT * FROM landis_currency WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
+		if not userData then
+			landis.ConsoleMessage("No existing currency data found for user! Creating new data...")
+			sql.Query("INSERT INTO landis_currency VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. tostring(0) ..", ".. tostring(0)..")")
+			return
+		end
+		self:SetNWInt("Money",userData[1].cc)
+	end
 	--[[
 	local fileClass = file.Open(self:GetDataDir(), "r", "DATA")
 	local userData = util.JSONToTable( fileClass:ReadLine() )

@@ -1,2 +1,6 @@
 
 logo.pdn
+plugins/moderation/vgui/cl_modreports.lua
+plugins/moderation/vgui/cl_reports_admin.lua
+plugins/moderation/sh_commands.lua
+plugins/moderation/sv_net.lua

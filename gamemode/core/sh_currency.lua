@@ -24,4 +24,14 @@ if SERVER then
             Money:Spawn()
         end
     end
+
+    function meta:GiveMoney(amt)
+        local t = self:GetNWInt("Money",0) + amt
+        self:SetNWInt("Money",t)
+        local Success = sql.Query("UPDATE landis_currency SET cc = " .. tostring(t) .. " WHERE steamid = " .. sql.SQLStr(self:SteamID64()) )
+        if Success == false then
+            landis.Error("Failed to update Money sync'd value! {" .. t .. "," .. self:SteamID64() .. "," .. tostring(Success) .. "}")
+        end
+    end
+
 end

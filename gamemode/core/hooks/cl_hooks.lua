@@ -1,5 +1,8 @@
 local ply = LocalPlayer()
 
+function GM:AddDeathNotice()
+end
+
 function GM:HUDDrawTargetID()
 end
 

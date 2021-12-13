@@ -15,6 +15,7 @@ function PANEL:Init()
 		self:Remove()
 		return
 	end
+	self:SetPopupStayAtBack(true)
 	MainMenuMusic = MainMenuMusic or CreateSound(LocalPlayer(), "music/hl2_intro.mp3")
 	MainMenuMusic:Play()
 	SCHEMA:SetHUDElement("Crosshair",false)

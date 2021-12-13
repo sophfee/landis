@@ -20,10 +20,10 @@ function ENTITY:DoRagdollCamera()
 	hookRunning = true
 	local ang = self:EyeAngles()
 	surface.PlaySound(Sound("ui/critical_event_1.wav"))
-	hook.Add("CalcView", "ragdoll_camera", function(_,origin,__,fov,znear,zfar)
+	hook.Add("CalcView", "landisCalcRagdollCamera", function(_,origin,__,fov,znear,zfar)
 		if not IsValid(ragdoll) then
 			hookRunning = false
-			hook.Remove("CalcView", "ragdoll_camera") 
+			hook.Remove("CalcView", "landisCalcRagdollCamera") 
 			return 
 		end
 		ragdollCameraTime = ragdollCameraTime + FrameTime()

@@ -32,6 +32,6 @@ hook.Add("Think", "landisRagdollCamera",function()
 			ply:DoRagdollCamera()
 		end
 	else
-		hook.Remove("CalcView","ragdoll_camera")
+		hook.Remove("CalcView","landisCalcRagdollCamera")
 	end
 end)

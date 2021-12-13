@@ -25,7 +25,7 @@ hook.Add("PlayerBindPress", "landisInventoryMenuOpen", function(ply, bind, press
     end
 end)
 
-hook.Add("Think", "startcam",function()
+hook.Add("Think", "landisRagdollCamera",function()
 	if not IsValid(ply) then ply = LocalPlayer() return end
 	if not ply:Alive() then
 		if not hookRunning then

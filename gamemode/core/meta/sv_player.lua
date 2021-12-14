@@ -5,6 +5,30 @@ function PLAYER:SetXP( num )
   self:SetNWInt("XP", num)
 end
 
+function PLAYER:SetupData()
+	landis.ConsoleMessage("Setting up data for User: "..self:Nick())
+	-- Setup Core Data
+	do 
+		local userData = sql.Query("SELECT * FROM landis_user WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
+		if not userData then
+			landis.ConsoleMessage("No existing core data found for user! Creating new data...")
+			self:SetupNewUser()
+			return
+		end
+		self:SetUserGroup(userData[1].usergroup)
+		self:SetRPName(userData[1].rpname)
+	end
+	-- Setup Currency Data
+	do
+		local userData = sql.Query("SELECT * FROM landis_currency WHERE steamid = " .. sql.SQLStr( self:SteamID64()) )
+		if not userData then
+			landis.ConsoleMessage("No existing currency data found for user! Creating new data...")
+			sql.Query("INSERT INTO landis_currency VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. tostring(0) ..", ".. tostring(0)..")")
+			return
+		end
+		self:SetNWInt("Money",userData[1].cc)
+	end
+end
 
 function PLAYER:SetupNewUser()
 	local userData = baseData

@@ -200,6 +200,13 @@ tweenOutTable = {alpha=1}
 local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
 local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
 
+
+landis.DefineSetting("!A-crosshairRed",{name="Crosshair Color (Red)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!B-crosshairGreen",{name="Crosshair Color (Green)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!C-crosshairBlue",{name="Crosshair Color (Blue)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!D-crosshairLength",{name="Crosshair Length",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
+landis.DefineSetting("!E-crosshairGap",{name="Crosshair Gap",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
+
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
@@ -231,13 +238,16 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if SCHEMA:ShouldDrawElement( "Crosshair" ) and landis.Radial.Close then
 		local wep = ply:GetActiveWeapon()
 		if IsValid(wep) then
-			--print(ply:GetVelocity():LengthSqr())
-			if not (ply:IsSprinting() and (ply:GetVelocity():LengthSqr() > 30000)) and ply:IsWeaponRaised() then
-				surface.SetDrawColor( 255, 255, 255, math.floor(255-(deathTime*255)) )
+				--print(ply:GetVelocity():LengthSqr())
+			if ply:IsWeaponRaised() then
+				local r = landis.GetSetting("!A-crosshairRed")
+				local g = landis.GetSetting("!B-crosshairGreen")
+				local b = landis.GetSetting("!C-crosshairBlue")
+				surface.SetDrawColor( math.floor(r), math.floor(g), math.floor(b), math.floor(255-(deathTime*255)) )
 				local centerW = ScrW()/2
 				local centerH = ScrH()/2
-				local len     = landis.GetSetting("crosshairLength")
-				local gap     = landis.GetSetting("crosshairGap")
+				local len     = math.floor(landis.GetSetting("!D-crosshairLength"))
+				local gap     = math.floor(landis.GetSetting("!E-crosshairGap"))
 				surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
 				surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
 				surface.DrawRect( centerW, centerH - gap - len, 1, len)

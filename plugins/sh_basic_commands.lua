@@ -99,3 +99,15 @@ local bringCommand = {
 }
 
 landis.chat.RegisterCommand("/bring",bringCommand)
+
+local dropmoneyCommand = {
+	RequireAlive    = true,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_USER,
+	HelpDescription = "Drop a specified amount of money",
+	onRun  = function(self,ply,args)
+		ply:DropMoney(tonumber(args[1]))
+	end
+}
+
+landis.chat.RegisterCommand("/dropmoney",dropmoneyCommand)

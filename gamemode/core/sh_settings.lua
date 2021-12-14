@@ -1,3 +1,5 @@
+return
+/* using that bc --[[ already used here
 --[[
 
 
@@ -12,15 +14,6 @@ valueType    = "bool", -- internal
 type         = "tickbox",
 printName    = "Base Setting",
 category     = "Other"
-
-
-
-
-
-
-
-
-
 
 ]]--
 
@@ -148,9 +141,7 @@ DefaultSettings = {
 	["useThirdperson"] = {
 		type         = "tickbox",
 		printName    = "Enable Thirdperson",
-		category     = "Camera",
-		defaultValue = false,
-		activeValue  = false
+		category     = "Camera"
 	},
 	["crosshairGap"] = {
 		type         = "slider",
@@ -179,16 +170,12 @@ DefaultSettings = {
 	["buttonClicks"] = {
 		type         = "tickbox",
 		printName    = "Enable Button Hover/Press Noise",
-		category     = "Misc.",
-		defaultValue = false,
-		activeValue  = false
+		category     = "Misc."
 	},
 	["debugHUD"] = {
 		type         = "tickbox",
 		printName    = "Enable Debug HUD",
-		category     = "Debug",
-		defaultValue = false,
-		activeValue  = false
+		category     = "Debug"
 	},
 	["chatfontSize"] = {
 		type         = "slider",
@@ -268,7 +255,7 @@ function landis.DefineSetting(className,struct)
 	end
 
 	function CSetting:GetCookieName()
-		return "landis_settings." .. string.Replace( className, " ", "_")
+		return "landis_settings." .. string.Replace( self.className, " ", "_")
 	end
 
 	function CSetting:GetValueType()
@@ -382,3 +369,4 @@ parent:MakePopup()
 
 data.createPanel(parent,data)
 ]]
+*/

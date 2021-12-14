@@ -14,14 +14,16 @@ if SERVER then
     function meta:DropMoney(amt)
         if self:GetMoney() - amt > 0 then
             local Money = ents.Create("landis_money")
-            Money:SetMoney(amt)
-            local tr = util.QuickTrace(self:EyePos(), self:EyeVector()*100)
+            
+            local tr = util.QuickTrace(self:EyePos(), self:GetAimVector()*100,self)
             if tr.HitPos then
                 Money:SetPos(tr.HitPos)
             else
-                Money:SetPos(self:EyePos()+(self:EyeVector()*100))
+                Money:SetPos(self:EyePos()+(self:GetAimVector()*100))
             end
             Money:Spawn()
+            self:SetNWInt("Money",self:GetMoney()-amt)
+            Money:SetMoneyA(amt)
         end
     end
 

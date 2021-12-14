@@ -17,11 +17,13 @@ CommandColors[PERMISSION_LEVEL_ADMIN] = Color(52,199,89,255)
 CommandColors[PERMISSION_LEVEL_LEAD_ADMIN] = Color(88,86,214)
 CommandColors[PERMISSION_LEVEL_SUPERADMIN] = Color(255,69,58)
 
+landis.DefineSetting("chatfontSize",{type="slider",default=18,min=8,max=48,dec=0,name="Chat Font Size",category="Chatbox"})
+
 function PANEL:SetMessage( ... )
 
 	local args = { ... }
 
-	self.text    = "<font=landis-" .. tostring(math.Clamp(landis.GetSetting("chatfontSize"), 8, 48) or 18) .. (landis.GetSetting("chatUseBold") and "-S-B" or "-S") .. "><colour=255,255,255>"
+	self.text    = "<font=landis-" .. tostring(math.Clamp(math.floor(landis.GetSetting("chatfontSize")), 8, 48) or 18) .. "-S" .. "><colour=255,255,255>"
 	self.colors  = {}
 	self.sender  = nil
 

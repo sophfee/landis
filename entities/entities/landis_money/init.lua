@@ -10,7 +10,10 @@ function ENT:Initialize()
     self:SetUseType(SIMPLE_USE)
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
-    self:SetMoneyA(50)
+	local phys = self:GetPhysicsObject()
+	if IsValid(phys) then
+		phys:Wake()
+	end
 end
 
 function ENT:Think()

@@ -29,6 +29,8 @@ landis.Config.CloseButtonColorV    = Vector(255,69,58,255)
 landis.Config.ClickSound = "landis/ui/notification.mp3"
 landis.Config.HoverSound = "landis/ui/scroll.mp3"
 
+landis.DefineSetting("buttonClicks",{type="tickbox",default=false,category="UI",name="Button Clicks"})
+
 surface.CreateFont("landis_base-default-14", {
 	font = "Segoe UI Light",
 	weight = 2500,

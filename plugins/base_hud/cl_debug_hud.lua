@@ -17,7 +17,7 @@ surface.CreateFont("DebugHUD18", {
 	weight = 4500,
 	size = 24
 })
-
+landis.DefineSetting("debugHUD",{type="tickbox",value=false,default=false,category="UI",name="Debug Hud"})
 local function GetDebugHUDText()
 	local t = "[Debug Info]\n"
 	

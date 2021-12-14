@@ -165,6 +165,7 @@ net.Receive("landisStartMenu", function()
 	--Derma_Message("Hello! Welcome to Landis Development Build 0.2\n\nThis is an experimental version of the Landis framework, things may tend to destroy themselves.\nBugs may occur! This is normal for a development build. Make sure to report them!\n\nOverall, have fun toying with the new tools!\n\nEnjoy!\n- Nick","Welcome to the Landis Framework!","Let me play now!")
 	--surface.PlaySound(Sound("music/hl2_intro.mp3"))
 	timer.Simple(0.5, function()
+		landis.DefineSetting("mod-esp",{type="tickbox",value=false,default=false,category="Mod",name="Noclip ESP"})
 		MainMenu = MainMenu or vgui.Create("landisMainMenu")
 		Slides = getRandomSlideShow()
 		CanChangeAt= CurTime() + 18

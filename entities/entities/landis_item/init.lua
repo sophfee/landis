@@ -24,7 +24,10 @@ function ENT:Initialize()
 	self:SetModel( Model("models/player/impulse_zelpa/female_02.mdl") )
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
-    self:SetItem("wep_mp7")
+	local phys = self:GetPhysicsObject()
+	if IsValid(phys) then
+		phys:Wake() -- let the thingy move
+	end
 end
 
 function ENT:Think()

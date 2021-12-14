@@ -36,3 +36,10 @@ function PLAYER:GetSyncRPName()
 	local T = sql.Query("SELECT rpname FROM landis_user WHERE steamid = " .. sql.SQLStr(tostring(self:SteamID64())))
 	return T[1].rpname
 end
+function PLAYER:AddInventoryItem(class)
+	net.Start("landisPickupItem")
+		net.WriteEntity(self)
+		net.WriteString(class)
+	net.Send(self)
+	table.ForceInsert(self.Inventory, landis.items.data[class])
+end

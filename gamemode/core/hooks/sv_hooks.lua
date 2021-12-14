@@ -1,3 +1,7 @@
+local math = math
+local clamp = math.clamp
+local floor = math.floor
+
 -- Prevent family shared accounts from joining (alt account detection)
 function GM:PlayerAuthed(ply,steamID)
 	if not (ply:OwnerSteamID64() == ply:SteamID64()) then
@@ -8,7 +12,8 @@ end
 
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]
-	ply:SetRPName(ply:GetSyncRPName())
+	ply:SetHunger(60)
+	ply:SetRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
 	ply:SetRunSpeed(200)
 	ply:SetWalkSpeed(120)
 	ply:SetSlowWalkSpeed(70)
@@ -28,6 +33,14 @@ end
 
 function GM:PlayerDeathThink()
 	return false
+end
+
+function GM:PlayerPostThink(ply)
+	ply.HungerTick = ply.HungerTick or CurTime()
+	if CurTime() > ply.HungerTick then
+		ply:SetHunger(clamp(ply:GetHunger()-1,0,100))
+		ply.HungerTick = CurTime() + 30
+	end
 end
 
 hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)

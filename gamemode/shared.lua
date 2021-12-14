@@ -1,29 +1,47 @@
 DeriveGamemode("sandbox")
 landis = landis or {}
 landis.lib = landis.lib or {}
-landis.__VERSION = "DEV-0.2"
-landis.__DISPLAY = "Landis Base"
-landis.__XTNOTES = [[This gamemode is in development.
-Nothing seen is considered final.
-(c) 2021 Nick S]]
+landis.__VERSION = "DEV-0.3"
+landis.__DISPLAY = "Landis Framework"
+landis.__XTNOTES = "PREVIEW BUILD: " .. GetGlobalString(1)
 landis.__DVBUILD = true
 
 // fallback configurations
 landis.Config =  {}
-landis.Config.MainColor        = Color( 10,  132, 255 )
+landis.Config.MainColor        = Color( 255, 69, 58 )
 landis.Config.DefaultTextColor = Color( 245, 245, 245 )
 landis.Config.BGColorDark      = Color( 44,  44,  46  )
 landis.Config.BGColorLight     = Color( 229, 229, 234  )
 landis.Config.ConsolePrefix    = "[landis]"
-// instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
+landis.Config.VoiceRange       = 600
+-- instead of writing out the same LONG ASS FUCKING MESSAGE use this simple function!! :)))
 
+-- Credit to vin (vingard on github) ty for letting me use this :)
+-- originally belonged to impulse (created by vin)
+function landis.FindPlayer(term)
+	local match
+	local termLen = string.len(term)
+	term = string.upper(term)
+	local ezTest = player.GetBySteamID( term )
+	if ezTest then return ezTest end 
+	for _,ply in ipairs(player.GetAll()) do
+		local nick = string.upper( ply:Nick() )
+		for i=0,termLen do
+			local sub = string.sub(term, 0, termLen-i)
+			if i == termLen then break end
+			if string.match(nick,sub) then
+				return ply
+			end
+		end
+	end
+end
 
 function landis.ConsoleMessage(...)
 	local mColor = landis.Config.MainColor
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
 	return MsgC(mColor,prefix,Color(255,59,48),"[Server] ",textCo,...,"\n")
 end
@@ -33,7 +51,7 @@ function landis.Warn(...)
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
 	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Warn] ",textCo,...,"\n")
 end
@@ -43,12 +61,15 @@ function landis.Error(...)
 	local prefix = landis.Config.ConsolePrefix
 	local textCo = landis.Config.DefaultTextColor
 	if CLIENT then
-		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") // \n to prevent same line console messages
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") -- \n to prevent same line console messages
 	end
-	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
+	MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
+	print("======[STACK TRACEBACK]=====")
+	debug.Trace()
+	print("======[ENDOF TRACEBACK]=====")
 end
 
-function landis.lib.includeDir( scanDirectory, core )
+function landis.includeDir( scanDirectory, core )
 	-- Null-coalescing for optional argument
 	core = core or false
 	
@@ -65,7 +86,7 @@ function landis.lib.includeDir( scanDirectory, core )
 			
 			-- Include files within this directory
 			for _, fileName in pairs( files ) do
-				//print(fileName)
+				
 				if fileName != "shared.lua" and fileName != "init.lua" and fileName != "cl_init.lua" then
 					-- print( "Found: ", fileName )
 					
@@ -75,6 +96,14 @@ function landis.lib.includeDir( scanDirectory, core )
 	
 					if core then
 						relativePath = string.gsub( directory .. "/" .. fileName, "landis/gamemode/", "" )
+					end
+
+					-- Include server files
+					if string.match( fileName, "^rq" ) then
+						if (SERVER) then
+							AddCSLuaFile(relativePath)
+						end
+						_G[string.sub(fileName, 3, string.len(fileName) - 4)] = include(relativePath)
 					end
 					
 					-- Include server files
@@ -123,27 +152,46 @@ if CLIENT then
 	--        Get ratio scale
 	LOW_RES = ScrH()*ScrW() < 1000000 and true or false
 end
-
+function landis.SafeString(s)
+	local pat = "[^0-9a-zA-Z%s]+"
+	local cln =s
+	cln = string.gsub(cln, pat, "")
+	return cln
+end
 if SERVER then
 	// load core plugins/extensions
 	landis.ConsoleMessage("loading libraries")
-	AddCSLuaFile("landis/gamemode/lib/tween.lua")
+	landis.includeDir("landis/gamemode/lib")
 
 	landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( "landis/core"  )
+	landis.includeDir("landis/gamemode/core")
 
 	landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( "landis/plugins" )
+	landis.includeDir("landis/plugins")
 end
+
 if CLIENT then 
-	// load core plugins/extensions
+
 	landis.ConsoleMessage("loading libraries")
-	include("landis/gamemode/lib/tween.lua")
-	//landis.lib.includeDir( "landis/gamemode/lib"  )
+	landis.includeDir("landis/gamemode/lib")
 
 	landis.ConsoleMessage("loading extensions")
-	landis.lib.includeDir( "landis/core"  )
+	landis.includeDir("landis/gamemode/core")
 
 	landis.ConsoleMessage("loading plugins")
-	landis.lib.includeDir( "landis/plugins" )
+	landis.includeDir("landis/plugins")
+
+end
+
+
+
+function landis.Reload()
+	landis.Warn("A file has been refreshed! This may cause unexpected bugs!")
+	if CLIENT then 
+		landis.chatbox.buildBox()
+	end
+end
+
+function GM:OnReloaded()
+	landis.Reload()
 end

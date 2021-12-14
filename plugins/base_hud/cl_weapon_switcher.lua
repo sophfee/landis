@@ -1,8 +1,12 @@
+return -- dont like this, want to redesign it
+--[[
 -- Made this an entirely separate script due to lots of complexity
 local curSlot = 0
 local curTab  = 0
 local selecting = false
 local weps = {}
+
+
 
 local slotAlpha = {}
 slotAlpha.a = 0
@@ -14,7 +18,7 @@ local slotTweenOut = tween.new(0.07,slotAlpha,{a=0},"outQuad")
 
 hook.Add("HUDPaint", "landisDrawWepSelect", function()
 	local slots = {}
-	if weps[curSlot] and selecting then
+	if IsValid(weps[curSlot]) and selecting then
 		if easingIn then
 			slotTweenIn:update(FrameTime())
 		else
@@ -22,7 +26,46 @@ hook.Add("HUDPaint", "landisDrawWepSelect", function()
 		end
 		local c = table.Copy(landis.Config.MainColor)
 		c.a = math.floor(slotAlpha.a *255)
-		draw.SimpleText(weps[curSlot]:GetPrintName(), "landis-24-S-B", ScrW()/2+24, ScrH()/2, c,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER,1,Color( 1, 1, 1, math.floor(slotAlpha.a *255) ))
+		draw.SimpleText(
+			weps[curSlot]:GetPrintName(), 
+			"landis-48", 
+			ScrW()/2+26, 
+			ScrH()/2, 
+			Color(
+				math.floor(c.r/2),
+				math.floor(c.g/2),
+				math.floor(c.b/2),
+				math.floor(slotAlpha.a *255)
+			),
+			TEXT_ALIGN_LEFT,
+			TEXT_ALIGN_CENTER,
+			1,
+			Color(
+				math.floor(c.r/2),
+				math.floor(c.g/2),
+				math.floor(c.b/2),
+				math.floor(slotAlpha.a *255)
+			)
+		)
+		draw.SimpleText(
+			weps[curSlot]:GetPrintName(), 
+			"landis-48", 
+			ScrW()/2+24, 
+			ScrH()/2, 
+			c,
+			TEXT_ALIGN_LEFT,
+			TEXT_ALIGN_CENTER,
+			1,
+			Color( 1, 1, 1, math.floor(slotAlpha.a *255) ),
+			0,
+			Color(
+				c.r/1.25,
+				c.g/1.25,
+				c.b/1.25,
+				0
+			)
+		)
+		
 		draw.DrawText((weps[curSlot].Instructions or "") .. (weps[curSlot].Purpose or ""), "landis-20-S", ScrW()/2+24, ScrH()/2+17, Color( 255, 255, 255, math.floor(slotAlpha.a *255) ))
 		if #weps == 1 then return end
 		c.a = math.floor(slotAlpha.a *80)
@@ -38,6 +81,11 @@ local function updateTable(slot)
 		end
 	end
 end
+
+net.Receive("landisRefreshTable", function()
+	updateTable(curSlot)
+end)
+
 hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 	for i=1,6 do
 		if (string.sub(bind, 0, 5) == "slot"..i) and pressed then
@@ -64,6 +112,50 @@ hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 			return true
 		end
 	end
+	if (string.sub(bind, 0, 7) == "invnext") then
+		slotTweenOut:set(0)
+		selecting = true
+		easingIn = false
+			
+		surface.PlaySound("landis/ui/scroll.mp3")
+		timer.Simple(0.07, function()
+			if curSlot + 1 > #weps then
+				if curTab + 1 > 5 then
+					curTab = 0
+				else
+					curTab = curTab + 1
+				end
+				updateTable(curTab)
+				curSlot = 1
+			else
+				curSlot = curSlot + 1
+			end
+			slotTweenIn:set(0)
+			easingIn = true
+		end)
+	end
+	if (string.sub(bind, 0, 7) == "invprev") then
+		slotTweenOut:set(0)
+		selecting = true
+		easingIn = false
+			
+		surface.PlaySound("landis/ui/scroll.mp3")
+		timer.Simple(0.07, function()
+			if curSlot - 1 < 1 then
+				if curTab - 1 < 0 then
+					curTab = 5
+				else
+					curTab = curTab - 1
+				end
+				updateTable(curTab)
+				curSlot = #weps
+			else
+				curSlot = curSlot - 1
+			end
+			slotTweenIn:set(0)
+			easingIn = true
+		end)
+	end
 	if (string.sub(bind, 0, 7) == "+attack") then
 		if selecting then
 			if weps[curSlot] then
@@ -74,4 +166,4 @@ hook.Add("PlayerBindPress", "landisWepSelBind", function(ply,bind,pressed)
 			return true
 		end
 	end
-end)
+end)]]

@@ -1,11 +1,12 @@
+deathTime = 0
+
 local hiddenElements = {
 	CHudHealth = true,
 	CHudBattery = true,
 	CHudCrosshair = true,
 	CHudAmmo = true,
 	CHudSecondaryAmmo = true,
-	CHudSquadStatus = true,
-	CHudWeaponSelection = true
+	CHudSquadStatus = true
 }
 
 hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
@@ -15,7 +16,7 @@ hook.Add("HUDShouldDraw", "hudPlugin_hideDefault", function(elem)
 end)
 
 surface.CreateFont("hud24", {
-	font = "Arial",
+	font = "Segoe UI Semibold",
 	shadow = false,
 	size = 24,
 	weight = 6000,
@@ -25,22 +26,24 @@ surface.CreateFont("hud24", {
 })
 
 surface.CreateFont("hud18", {
-	font = "Arial",
+	font = "Segoe UI",
 	shadow = false,
 	size = 18,
 	weight = 6000,
 	antialias = true,
 	extended = true,
-	italic = true
+	italic = false
 })
 
 surface.CreateFont("hud36", {
-	font = "Arial",
+	font = "Segoe UI Semibold",
 	shadow = false,
 	size = 36,
 	weight = 6000,
 	antialias = true,
 	extended = true,
+	outline = false,
+	shadow = false,
 	italic = false
 })
 
@@ -61,14 +64,14 @@ local function drawBar(label,val,col,pos)
 	}
 	local r,g,b = col:Unpack()
 
-	surface.SetDrawColor(80/2, 80/2, 80/2,255)
+	surface.SetDrawColor(80/2, 80/2, 80/2,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vertOutline)
 
-	surface.SetDrawColor(80,80,80,255)
+	surface.SetDrawColor(80,80,80,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vert)
 
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, g/3, b/3,120)
+	surface.SetDrawColor(r/3, g/3, b/3,math.floor(120-(deathTime*120)))
 
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
 
@@ -87,18 +90,18 @@ local function drawBar(label,val,col,pos)
 		{ x = pos.x, y = pos.y + 25 }
 	}
 
-	surface.SetDrawColor( r / 3, g / 3, b / 3, 255 )
+	surface.SetDrawColor( r / 3, g / 3, b / 3, math.floor(255-(deathTime*255)) )
 	surface.DrawPoly( vertOutline )
-	surface.SetDrawColor( r, g, b, 255 )
+	surface.SetDrawColor( r, g, b, math.floor(255-(deathTime*255)) )
 	surface.DrawPoly( vert )
 	surface.SetMaterial( Material( "vgui/gradient-l" ) )
-	surface.SetDrawColor( r / 2, g / 2, b / 2, 100 )
+	surface.SetDrawColor( r / 2, g / 2, b / 2, math.floor(100-(deathTime*100)) )
 	surface.DrawTexturedRect( pos.x, pos.y, value, 25 )
 
-	draw.DrawText( tostring( math.Round( val, 0 ) ), "hud24", pos.x + 5, pos.y + 2, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT )
-	draw.DrawText( tostring( math.Round( val, 0 )), "hud24", pos.x + 3, pos.y + 1, color_white, TEXT_ALIGN_LEFT )
-	draw.SimpleText( label, "hud18", pos.x + 2, pos.y, Color( r / 8, g / 8, b / 8, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
-	draw.SimpleText( label, "hud18", pos.x, pos.y - 1, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.DrawText( tostring( math.Round( val, 0 ) ), "hud24", pos.x + 5, pos.y + 2, Color( r / 8, g / 8, b / 8, math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT )
+	draw.DrawText( tostring( math.Round( val, 0 )), "hud24", pos.x + 3, pos.y + 1, Color( math.floor(255-r/90), math.floor(255-g/90), math.floor(255-b/90), math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT )
+	draw.SimpleText( label, "hud18", pos.x + 2, pos.y, Color( r / 8, g / 8, b / 8, math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	draw.SimpleText( label, "hud18", pos.x, pos.y - 1, Color( math.floor(255-r/90), math.floor(255-g/90), math.floor(255-b/90), math.floor(255-(deathTime*255)) ), TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	draw.NoTexture()
 
 end
@@ -132,12 +135,12 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x,y=pos.y+25}
 	}
 	local r,gC,b = col:Unpack()
-	surface.SetDrawColor(80/2, 80/2, 80/2,255)
+	surface.SetDrawColor(80/2, 80/2, 80/2,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vertOutline)
-	surface.SetDrawColor(80,80,80,255)
+	surface.SetDrawColor(80,80,80,math.floor(255-(deathTime*255)))
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-l"))
-	surface.SetDrawColor(r/3, gC/3, b/3,120)
+	surface.SetDrawColor(r/3, gC/3, b/3,math.floor(120-(deathTime*120)))
 	surface.DrawTexturedRect(pos.x,pos.y,300,25)
 	//draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/3, gC/3, b/3,255), TEXT_ALIGN_LEFT)
 	//draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
@@ -158,12 +161,12 @@ local function drawBarFlipped(label,val,col,pos)
 		{x=pos.x,y=pos.y+25}
 	}
 	local r,gC,b = col:Unpack()
-	surface.SetDrawColor(r/3, gC/3, b/3,255)
+	surface.SetDrawColor(r/3, gC/3, b/3,math.floor(255-(deathTime*255)))
 	//surface.DrawPoly(vertOutline)
 	surface.SetDrawColor(r,gC,b,255)
 	surface.DrawPoly(vert)
 	surface.SetMaterial(Material("vgui/gradient-r"))
-	surface.SetDrawColor(r/2, gC/2, b/2,100)
+	surface.SetDrawColor(r/2, gC/2, b/2,math.floor(100-(deathTime*100)))
 	//surface.DrawTexturedRect(pos.x,pos.y,value,25)
 	draw.DrawText(tostring(val), "hud24", pos.x+5, pos.y+2, Color(r/8, gC/8, b/8,255), TEXT_ALIGN_LEFT)
 	draw.DrawText(tostring(val), "hud24", pos.x+3, pos.y+1, color_white, TEXT_ALIGN_LEFT)
@@ -179,7 +182,7 @@ local whiteColor = Vector(255,255,255)
 local redColor   = Vector(255,0,0)
 
 surface.CreateFont("DEAD", {
-	font = "Arial",
+	font = "Segoe UI Black",
 	size = 80,
 	weight = 1000,
 	antialias = true,
@@ -197,24 +200,31 @@ tweenOutTable = {alpha=1}
 local tweenIn = tween.new(1.75,tweenInTable,{alpha=1},'outBounce')
 local tweenOut = tween.new(0.85,tweenOutTable,{alpha=0},'outQuint')
 
+
+landis.DefineSetting("!A-crosshairRed",{name="Crosshair Color (Red)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!B-crosshairGreen",{name="Crosshair Color (Green)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!C-crosshairBlue",{name="Crosshair Color (Blue)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
+landis.DefineSetting("!D-crosshairLength",{name="Crosshair Length",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
+landis.DefineSetting("!E-crosshairGap",{name="Crosshair Gap",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
+
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
 		ply = LocalPlayer()
 		return 
 	end
 
-	if ply:InNoclip() then
+	if ply:InNoclip() and ply:IsAdmin() then
 
-		draw.DrawText("Moderation View", "landis-24", 5, 5, Color( 230, 230, 230, 180 ))
+		draw.DrawText("Moderation View", "landis-48-B", 5, 5, Color( 230, 230, 230, 180 ))
 
 		local msg = [[Playercount: ]]
 		msg=msg..tostring(player.GetCount())
 
-		draw.DrawText(msg, "landis-18", 5, 29, Color( 230, 230, 230, 180 ))
+		draw.DrawText(msg, "landis-36", 5, 53, Color( 230, 230, 230, 180 ))
 
-		if landis.lib.GetSetting("mod-esp") then
+		if landis.GetSetting("mod-esp") then
 			for v,k in ipairs(player.GetAll()) do
-				if k == LocalPlayer() then continue end
+				if k == ply then continue end
 				local viewData = (k:OBBCenter()+k:GetPos()):ToScreen()
 				if viewData.visible then
 					draw.SimpleText(k:Nick(), "entname", viewData.x, viewData.y, team.GetColor(k:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -225,21 +235,43 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 
 	
 
-	if SCHEMA:ShouldDrawElement( "Crosshair" ) then
-		surface.SetDrawColor( 255, 255, 255 )
-		local centerW = ScrW()/2
-		local centerH = ScrH()/2
-		local len     = landis.lib.GetSetting("crosshairLength")
-		local gap     = landis.lib.GetSetting("crosshairGap")
-		surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
-		surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
-		surface.DrawRect( centerW, centerH - gap - len, 1, len)
-		surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+	if SCHEMA:ShouldDrawElement( "Crosshair" ) and landis.Radial.Close then
+		local wep = ply:GetActiveWeapon()
+		if IsValid(wep) then
+				--print(ply:GetVelocity():LengthSqr())
+			if ply:IsWeaponRaised() then
+				local r = landis.GetSetting("!A-crosshairRed")
+				local g = landis.GetSetting("!B-crosshairGreen")
+				local b = landis.GetSetting("!C-crosshairBlue")
+				surface.SetDrawColor( math.floor(r), math.floor(g), math.floor(b), math.floor(255-(deathTime*255)) )
+				local centerW = ScrW()/2
+				local centerH = ScrH()/2
+				local len     = math.floor(landis.GetSetting("!D-crosshairLength"))
+				local gap     = math.floor(landis.GetSetting("!E-crosshairGap"))
+				surface.DrawRect( centerW, centerH + 1 + gap, 1, len)
+				surface.DrawRect( centerW + 1 + gap, centerH, len, 1 )
+				surface.DrawRect( centerW, centerH - gap - len, 1, len)
+				surface.DrawRect( centerW - gap - len, centerH, len, 1 )
+			end
+		end
 	end
 	
-	if SCHEMA:ShouldDrawElement( "Health" ) then drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) end
+	if SCHEMA:ShouldDrawElement( "Health" ) then 
+		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) 
+		landis.DrawText(ply:GetMoney().. " Credits",350,ScrH()-60,{size=36,bold=true},{x=TEXT_ALIGN_LEFT,y=TEXT_ALIGN_TOP},color_white)
+	end
 
-	if SCHEMA:ShouldDrawElement( "Armor" ) then if ply:Armor() > 0 then drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100}) end end
+	if SCHEMA:ShouldDrawElement( "Armor" ) then 
+		if ply:Armor() > 0 then 
+			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100})
+			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-150,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-150,{size=36,bold=true},{x=0,y=0},color_white) 
+		else
+			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-100,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-100,{size=36,bold=true},{x=0,y=0},color_white) 
+			
+		end
+	end
 
 	if SCHEMA:ShouldDrawElement( "Ammo") then
 		local wep = ply:GetActiveWeapon()
@@ -265,30 +297,36 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	end
 	--if not ply:Alive() == isAlive then tweenIn:set(0) end
 	--if not ply:Alive() == isAlive then tweenOut:set(1) end
+
 	if not ply:Alive() then
 		if not ply:Alive() == isAlive then 
 			tweenIn:set(0) 
-			timer.Simple(0.6, function()
+			deathTime = 0
+			timer.Simple(1.6, function()
 				for i=1,30 do
-					landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
+					--landis.Smoke2D((ScrW()/30)*(i-1)+math.Rand(-30, 30),ScrH()/2-80)
 				end
 			end)
 		end
-		tweenIn:update(FrameTime())
-
-		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenInTable.alpha, team.GetColor(LocalPlayer():Team()))
-		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenInTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
-
-		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenInTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenInTable.alpha)) 
-
+		deathTime = deathTime + FrameTime()
 		hiddenElements["CHudDamageIndicator"] = true 
-		draw.SimpleText(tweenInTable.alpha,"BudgetLabel")
+		if deathTime > 10-3 then
+			tweenIn:update(FrameTime())
+			local flatAlpha = math.Clamp(tweenInTable.alpha, 0, 255)
+
+			draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*flatAlpha, team.GetColor(LocalPlayer():Team()))
+			draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*flatAlpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+
+			draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, flatAlpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,flatAlpha)) 
+		end
 
 	else
 
 		if not ply:Alive() == isAlive then 
 			tweenOut:set(0) 
 		end
+		
+		deathTime = math.Clamp(deathTime - FrameTime(),0,1)
 
 		tweenOut:update(FrameTime())
 
@@ -298,8 +336,9 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenOutTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenOutTable.alpha))
 
 		hiddenElements["CHudDamageIndicator"] = nil
-		draw.SimpleText(math.floor(tweenOutTable.alpha),"BudgetLabel")
 
 	end
+
 	isAlive = ply:Alive()
+
 end)

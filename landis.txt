@@ -1,6 +1,6 @@
 "land"
 {
-	"base"		"base"
+	"base"		"sandbox"
 	"title"		"landis"
 	"category"	"pvp"
 	"menusystem"	"1"

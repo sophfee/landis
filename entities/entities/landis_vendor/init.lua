@@ -19,7 +19,7 @@ end
 	
 function ENT:Initialize()
 	MsgC(Color(10,132,255),"[landis] Created a new vendor @ " .. tostring(self:GetPos()) .. "\n")
-	self:SetModel( Model("models/player/impulse_zelpa/female_02.mdl") )
+	--self:SetModel( Model("models/player/impulse_zelpa/female_02.mdl") )
 	self:PhysicsInit( SOLID_BBOX )
 	self:SetMoveType( MOVETYPE_NONE )
 	self:SetSequence( 2 )

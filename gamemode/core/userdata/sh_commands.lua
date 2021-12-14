@@ -1,7 +1,3 @@
-if SERVER then
-	util.AddNetworkString("moderation_ban")
-end
-
 function landis.FindPlayer(searchKey)
     if not searchKey or searchKey == "" then return nil end
     local searchPlayers = player.GetAll()

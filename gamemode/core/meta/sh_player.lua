@@ -4,7 +4,8 @@ function PLAYER:SetupDataTables()
 	self:NetworkVar("Bool", 0, "IsTyping")
 	self:NetworkVar("Bool",1,"InNoclip")
 	self:NetworkVar("Int",2,"XP")
-	self:NetworkVar("String",3,"RPName")
+	self:NetworkVar("Int",3,"Hunger")
+	self:NetworkVar("String",4,"RPName")
 end
 
 PLAYER.Inventory = {}

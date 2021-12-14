@@ -8,14 +8,14 @@ surface.CreateFont("DebugHUD24", {
 	antialias = true,
 	extended = true,
 	weight = 4500,
-	size = 36
+	size = 24
 })
 surface.CreateFont("DebugHUD18", {
 	font = "Segoe UI Light",
 	antialias = true,
 	extended = true,
 	weight = 4500,
-	size = 24
+	size = 18
 })
 landis.DefineSetting("debugHUD",{type="tickbox",value=false,default=false,category="UI",name="Debug Hud"})
 local function GetDebugHUDText()
@@ -36,8 +36,11 @@ end
 
 hook.Add("HUDPaint", "DebugHud_LANDIS", function()
 	if not DVBUILD then return end
-	draw.DrawText(DISPLAY .. " - " .. VERSION, "DebugHUD24", ScrW()-5, 5, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
-	draw.DrawText(XTNOTES, "DebugHUD18", ScrW()-5, 41, Color( 230, 230, 230, 150 ),TEXT_ALIGN_RIGHT)
+	local scrW = ScrW()
+	local scrH = ScrH()
+	local drwH = scrH/2+(scrH/4)
+	draw.SimpleText("Landis","DebugHud24",scrW/2,drwH,Color(200,200,200,180),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+	draw.SimpleText(LocalPlayer():SteamID64(),"DebugHud18",scrW/2,drwH+18,Color(200,200,200,180),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 	if landis.GetSetting("debugHUD") then
 		draw.DrawText(GetDebugHUDText(), "BudgetLabel", 16, 16)
 	end

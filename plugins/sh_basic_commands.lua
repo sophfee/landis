@@ -122,30 +122,8 @@ landis.chat.RegisterCommand("/luarunner",{
 	end
 })
 
-if CLIENT then
-	concommand.Add("icontool", function()
-		if LocalPlayer():IsSuperAdmin() then
-			vgui.Create( "landisIcontool" )
-		else
-			MsgC(Color(255,0,0),"Invalid Permissions.\n",color_white)
-		end
-	end)
-end
-
-landis.chat.RegisterCommand("/icontool",{
-	RequireAlive    = false,
-	RequireArgs     = false,
-	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
-	HelpDescription = "Open the Icon Tool.",
-	onRun  = function(self,ply,args)
-		if ply:IsSuperAdmin() then
-			ply:ConCommand("icontool") -- add local concommand
-			--landis.
-		end
-	end
-})
-
-local banCommand = {
+-- landis.chat.commands
+landis.chat.RegisterCommand("/ban",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -176,11 +154,9 @@ local banCommand = {
 		end
 
 	end
-}
--- landis.chat.commands
-landis.chat.RegisterCommand("/ban",banCommand)
+})
 
-local giveXPCommand = {
+landis.chat.RegisterCommand("/givexp",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -197,11 +173,9 @@ local giveXPCommand = {
 		end
 
 	end
-}
+})
 
-landis.chat.RegisterCommand("/givexp",giveXPCommand)
-
-local SetUserGroupCommand = {
+landis.chat.RegisterCommand("/setusergroup",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -223,11 +197,9 @@ local SetUserGroupCommand = {
 		end
 
 	end
-}
+})
 
-landis.chat.RegisterCommand("/setusergroup",SetUserGroupCommand)
-
-local SetHP = {
+landis.chat.RegisterCommand("/sethp",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -250,11 +222,9 @@ local SetHP = {
 		end
 
 	end
-}
+})
 
-landis.chat.RegisterCommand("/sethp",SetHP)
-
-local Setteam = {
+landis.chat.RegisterCommand("/setteam",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -276,6 +246,4 @@ local Setteam = {
 		end
 
 	end
-}
-
-landis.chat.RegisterCommand("/setteam",Setteam)
+})

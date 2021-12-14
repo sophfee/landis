@@ -10,7 +10,7 @@ if CLIENT then
 end
 
 -- EVENT
-landis.chat.RegisterCommand("/event",{
+landis.RegisterChatCommand("/event",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_LEAD_ADMIN,
@@ -34,7 +34,7 @@ if CLIENT then
 		end
 	end)
 end
-landis.chat.RegisterCommand("/icontool",{
+landis.RegisterChatCommand("/icontool",{
 	RequireAlive    = false,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -48,7 +48,7 @@ landis.chat.RegisterCommand("/icontool",{
 })
 
 -- GOTO
-landis.chat.RegisterCommand("/goto",{
+landis.RegisterChatCommand("/goto",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -66,7 +66,7 @@ landis.chat.RegisterCommand("/goto",{
 })
 
 -- BRING
-landis.chat.RegisterCommand("/bring",{
+landis.RegisterChatCommand("/bring",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -84,7 +84,7 @@ landis.chat.RegisterCommand("/bring",{
 })
 
 -- DROPMONEY
-landis.chat.RegisterCommand("/dropmoney",{
+landis.RegisterChatCommand("/dropmoney",{
 	RequireAlive    = true,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_USER,
@@ -95,7 +95,7 @@ landis.chat.RegisterCommand("/dropmoney",{
 })
 
 -- ME
-landis.chat.RegisterCommand("/me",{
+landis.RegisterChatCommand("/me",{
 	RequireAlive    = true,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_USER,
@@ -110,7 +110,7 @@ landis.chat.RegisterCommand("/me",{
 })
 
 -- LUARUNNER
-landis.chat.RegisterCommand("/luarunner",{
+landis.RegisterChatCommand("/luarunner",{
 	RequireAlive    = false,
 	RequireArgs     = false,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -123,7 +123,7 @@ landis.chat.RegisterCommand("/luarunner",{
 })
 
 -- landis.chat.commands
-landis.chat.RegisterCommand("/ban",{
+landis.RegisterChatCommand("/ban",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -156,7 +156,7 @@ landis.chat.RegisterCommand("/ban",{
 	end
 })
 
-landis.chat.RegisterCommand("/givexp",{
+landis.RegisterChatCommand("/givexp",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -175,7 +175,7 @@ landis.chat.RegisterCommand("/givexp",{
 	end
 })
 
-landis.chat.RegisterCommand("/setusergroup",{
+landis.RegisterChatCommand("/setusergroup",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_SUPERADMIN,
@@ -199,7 +199,7 @@ landis.chat.RegisterCommand("/setusergroup",{
 	end
 })
 
-landis.chat.RegisterCommand("/sethp",{
+landis.RegisterChatCommand("/sethp",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,
@@ -224,7 +224,7 @@ landis.chat.RegisterCommand("/sethp",{
 	end
 })
 
-landis.chat.RegisterCommand("/setteam",{
+landis.RegisterChatCommand("/setteam",{
 	RequireAlive    = false,
 	RequireArgs     = true,
 	PermissionLevel = PERMISSION_LEVEL_ADMIN,

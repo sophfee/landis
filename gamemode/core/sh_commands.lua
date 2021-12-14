@@ -27,7 +27,7 @@ local baseStruct = {
 -- Registers a chat command. Must be called on both Client & Server.
 -- @param className What a user has to enter into their chatbox, must start with /.
 -- @param struct The command data, including the code that runs when the command is issued.
-function landis.chat.RegisterCommand(className,struct)
+function landis.RegisterChatCommand(className,struct)
 	if not className or not struct then return end
 	local makeStruct = table.Inherit(struct, baseStruct)
 	-- shoud never fail

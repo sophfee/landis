@@ -11,7 +11,7 @@
 
 # Chat
 
-# landis.chat.RegisterCommand(className,struct)
+# landis.RegisterChatCommand(className,struct)
 - Registers a new chat command
 
 - className

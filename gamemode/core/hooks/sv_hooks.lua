@@ -53,7 +53,7 @@ function GM:PlayerCanHearPlayersVoice( listener, talker )
 	end
 end
 
-hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
+hook.Add("DoPlayerDeath", "landisRagdollCreate",function(ply)
 	ply:CreateRagdoll()
 	ply:SetNWBool("CanRespawn",false)
 	timer.Simple(10, function()
@@ -61,13 +61,13 @@ hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
 	end)
 end)
 
-hook.Add( "PhysgunPickup", "pickupPlayer", function( ply, ent )
+hook.Add( "PhysgunPickup", "landisPickupPlayer", function( ply, ent )
 	if ( ply:IsAdmin() and ent:IsPlayer() ) then
 		ent:SetMoveType(MOVETYPE_NONE)
 		return true
 	end
 end )
-hook.Add("PhysgunDrop", "dropPlayer", function(ply, ent)
+hook.Add("PhysgunDrop", "landisDropPlayer", function(ply, ent)
 	if ent:IsPlayer() then
 		ent:SetMoveType(MOVETYPE_WALK)
 	end
@@ -150,7 +150,7 @@ hook.Add("PlayerInitialSpawn", "landisStartMenu", function(ply,transition)
 	net.Send(ply)
 end)
 
-hook.Add("CheckPassword", "CheckForBan", function(uSteamID64)
+hook.Add("CheckPassword", "landisCheckForBan", function(uSteamID64)
 	local userData = sql.Query("SELECT * FROM landis_bans WHERE steamid = " .. sql.SQLStr(uSteamID64) .. ";")
 	if not userData then return true end
 	for _,ban in ipairs(userData) do
@@ -161,23 +161,11 @@ hook.Add("CheckPassword", "CheckForBan", function(uSteamID64)
 	return true
 end)
 
-hook.Add("PlayerInitialSpawn", "setup_data", function(ply)
+hook.Add("PlayerInitialSpawn", "landisSetupData", function(ply)
 	ply:SetupData()
 end)
 
 
-hook.Add("PlayerDisconnected", "save_data", function(ply)
+hook.Add("PlayerDisconnected", "landisSaveData", function(ply)
 	ply:SaveAllData()
-end)
-
-hook.Add("PlayerGiveSWEP","noThumpThump", function(ply,class,swep)
-	if class == "ls_thumpthump" then
-		return ply:SteamID() == "STEAM_0:1:92733650"
-	end
-end)
-
-hook.Add("PlayerSpawnSWEP","noThumpThump", function(ply,class,swep)
-	if class == "ls_thumpthump" then
-		return ply:SteamID() == "STEAM_0:1:92733650"
-	end
 end)

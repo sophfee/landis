@@ -5,7 +5,13 @@ function PLAYER:SetXP( num )
   self:SetNWInt("XP", num)
 end
 
-util.AddNetworkString("landisNotify")
+
+function PLAYER:SetupNewUser()
+	local userData = baseData
+	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. sql.SQLStr(self:Nick()) ..", ".. tostring(0)..", "..sql.SQLStr("user")..")")
+	sql.Query("INSERT INTO landis_currency VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. tostring(0) ..", ".. tostring(0)..")")
+	landis.ConsoleMessage("Created new data successfully!")
+end
 
 function PLAYER:Notify(message,duration)
 	if not message then return end

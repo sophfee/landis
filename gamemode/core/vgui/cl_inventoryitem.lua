@@ -65,7 +65,22 @@ function PANEL:DoClick()
         local M = DermaMenu()
         if I.canUse then
             M:AddOption(I.useText, function()
-                I.onUse()
+                I.onUse(I,LocalPlayer(),self.Index)
+                net.Start("landisItemUse")
+                    net.WriteInt(self.Index, 32)
+                net.SendToServer()
+                if I.useRemove then
+                    self:Remove()
+                end
+            end)
+        end
+        if I.Droppable then
+            M:AddOption("Drop", function()
+                I.onDrop(I,LocalPlayer(),self.Index)
+                net.Start("landisItemDrop")
+                    net.WriteInt(self.Index, 32)
+                net.SendToServer()
+                self:Remove()
             end)
         end
         if I.canEquip then

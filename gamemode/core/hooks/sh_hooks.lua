@@ -11,3 +11,7 @@ function GM:StartCommand(ply,cmd)
 		cmd:RemoveKey(IN_ATTACK+IN_ATTACK2)
 	end
 end
+
+function GM:OnReloaded()
+	landis.Reload()
+end

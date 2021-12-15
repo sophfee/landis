@@ -19,6 +19,7 @@ landis.items.base = {
 		lookAt = Vector()
 	},
 	weight    = 0,
+	Droppable = false,
 	canUse    = false,
 	onUse     = function() end,
 	useText   = "Use",
@@ -59,5 +60,29 @@ function landis.RegisterItem( meta )
 		end
 	end
 
+	self.onDrop = function ( self, ply, i )
+		if self.Droppable then
+			if SERVER then
+				local Item = ents.Create("landis_item")
+            
+            	local tr = util.QuickTrace(ply:EyePos(), ply:GetAimVector()*100,ply)
+            	if tr.HitPos then
+                	Item:SetPos(tr.HitPos)
+            	else
+                	Item:SetPos(ply:EyePos()+(ply:GetAimVector()*100))
+            	end
+            	Item:Spawn()
+            	Item:SetItem(ply.Inventory[i].UniqueID)
+			end
+			table.remove(ply.Inventory, i)
+		end
+	end
+
 	landis.items.data[self.UniqueID] = self
+end
+
+local meta = FindMetaTable("Player")
+
+function meta:DropItem(index)
+	
 end

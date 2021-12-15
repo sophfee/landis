@@ -1,3 +1,7 @@
+local math = math
+local clamp = math.Clamp
+local floor = math.floor
+
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:SetXP( num )
@@ -35,6 +39,10 @@ function PLAYER:SetupNewUser()
 	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. sql.SQLStr(self:Nick()) ..", ".. tostring(0)..", "..sql.SQLStr("user")..")")
 	sql.Query("INSERT INTO landis_currency VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. tostring(0) ..", ".. tostring(0)..")")
 	landis.ConsoleMessage("Created new data successfully!")
+end
+
+function PLAYER:FeedHunger(v)
+	return self:SetHunger(floor(clamp(self:GetHunger()+v,0,100)))
 end
 
 function PLAYER:Notify(message,duration)

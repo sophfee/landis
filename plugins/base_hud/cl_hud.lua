@@ -257,18 +257,19 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	end
 	
 	if SCHEMA:ShouldDrawElement( "Health" ) then 
-		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) 
+		drawBar("Hunger",ply:GetHunger(),Color(212,158,65),{x=25,y=ScrH()-50}) 
+		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-100}) 
 		landis.DrawText(ply:GetMoney().. " Credits",350,ScrH()-60,{size=36,bold=true},{x=TEXT_ALIGN_LEFT,y=TEXT_ALIGN_TOP},color_white)
 	end
 
 	if SCHEMA:ShouldDrawElement( "Armor" ) then 
 		if ply:Armor() > 0 then 
-			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100})
+			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-150})
+			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-200,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-200,{size=36,bold=true},{x=0,y=0},color_white) 
+		else
 			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-150,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
 			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-150,{size=36,bold=true},{x=0,y=0},color_white) 
-		else
-			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-100,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
-			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-100,{size=36,bold=true},{x=0,y=0},color_white) 
 			
 		end
 	end

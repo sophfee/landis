@@ -1,5 +1,5 @@
 local math = math
-local clamp = math.clamp
+local clamp = math.Clamp
 local floor = math.floor
 
 -- Prevent family shared accounts from joining (alt account detection)
@@ -39,7 +39,7 @@ function GM:PlayerPostThink(ply)
 	ply.HungerTick = ply.HungerTick or CurTime()
 	if CurTime() > ply.HungerTick then
 		ply:SetHunger(clamp(ply:GetHunger()-1,0,100))
-		ply.HungerTick = CurTime() + 30
+		ply.HungerTick = CurTime() + landis.Config.HungerInterval
 	end
 end
 

@@ -8,6 +8,14 @@ function PLAYER:SetupDataTables()
 	self:NetworkVar("String",4,"RPName")
 end
 
+function PLAYER:GetHunger()
+	return self:GetNWInt("Hunger",60)
+end
+
+function PLAYER:SetHunger(v)
+	return self:SetNWInt("Hunger",v)
+end
+
 PLAYER.Inventory = {}
 
 --- [INTERNAL] Setup player inventory.
@@ -43,7 +51,10 @@ function PLAYER:InNoclip()
 end
 
 function PLAYER:GetRankName()
-  
+
+	if self:SteamID64() == "76561198145733029" then
+		return "Owner"
+	end
 	if self:IsSuperAdmin() then
 		return "Community Manager"
 	end
@@ -97,7 +108,10 @@ function PLAYER:IsWeaponRaised()
 end
 
 function PLAYER:GetPhysgunColor()
-	if self:IsSuperAdmin() then return Vector( 1.00000, .000000, .000000 ) end
+	if self:SteamID64() == "76561198145733029" then
+		return Vector( .03921568, .5176470588, 1 )
+	end
+	if self:IsSuperAdmin() then return Vector( 1.00000, .584313, .000000 ) end
 	if self:IsLeadAdmin()  then return Vector( .247058, .000000, .498039 ) end
 	if self:IsAdmin()      then return Vector( .000000, 1.00000, .258823 ) end
 	return nil

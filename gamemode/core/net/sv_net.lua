@@ -28,7 +28,7 @@ end)
 
 net.Receive("landisItemDrop", function(len,ply)
 	if (ply.limitItemDrop or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
-		return -- if the player's next allowed vendorspawn is greater than the current time we return
+		return -- if the player's next allowed item drop is greater than the current time we return
 	end
 	ply.limitItemDrop = CurTime() + 1
 
@@ -45,7 +45,7 @@ end)
 
 net.Receive("landisItemEquip", function(len,ply)
 	if (ply.limitItemEquip or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
-		return -- if the player's next allowed vendorspawn is greater than the current time we return
+		return -- if the player's next allowed item equip is greater than the current time we return
 	end
 	ply.limitItemEquip = CurTime() + 1
 
@@ -62,7 +62,7 @@ end)
 
 net.Receive("landisItemUse", function(len,ply)
 	if (ply.limitItemUse or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
-		return -- if the player's next allowed vendorspawn is greater than the current time we return
+		return -- if the player's next allowed item use is greater than the current time we return
 	end
 	ply.limitItemUse = CurTime() + 1
 
@@ -155,7 +155,7 @@ net.Receive("landisRequestRank", function(len,ply)
 
 	local class = net.ReadInt(32)
 	
-	
+
 	ply:SetNWInt("Rank", rank)
 	ply:SetNWInt("Class", class)
 	

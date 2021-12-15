@@ -38,7 +38,7 @@ net.Receive("landisItemDrop", function(len,ply)
 
 	if itemData then
 		if itemData.Droppable then
-			ply.Inventory[itemIndex].OnEquip(itemData,ply,itemIndex)
+			ply.Inventory[itemIndex].onDrop(itemData,ply,itemIndex)
 		end
 	end
 end)

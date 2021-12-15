@@ -140,7 +140,7 @@ hook.Add("PlayerSpawnRagdoll", "landisSchemaPlayerSpawnRagdoll", function(ply,mo
 end)
 
 hook.Add("PlayerSpawnSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,swep)
-	landis.ConsoleMessage(ply," is attempting to spawn a ",weapon," (SWEP)")
+	landis.ConsoleMessage(ply:Nick().." is attempting to spawn a "..weapon.." (SWEP)")
 	if SCHEMA.PlayerSpawnSWEP then
 		return SCHEMA:PlayerSpawnSWEP(ply,weapon,swep)
 	end
@@ -148,7 +148,7 @@ hook.Add("PlayerSpawnSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,s
 end)
 
 hook.Add("PlayerGiveSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,swep)
-	landis.ConsoleMessage(ply," is attempting to give themselves a ",weapon)
+	landis.ConsoleMessage(ply:Nick() .. " is attempting to give themselves a " .. weapon)
 	if SCHEMA.PlayerGiveSWEP then
 		return SCHEMA:PlayerGiveSWEP(ply,weapon,swep)
 	end

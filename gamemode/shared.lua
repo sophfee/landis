@@ -91,6 +91,39 @@ function landis.includeDir( scanDirectory, core )
 	end
 end
 
+function landis.ConsoleMessage(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix
+	local textCo = landis.Config.DefaultTextColor
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client] ",textCo,...,"\n") -- \n to prevent same line console messages
+	end
+	return MsgC(mColor,prefix,Color(255,59,48),"[Server] ",textCo,...,"\n")
+end
+
+function landis.Warn(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix
+	local textCo = landis.Config.DefaultTextColor
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Warn] ",textCo,...,"\n") -- \n to prevent same line console messages
+	end
+	return MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Warn] ",textCo,...,"\n")
+end
+
+function landis.Error(...)
+	local mColor = landis.Config.MainColor
+	local prefix = landis.Config.ConsolePrefix
+	local textCo = landis.Config.DefaultTextColor
+	if CLIENT then
+		return MsgC(mColor,prefix,Color(50,173,230),"[Client]",Color(255,149,0),"[Error] ",textCo,...,"\n") -- \n to prevent same line console messages
+	end
+	MsgC(mColor,prefix,Color(255,59,48),"[Server]",Color(255,149,0),"[Error] ",textCo,...,"\n")
+	print("======[STACK TRACEBACK]=====")
+	debug.Trace()
+	print("======[ENDOF TRACEBACK]=====")
+end
+
 if SERVER then
 	// load core plugins/extensions
 	MsgC(Color(10,132,255),"[landis] loading libraries...\n")

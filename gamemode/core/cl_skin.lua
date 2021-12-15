@@ -44,7 +44,7 @@ surface.CreateFont("landis_base-default-20", {
 })
 
 local blur = Material("pp/blurscreen")
-function blurDerma(panel,alpha,layers,density)
+function landis.blur(panel,alpha,layers,density)
     local x, y = panel:LocalToScreen(0, 0)
     surface.SetDrawColor(255, 255, 255, alpha)
     surface.SetMaterial(blur)
@@ -108,7 +108,7 @@ end
 
 function SKIN:PaintFrame( self,w,h )
 	self.lblTitle:SetFont("landis-18-B")
-	blurDerma(self,200,10,20)
+	landis.blur(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark
 	local cornerRadius = landis.Config.CornerRadius
@@ -169,7 +169,7 @@ function SKIN:PaintWindowCloseButton(self,w,h)
 end
 
 function SKIN:PaintPropertySheet(self,w,h)
-	blurDerma(self,200,10,20)
+	landis.blur(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark
 	surface.SetDrawColor( bgColor.r, bgColor.g, bgColor.b, 220 )

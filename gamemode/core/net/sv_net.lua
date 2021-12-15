@@ -34,6 +34,10 @@ net.Receive("landisItemDrop", function(len,ply)
 
 
 	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+	
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
@@ -51,6 +55,10 @@ net.Receive("landisItemEquip", function(len,ply)
 
 
 	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
@@ -68,6 +76,10 @@ net.Receive("landisItemUse", function(len,ply)
 
 
 	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
@@ -132,7 +144,13 @@ net.Receive("landisRPNameChange", function(len,ply)
 	end
 	ply.rpNameChangeWait = CurTime() + 2
 
+
 	local name = net.ReadString()
+	if name == nil then -- nick, remember, players could just be sending nothing at all
+		return
+	end
+
+
 	name = landis.SafeString(name)
 	local len  = name:len()
 
@@ -151,9 +169,19 @@ net.Receive("landisRPNameChange", function(len,ply)
 end)
 
 net.Receive("landisRequestRank", function(len,ply)
+	if (ply.rankRequestWait or 0) > CurTime() then
+		return
+	end
+	ply.rankRequestWait = CurTime() + 1
 	local rank = net.ReadInt(32)
+	if rank == nil then -- make rank is valid
+		return
+	end
 
 	local class = net.ReadInt(32)
+	if class == nil then -- make sure class is valid
+		return
+	end
 	
 
 	ply:SetNWInt("Rank", rank)

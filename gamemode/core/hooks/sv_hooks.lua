@@ -199,7 +199,6 @@ hook.Add("CheckPassword", "landisCheckForBan", function(uSteamID64)
 			return false, "uh oh! looks like you're currently banned!\n\nBanned by: " .. ban.moderator .. "\nReason: "..ban.reason.."\nUnban Date: "..os.date("%A, %B %d - %x %X", ban.end_date)  
 		end
 	end
-	return true
 end)
 
 hook.Add("PlayerInitialSpawn", "landisSetupData", function(ply)

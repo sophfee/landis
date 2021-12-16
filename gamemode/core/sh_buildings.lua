@@ -15,7 +15,7 @@ function landis.Buildings.Register(UniqueID,self)
 			--if not (door:GetClass() == "func_door") then return end
 			
 			if self.Label then
-				door:SetNWString("DisplayName",self.Label)
+				door.DoorLabel = self.Label
 			end
 			
 			if self.Purchasable then

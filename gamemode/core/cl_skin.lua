@@ -107,7 +107,12 @@ function SKIN:PaintButtonUp( panel, w, h )
 end
 
 function SKIN:PaintFrame( self,w,h )
-	self.lblTitle:SetFont("landis-18-B")
+	local lblTitle = self.lblTitle
+	if lblTitle then
+		if IsValid(lblTitle) then
+			self.lblTitle:SetFont("landis-18-B")
+		end
+	end
 	landis.blur(self,200,10,20)
 	local mainColor = landis.Config.MainColor
 	local bgColor   = landis.Config.BGColorDark

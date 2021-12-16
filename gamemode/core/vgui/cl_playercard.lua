@@ -82,7 +82,7 @@ function PANEL:Init()
 end
 
 function PANEL:OnClose()
-	openPlayercard = false
+	openPlayercard = nil
 end
 
 vgui.Register("landisPlayerCard", PANEL, "DFrame")
@@ -96,7 +96,7 @@ properties.Add("openPlayercard", {
 	end,
 	Action = function(ply,self)
 		if self:IsPlayer() then
-			local Card = vgui.Create("landisPlayerCard")
+			landis.Playercard = landis.Playercard or vgui.Create("landisPlayerCard")
 			Card:SetPlayer(self)
 
 		end

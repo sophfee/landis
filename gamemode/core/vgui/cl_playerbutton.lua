@@ -71,7 +71,7 @@ function PANEL:SetPlayer(ply)
 
 end
 function PANEL:Init()
-
+	
 	self:SetText("")
 	self:SetTooltip("Left-Click to open Player Card.")
 	self.Icon = vgui.Create("DModelPanel", self)
@@ -79,17 +79,17 @@ function PANEL:Init()
 	self.Icon:SetPos(1,1)
 	self.Owner = nil
 	self.Badges ={}
+
 	function self.Icon:LayoutEntity()
 	end
+
 end
 function PANEL:DoClick()
 	if not IsValid( self.Owner ) then return end
-	if openPlayercard then return end
-	openPlayercard = true
-	local pCard = vgui.Create("landisPlayerCard")
-	pCard:Center()
-	pCard:MakePopup()
-	pCard:SetPlayer( self.Owner )
+	landis.Playercard = landis.Playercard or vgui.Create("landisPlayerCard")
+	landis.Playercard:Center()
+	landis.Playercard:MakePopup()
+	landis.Playercard:SetPlayer( self.Owner )
 end
 
 vgui.Register("landisPlayerPanel", PANEL, "DButton")

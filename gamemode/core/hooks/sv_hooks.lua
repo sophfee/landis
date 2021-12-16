@@ -10,6 +10,10 @@ function GM:PlayerAuthed(ply,steamID)
 	end
 end
 
+function GM:CanDrive()
+	return false
+end
+
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]
 	ply:SetHunger(60)
@@ -21,12 +25,8 @@ function GM:PlayerSpawn(ply)
 	if teamData then
 		ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
 	end
-	if ply:IsAdmin() then
-		ply:Give("weapon_physgun")
-	end
-	if ply:IsLeadAdmin() then
-		ply:Give("gmod_tool")
-	end
+	ply:Give("weapon_physgun")
+	ply:Give("gmod_tool")
 	ply:Give("landis_hands")
 	hook.Run("PlayerLoadout", ply)
 end

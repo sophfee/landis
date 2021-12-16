@@ -56,6 +56,6 @@ landis.Buildings.Register("AA",{
 	Purchasable = true,
 	Label = "deez nuts",
 	Doors = {
-		[ 1315 ] = {}
+		[ 142 ] = {}
 	}
 })

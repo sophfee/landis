@@ -114,7 +114,7 @@ function landis.chatbox.buildBox()
 		end
 	end
 
-	landis.chatbox.chatLog = vgui.Create("DScrollPanel", landis.chatbox.frame) 
+	landis.chatbox.chatLog = vgui.Create("landisScroll", landis.chatbox.frame) 
 	landis.chatbox.chatLog:SetSize( landis.chatbox.frame:GetWide() - 10, landis.chatbox.frame:GetTall() - 60 )
 	landis.chatbox.chatLog:SetPos( 5, 30 )
 	landis.chatbox.chatLog.Paint = function( self, w, h )
@@ -214,7 +214,7 @@ function landis.chatbox.hideBox()
 	landis.chatbox.frame.Paint = function() end
 	landis.chatbox.chatLog.Paint = function() end
 	
-	landis.chatbox.chatLog:SetScrollBarVisible( false )
+	landis.chatbox.chatLog:SetScrollbarVisible(false)
 	landis.chatbox.chatLog:GotoTextEnd()
 	
 	landis.chatbox.lastMessage = landis.chatbox.lastMessage or CurTime() - landis.chatbox.config.fadeTime
@@ -252,7 +252,7 @@ function landis.chatbox.showBox()
 	landis.chatbox.frame.Paint = landis.chatbox.oldPaint
 	landis.chatbox.chatLog.Paint = landis.chatbox.oldPaint2
 	
-	landis.chatbox.chatLog:SetVerticalScrollbarEnabled( true )
+	landis.chatbox.chatLog:GetVBar():Show()
 	landis.chatbox.lastMessage = nil
 	
 	-- Show any hidden children
@@ -468,7 +468,7 @@ hook.Add("PlayerBindPress", "landis.chatbox_hijackbind", function(ply, bind, pre
 		
 		if IsValid( landis.chatbox.frame ) then
 			landis.chatbox.showBox()
-			landis.chatbox.chatLog:SetScrollBarVisible( true )
+			landis.chatbox.chatLog:SetScrollbarVisible(true)
 		else
 			landis.chatbox.buildBox()
 			landis.chatbox.showBox()
@@ -499,7 +499,7 @@ chat.Open = landis.chatbox.showBox
 function chat.Close(...) 
 	if IsValid( landis.chatbox.frame ) then 
 		landis.chatbox.hideBox(...)
-		
+		landis.chatbox.chatLog:SetScrollbarVisible(false)
 	else
 		landis.chatbox.buildBox()
 		landis.chatbox.showBox()

@@ -6,6 +6,11 @@ landis.__DISPLAY = "Landis Framework"
 landis.__XTNOTES = "PREVIEW BUILD: " .. GetGlobalString(1)
 landis.__DVBUILD = true
 
+PERMISSION_LEVEL_USER       = 1
+PERMISSION_LEVEL_ADMIN      = 2
+PERMISSION_LEVEL_LEAD_ADMIN = 3
+PERMISSION_LEVEL_SUPERADMIN = 4
+
 // fallback configurations
 landis.Config =  {}
 landis.Config.MainColor        = Color( 255, 69, 58 )

@@ -30,8 +30,8 @@ local function GetDebugHUDText()
 	t=t.."deathTime: " .. deathTime .. "\n"
 	t=t.."teamIndex: " .. landis.TeamIndex .. "\n"
 	t=t.."hunger: " .. LocalPlayer():GetHunger() .. "\n"
-	t=t.."inventoryItemCount: " .. #(LocalPlayer().Inventory)
-
+	t=t.."inventoryItemCount: " .. #(LocalPlayer().Inventory) .. "\n"
+	t=t.."3d2dDoorsDrawCount: " .. debugDrawDoorCount .. "\n"
 	return t
 end
 

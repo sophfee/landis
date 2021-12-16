@@ -16,8 +16,8 @@ function PANEL:Init()
 		return
 	end
 	self:SetPopupStayAtBack(true)
-	MainMenuMusic = MainMenuMusic or CreateSound(LocalPlayer(), "music/hl2_intro.mp3")
-	MainMenuMusic:Play()
+	--MainMenuMusic = MainMenuMusic or CreateSound(LocalPlayer(), "music/hl2_intro.mp3")
+	--MainMenuMusic:Play()
 	SCHEMA:SetHUDElement("Crosshair",false)
 	SCHEMA:SetHUDElement("Health",false)
 	SCHEMA:SetHUDElement("Armor",false)
@@ -59,7 +59,7 @@ function PANEL:Init()
 				net.Start("landisRPNameChange")
 					net.WriteString(name)
 				net.SendToServer()
-				MainMenuMusic:FadeOut(1.125)
+				--MainMenuMusic:FadeOut(1.125)
 				hook.Remove("HUDShouldDraw", "removeall")
 		
 				MainMenu = nil
@@ -80,7 +80,7 @@ function PANEL:Init()
 				end)
 			end)
 		else
-			MainMenuMusic:FadeOut(1.125)
+			--MainMenuMusic:FadeOut(1.125)
 			hook.Remove("HUDShouldDraw", "removeall")
 		
 			MainMenu = nil

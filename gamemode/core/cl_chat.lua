@@ -214,7 +214,7 @@ function landis.chatbox.hideBox()
 	landis.chatbox.frame.Paint = function() end
 	landis.chatbox.chatLog.Paint = function() end
 	
-	landis.chatbox.chatLog:SetVerticalScrollbarEnabled( false )
+	landis.chatbox.chatLog:SetScrollBarVisible( false )
 	landis.chatbox.chatLog:GotoTextEnd()
 	
 	landis.chatbox.lastMessage = landis.chatbox.lastMessage or CurTime() - landis.chatbox.config.fadeTime
@@ -285,7 +285,7 @@ function landis.chatbox.openSettings()
 	landis.chatbox.frameS:SetPos( ScrW()/2 - landis.chatbox.frameS:GetWide()/2, ScrH()/2 - landis.chatbox.frameS:GetTall()/2 )
 	landis.chatbox.frameS:ShowCloseButton( true )
 	landis.chatbox.frameS.Paint = function( self, w, h )
-		landis.chatbox.blur( self, 10, 20, 255 )
+		landis.blur( self, 10, 20, 255 )
 		draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 200 ) )
 		
 		draw.RoundedBox( 0, 0, 0, w, 25, Color( 80, 80, 80, 100 ) )
@@ -468,6 +468,7 @@ hook.Add("PlayerBindPress", "landis.chatbox_hijackbind", function(ply, bind, pre
 		
 		if IsValid( landis.chatbox.frame ) then
 			landis.chatbox.showBox()
+			landis.chatbox.chatLog:SetScrollBarVisible( true )
 		else
 			landis.chatbox.buildBox()
 			landis.chatbox.showBox()
@@ -498,6 +499,7 @@ chat.Open = landis.chatbox.showBox
 function chat.Close(...) 
 	if IsValid( landis.chatbox.frame ) then 
 		landis.chatbox.hideBox(...)
+		
 	else
 		landis.chatbox.buildBox()
 		landis.chatbox.showBox()

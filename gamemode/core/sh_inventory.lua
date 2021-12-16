@@ -12,20 +12,20 @@ landis.items.base = {
 	ID = 0,
 	DisplayName = "Unset Item",
 	Description = "Missing description",
-	Model     = "models/props_lab/huladoll.mdl",
-	iconCam   = {
+	Model       = "models/props_lab/huladoll.mdl",
+	Icon       = {
 		pos    = Vector( 72.349167, 60.546150, 47.260101 ),
 		fov    = 6,
 		lookAt = Vector()
 	},
-	weight    = 0,
+	Weight    = 0,
 	Droppable = false,
-	canUse    = false,
-	onUse     = function() end,
-	useText   = "Use",
-	useRemove = true, -- remove after use
-	canEquip  = false, -- equip is a automatic function, depending on the way you setup the equipdata determines how it works, other cases should be made into a custom use.
-	equipData = {
+	Usable    = false,
+	OnUse     = function() end,
+	UseText   = "Use",
+	UseRemove = true, -- remove after use
+	CanEquip  = false, -- equip is a automatic function, depending on the way you setup the equipdata determines how it works, other cases should be made into a custom use.
+	EquipData = {
 		type  = EQUIP_WEAPON,
 		class = "weapon_pistol", -- weapon string class
 		ammo1 = nil, -- give the user an amount of ammo for the priamry clip
@@ -43,7 +43,7 @@ function landis.RegisterItem( meta )
 	local self = table.Inherit( meta, landis.items.base )
 
 	self.OnEquip = function ( self, ply, i )
-		if self.equipData.type == EQUIP_WEAPON then
+		if self.EquipData.type == EQUIP_WEAPON then
 			ply.Inventory[i].Equipped = ply.Inventory[i].Equipped or false
 			ply.Inventory[i].Equipped = !ply.Inventory[i].Equipped -- invert value
 			if SERVER then

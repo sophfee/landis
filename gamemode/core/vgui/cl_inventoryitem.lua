@@ -61,15 +61,25 @@ end
 
 function PANEL:DoClick()
     local I = LocalPlayer().Inventory[self.Index]
+    local Index = self.Index
     if I then
         local M = DermaMenu()
-        if I.canUse then
-            M:AddOption(I.useText, function()
-                I.onUse(I,LocalPlayer(),self.Index)
-                net.Start("landisItemUse")
-                    net.WriteInt(self.Index, 32)
-                net.SendToServer()
-                if I.useRemove then
+        if I.Usable then
+            M:AddOption(I.UseText, function()
+                if I.UseBar then
+                    INVENTORY_PANEL:Hide()
+                    net.Start("landisItemUse")
+                        net.WriteInt(Index, 32)
+                    net.SendToServer()
+                    landis.MakeBar(I.UseBarText, I.UseBarTime, function()
+                        I.OnUse(I,LocalPlayer(),Index)
+                        if IsValid(INVENTORY_PANEL) then
+                            INVENTORY_PANEL:Show()
+                        end
+                    end)
+                    
+                end
+                if I.UseRemove then
                     self:Remove()
                 end
             end)
@@ -83,7 +93,7 @@ function PANEL:DoClick()
                 self:Remove()
             end)
         end
-        if I.canEquip then
+        if I.CanEquip then
             M:AddOption("Equip", function()
                 I.OnEquip(I,LocalPlayer(),self.Index)
                 net.Start("landisItemEquip")

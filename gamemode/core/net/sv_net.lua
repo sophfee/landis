@@ -83,10 +83,19 @@ net.Receive("landisItemUse", function(len,ply)
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
-		if itemData.canUse then
-			ply.Inventory[itemIndex].onUse(itemData,ply,itemIndex)
-			if itemData.useRemove then
-				table.remove(ply.Inventory, itemIndex)
+		if itemData.CanUse then
+			if not itemData.UseBar then -- easier
+				ply.Inventory[itemIndex].onUse(itemData,ply,itemIndex)
+				if itemData.UseRemove then
+					table.remove(ply.Inventory, itemIndex)
+				end
+			else
+				timer.Simple(itemData.UseBarTime,function()
+					ply.Inventory[itemIndex].OnUse(itemData,ply,itemIndex)
+					if itemData.UseRemove then
+						table.remove(ply.Inventory, itemIndex)
+					end
+				end)
 			end
 		end
 	end

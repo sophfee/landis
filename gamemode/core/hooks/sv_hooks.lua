@@ -59,6 +59,13 @@ hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
 	end
 end)
 
+function GM:PlayerCanSeePlayersChat( _, __, listener, talker )
+	if not talker:Alive() then return false end
+	if listener:GetPos():DistToSqr( talker:GetPos() ) < ((landis.Config.VoiceRange*landis.Config.VoiceRange) or 600*600) then
+		return true,true
+	end
+end
+
 function GM:PlayerCanHearPlayersVoice( listener, talker )
 	if not talker:Alive() then return false end
 	if listener:GetPos():DistToSqr( talker:GetPos() ) < ((landis.Config.VoiceRange*landis.Config.VoiceRange) or 600*600) then
@@ -129,7 +136,28 @@ hook.Add("PlayerSpawnProp", "landisSchemaPlayerSpawnProp", function(ply,model)
 	if SCHEMA.PlayerSpawnProp then
 		return SCHEMA:PlayerSpawnProp(ply,model)
 	end
+	return true
+end)
+
+hook.Add("PlayerSpawnEffect", "landisSchemaPlayerSpawnEffect", function(ply,model)
+	if SCHEMA.PlayerSpawnEffect then
+		return SCHEMA:PlayerSpawnEffect(ply,model)
+	end
 	return ply:IsAdmin()
+end)
+
+hook.Add("PlayerSpawnSENT", "landisSchemaPlayerSpawnSENT", function(ply,sent)
+	if SCHEMA.PlayerSpawnSENT then
+		return SCHEMA:PlayerSpawnSENT(ply,sent)
+	end
+	return ply:IsSuperAdmin()
+end)
+
+hook.Add("PlayerSpawnVehicle", "landisSchemaPlayerSpawnVehicle", function(ply,veh)
+	if SCHEMA.PlayerSpawnVehicle then
+		return SCHEMA:PlayerSpawnVehicle(ply,veh)
+	end
+	return ply:IsSuperAdmin()
 end)
 
 hook.Add("PlayerSpawnRagdoll", "landisSchemaPlayerSpawnRagdoll", function(ply,model)

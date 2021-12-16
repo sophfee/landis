@@ -1,3 +1,4 @@
+util.AddNetworkString("landisNotify")
 util.AddNetworkString("landisStartChat")
 util.AddNetworkString("ragdoll_camera")
 util.AddNetworkString("landis_RequestTeamJoin")

@@ -1,3 +1,8 @@
+local math = math
+local floor = math.floor
+local clamp = math.Clamp
+
+
 if SERVER then
     sql.Query("CREATE TABLE IF NOT EXISTS `landis_currency` ( `steamid` VARCHAR(20) NOT NULL, `cc` NUMBER, `sc` NUMBER ) ")
 end
@@ -12,6 +17,8 @@ end
 if SERVER then 
 
     function meta:DropMoney(amt)
+        if amt < 0 then return end
+        amt = floor(amt)
         if self:GetMoney() - amt > 0 then
             local Money = ents.Create("landis_money")
             
@@ -22,7 +29,7 @@ if SERVER then
                 Money:SetPos(self:EyePos()+(self:GetAimVector()*100))
             end
             Money:Spawn()
-            self:SetNWInt("Money",self:GetMoney()-amt)
+            self:SetNWInt("Money",clamp(floor(self:GetMoney()-amt),0,2147483647) -- integer limit hard coded
             Money:SetMoneyA(amt)
         end
     end

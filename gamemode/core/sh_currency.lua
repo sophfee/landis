@@ -29,7 +29,7 @@ if SERVER then
                 Money:SetPos(self:EyePos()+(self:GetAimVector()*100))
             end
             Money:Spawn()
-            self:SetNWInt("Money",clamp(floor(self:GetMoney()-amt),0,2147483647) -- integer limit hard coded
+            self:SetNWInt("Money",clamp(floor(self:GetMoney()-amt),0,2147483647)) -- integer limit hard coded
             Money:SetMoneyA(amt)
         end
     end

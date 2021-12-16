@@ -1,4 +1,10 @@
 DeriveGamemode("sandbox")
+
+GM.Name = "Landis Framework"
+GM.Author = "nick"
+GM.Email = "N/A"
+GM.Website = "discord.gg/landis"
+
 landis = landis or {}
 landis.lib = landis.lib or {}
 landis.__VERSION = "DEV-0.3"

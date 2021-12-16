@@ -267,7 +267,9 @@ function SKIN:PaintCollapsibleCategory(self,w,h)
 end
 
 function SKIN:PaintButton(self,w,h)
-	self:SetFont("landis-14")
+	if self.SetFont then
+		self:SetFont("landis-14")
+	end
 	if !self.m_bBackground then return end
 	
 	if not self.hSND then

@@ -17,8 +17,9 @@ end
 if SERVER then 
 
     function meta:DropMoney(amt)
-        if amt < 0 then return end
-        amt = floor(amt)
+        amt = floor(tonumber(amt))
+        if not (amt > 0) then return end
+        
         if self:GetMoney() - amt > 0 then
             local Money = ents.Create("landis_money")
             

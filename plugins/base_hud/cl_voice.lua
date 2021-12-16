@@ -1,4 +1,5 @@
-function GM:PlayerStartVoice(ply)
+return
+/*function GM:PlayerStartVoice(ply)
 
     local a = vgui.Create("landisVoice")
     a.Player = ply
@@ -7,4 +8,4 @@ function GM:PlayerStartVoice(ply)
 end
 
 function GM:PlayerEndVoice(ply)
-end
+end*/

@@ -144,7 +144,7 @@ function landis.chatbox.buildBox()
             typed = string.Split(typed, " ")[1]
             local len   = string.len(typed)
             if string.Left(typed, 1) == "/" then
-                blurDerma(self,200,15,10)
+                landis.blur(self,200,15,10)
                 surface.SetDrawColor(30, 30, 30, 200)
                 surface.DrawRect(0, 0, w, h)
                 local i = 1

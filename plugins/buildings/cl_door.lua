@@ -5,13 +5,13 @@ local isValid = IsValid
 local cam = cam
 local drawSimpleText = draw.SimpleTextOutlined
 
-landis.DefineSetting("doorDrawDistance",{type="slider",name="Door 3D Text Draw Distance",min=16,max=4096,dec=0,default=1024,category="Performance"})
+landis.DefineSetting("3d2dDrawDistance",{type="slider",name="3D2D Draw Distance",min=16,max=4096,dec=0,default=1024,category="Performance"})
 
 debugDrawDoorCount = 0
 
 -- Thank you Witness
 hook.Add("PostDrawOpaqueRenderables", "landisDoorDraw", function()
-    local drawDist = landis.GetSetting("doorDrawDistance")
+    local drawDist = landis.GetSetting("3d2dDrawDistance")
     drawDist = drawDist * drawDist -- ^2
     debugDrawDoorCount = 0
     for v,k in pairs(landis.Doors) do
@@ -20,7 +20,7 @@ hook.Add("PostDrawOpaqueRenderables", "landisDoorDraw", function()
             continue
         end 
         debugDrawDoorCount = debugDrawDoorCount + 1 
-        local name = door:GetNWString("DisplayName","")
+        local name = door.DoorLabel
 
         if !isValid(door) or door.GetNoDraw(door) then 
             continue 

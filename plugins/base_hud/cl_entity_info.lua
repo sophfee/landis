@@ -48,10 +48,10 @@ hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 		if IsValid( k ) then
 			local p = k:IsPlayer()
 
-			local name = p and k:GetRPName() or (k:GetNWString("DisplayName", "nil") == "nil" and k.DisplayName or k:GetNWString("DisplayName", "nil") )
+			local name = p and (not p:InNoclip() and k:GetRPName() or "") or (k:GetNWString("DisplayName", "nil") == "nil" and k.DisplayName or k:GetNWString("DisplayName", "nil") )
 			--if not name then table.remove(drawEnts, v) continue end
 
-			local desc = p and ( k:IsTyping() and "Typing..." or "" ) or (k:GetNWString("Description", "nil") == "nil" and k.Description or k:GetNWString("Description", "nil") )
+			local desc = p and (not p:InNoclip() and ( k:IsTyping() and "Typing..." or "" ) or "") or (k:GetNWString("Description", "nil") == "nil" and k.Description or k:GetNWString("Description", "nil") )
 			--if not desc then table.remove(drawEnts, v) continue end
 
 			local heightOffset = k.HeightOffset or 0

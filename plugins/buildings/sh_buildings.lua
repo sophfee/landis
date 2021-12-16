@@ -12,10 +12,10 @@ function landis.Buildings.Register(UniqueID,self)
 			local door = Entity(v)
 			
 			if not IsValid(door) then return end
-			--if not (door:GetClass() == "func_door") then return end
+			if not (door:GetClass() == "prop_door_rotating") then return end
 			
-			if self.Label then
-				door.DoorLabel = self.Label
+			if k.label then
+				door.DoorLabel = k.label
 			end
 			
 			if self.Purchasable then
@@ -56,6 +56,8 @@ landis.Buildings.Register("AA",{
 	Purchasable = true,
 	Label = "deez nuts",
 	Doors = {
-		[ 142 ] = {}
+		[142] = {
+			label = "DOOR!!!"
+		}
 	}
 })

@@ -9,3 +9,6 @@ ENT.Spawnable = true
 ENT.AdminOnly = true
 
 ENT.AutomaticFrameAdvance = true
+
+ENT.name = "Unset Vendor"
+ENT.desc = "Fuck this isn't working"

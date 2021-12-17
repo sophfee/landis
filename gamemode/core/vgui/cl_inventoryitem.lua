@@ -72,7 +72,9 @@ function PANEL:DoClick()
                         net.WriteInt(Index, 32)
                     net.SendToServer()
                     landis.MakeBar(I.UseBarText, I.UseBarTime, function()
+                        
                         I.OnUse(I,LocalPlayer(),Index)
+
                         if IsValid(INVENTORY_PANEL) then
                             INVENTORY_PANEL:Show()
                         end

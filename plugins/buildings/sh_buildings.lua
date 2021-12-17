@@ -1,6 +1,7 @@
 landis.Buildings = landis.Buildings or {}
 landis.Buildings.Data = landis.Buildings.Data or {}
 landis.Doors = landis.Doors or {}
+landis.DoorCache = ents.FindByClass("prop_door_rotating")
 
 function landis.Buildings.Register(UniqueID,self)
 	if SERVER then
@@ -9,7 +10,15 @@ function landis.Buildings.Register(UniqueID,self)
 	for v,k in pairs(self.Doors) do
 		validDoor = false
 		do
-			local door = Entity(v)
+			local door = nil
+
+			for i,d in ipairs(landis.DoorCache) do
+				if d:GetPos():DistToSqr( k.pos ) < 160 then
+					door = d
+					table.remove(landis.DoorCache,i)
+					break
+				end
+			end
 			
 			if not IsValid(door) then return end
 			if not (door:GetClass() == "prop_door_rotating") then return end
@@ -24,7 +33,7 @@ function landis.Buildings.Register(UniqueID,self)
 				door:SetNWString("Description","")
 			end
 			
-			landis.Doors[v] = k
+			landis.Doors[door:EntIndex()] = k
 			
 			validDoor = true
 		end
@@ -44,6 +53,7 @@ if SERVER then
 				if not tr.Hit then return end
 				local ent = tr.Entity
 				if not IsValid(ent) then return end
+				if ent:GetClass() == "prop_door_rotating" then return end
 				if landis.Doors[ent:EntIndex()] then
 					landis.ConsoleMessage("do the door thang")
 				end
@@ -52,12 +62,24 @@ if SERVER then
 	end)
 end
 
-landis.Buildings.Register("AA",{
-	Purchasable = true,
-	Label = "deez nuts",
+landis.Buildings.Register("RDC",{
+	Purchasable = false,
 	Doors = {
-		[142] = {
-			label = "DOOR!!!"
+		[1] = {
+			pos   = Vector(3384,4535,382),
+			label = "RDC Exit"
+		},
+		[2] = {
+			pos   = Vector(2991,4792,382),
+			label = "RDCRDCRDC"
+		},
+		[3] = {
+			pos = Vector(1889,4744,438),
+			label = "dor"
+		},
+		[4] = {
+			pos = Vector(2540,5221,382),
+			label = "Shop"
 		}
 	}
 })

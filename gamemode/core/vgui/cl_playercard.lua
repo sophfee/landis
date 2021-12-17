@@ -83,6 +83,7 @@ end
 
 function PANEL:OnClose()
 	openPlayercard = nil
+	landis.Playercard = nil
 end
 
 vgui.Register("landisPlayerCard", PANEL, "DFrame")

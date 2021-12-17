@@ -255,8 +255,10 @@ end
 if CLIENT then
 	landis.DefineSetting("oocEnabled",{type="tickbox",name="OOC Chat Enabled",default=true,category="Chatbox"})
 	net.Receive("landisOOCMessage",function()
+		local ply = net.ReadEntity()
 		local txt = net.ReadString()
 		if landis.GetSetting("oocEnabled") then
+			chat.AddText(Color(255,0,0),"[OOC] ",landis.chatbox.CommandColors[ply:GetPermissionLevel()], ply:Nick(), Color(245,245,245,255),": ", txt)
 		end
 	end)
 end
@@ -268,9 +270,15 @@ local oocCommand = {
 	HelpDescription = "Send an out of character message",
 	onRun  = function(self,ply,args)
 		local text = table.concat(args, " ")
-		for v,k in ipairs(player.get
+		if text then
+			net.Start("landisOOCMessage")
+				net.WriteEntity(ply)
+				net.WriteString(text)
+			net.Broadcast()
+		end
 	end
 }
 
 -- OOC
-landis.RegisterChatCommand("/ooc",)
+landis.RegisterChatCommand("/ooc",oocCommand)
+landis.RegisterChatCommand("//",oocCommand)

@@ -247,3 +247,30 @@ landis.RegisterChatCommand("/setteam",{
 
 	end
 })
+
+if SERVER then
+	util.AddNetworkString("landisOOCMessage")
+end
+
+if CLIENT then
+	landis.DefineSetting("oocEnabled",{type="tickbox",name="OOC Chat Enabled",default=true,category="Chatbox"})
+	net.Receive("landisOOCMessage",function()
+		local txt = net.ReadString()
+		if landis.GetSetting("oocEnabled") then
+		end
+	end)
+end
+
+local oocCommand = {
+	RequireAlive    = false,
+	RequireArgs     = true,
+	PermissionLevel = PERMISSION_LEVEL_USER,
+	HelpDescription = "Send an out of character message",
+	onRun  = function(self,ply,args)
+		local text = table.concat(args, " ")
+		for v,k in ipairs(player.get
+	end
+}
+
+-- OOC
+landis.RegisterChatCommand("/ooc",)

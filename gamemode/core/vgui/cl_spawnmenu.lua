@@ -2,6 +2,47 @@ hook.Add( "SpawnMenuOpen", "SpawnMenuWhitelist", function()
 	return true
 end )
 
+local blockedTabs = {
+	["#spawnmenu.category.saves"] = true,
+	["#spawnmenu.category.dupes"] = true,
+	["#spawnmenu.category.postprocess"] = true
+}
+
+local blockNormalTabs = {
+	["#spawnmenu.category.entities"] = true,
+	["#spawnmenu.category.weapons"] = true,
+	["#spawnmenu.category.npcs"] = true
+}
+
+function GM:PostReloadToolsMenu()
+	local spawnMenu = g_SpawnMenu
+
+	if spawnMenu then
+		local tabs = spawnMenu.CreateMenu
+		local closeMe = {}
+
+		for v,k in pairs(tabs:GetItems()) do
+			if blockedTabs[k.Name] then
+				table.insert(closeMe, k.Tab)
+			end
+
+			if LocalPlayer() and LocalPlayer().IsAdmin and LocalPlayer().IsDonator then -- when u first load lp doesnt exist
+				if blockNormalTabs[k.Name] and not LocalPlayer():IsAdmin() then
+					table.insert(closeMe, k.Tab)
+				end
+
+				if k.Name == "#spawnmenu.category.vehicles" and not LocalPlayer():IsDonator() then
+					table.insert(closeMe, k.Tab)
+				end
+			end
+		end
+
+		for v,k in pairs(closeMe) do
+			tabs:CloseTab(k, true)
+		end
+	end
+end
+
 surface.CreateFont("entdesc",{
 	font = "arial",
 	size = 12,

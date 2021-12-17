@@ -82,7 +82,6 @@ function PANEL:Init()
 end
 
 function PANEL:OnClose()
-	openPlayercard = nil
 	landis.Playercard = nil
 end
 

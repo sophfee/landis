@@ -1,3 +1,7 @@
+local math = math
+local clamp = math.Clamp
+local floor = math.floor
+
 -- Prevent family shared accounts from joining (alt account detection)
 function GM:PlayerAuthed(ply,steamID)
 	if not (ply:OwnerSteamID64() == ply:SteamID64()) then
@@ -6,9 +10,14 @@ function GM:PlayerAuthed(ply,steamID)
 	end
 end
 
+function GM:CanDrive()
+	return false
+end
+
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]
-	ply:SetRPName(ply:GetSyncRPName())
+	ply:SetHunger(60)
+	ply:SetRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
 	ply:SetRunSpeed(200)
 	ply:SetWalkSpeed(120)
 	ply:SetSlowWalkSpeed(70)
@@ -16,18 +25,22 @@ function GM:PlayerSpawn(ply)
 	if teamData then
 		ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
 	end
-	if ply:IsAdmin() then
-		ply:Give("weapon_physgun")
-	end
-	if ply:IsLeadAdmin() then
-		ply:Give("gmod_tool")
-	end
+	ply:Give("weapon_physgun")
+	ply:Give("gmod_tool")
 	ply:Give("landis_hands")
 	hook.Run("PlayerLoadout", ply)
 end
 
 function GM:PlayerDeathThink()
 	return false
+end
+
+function GM:PlayerPostThink(ply)
+	ply.HungerTick = ply.HungerTick or CurTime()
+	if CurTime() > ply.HungerTick then
+		ply:SetHunger(clamp(ply:GetHunger()-1,0,100))
+		ply.HungerTick = CurTime() + landis.Config.HungerInterval
+	end
 end
 
 hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
@@ -46,6 +59,13 @@ hook.Add("PlayerNoClip", "landisNoclip", function(ply, desiredState)
 	end
 end)
 
+function GM:PlayerCanSeePlayersChat( _, __, listener, talker )
+	if not talker:Alive() then return false end
+	if listener:GetPos():DistToSqr( talker:GetPos() ) < ((landis.Config.VoiceRange*landis.Config.VoiceRange) or 600*600) then
+		return true,true
+	end
+end
+
 function GM:PlayerCanHearPlayersVoice( listener, talker )
 	if not talker:Alive() then return false end
 	if listener:GetPos():DistToSqr( talker:GetPos() ) < ((landis.Config.VoiceRange*landis.Config.VoiceRange) or 600*600) then
@@ -53,7 +73,7 @@ function GM:PlayerCanHearPlayersVoice( listener, talker )
 	end
 end
 
-hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
+hook.Add("DoPlayerDeath", "landisRagdollCreate",function(ply)
 	ply:CreateRagdoll()
 	ply:SetNWBool("CanRespawn",false)
 	timer.Simple(10, function()
@@ -61,13 +81,13 @@ hook.Add("DoPlayerDeath", "ragdoll_create",function(ply)
 	end)
 end)
 
-hook.Add( "PhysgunPickup", "pickupPlayer", function( ply, ent )
+hook.Add( "PhysgunPickup", "landisPickupPlayer", function( ply, ent )
 	if ( ply:IsAdmin() and ent:IsPlayer() ) then
 		ent:SetMoveType(MOVETYPE_NONE)
 		return true
 	end
 end )
-hook.Add("PhysgunDrop", "dropPlayer", function(ply, ent)
+hook.Add("PhysgunDrop", "landisDropPlayer", function(ply, ent)
 	if ent:IsPlayer() then
 		ent:SetMoveType(MOVETYPE_WALK)
 	end
@@ -116,7 +136,28 @@ hook.Add("PlayerSpawnProp", "landisSchemaPlayerSpawnProp", function(ply,model)
 	if SCHEMA.PlayerSpawnProp then
 		return SCHEMA:PlayerSpawnProp(ply,model)
 	end
+	return true
+end)
+
+hook.Add("PlayerSpawnEffect", "landisSchemaPlayerSpawnEffect", function(ply,model)
+	if SCHEMA.PlayerSpawnEffect then
+		return SCHEMA:PlayerSpawnEffect(ply,model)
+	end
 	return ply:IsAdmin()
+end)
+
+hook.Add("PlayerSpawnSENT", "landisSchemaPlayerSpawnSENT", function(ply,sent)
+	if SCHEMA.PlayerSpawnSENT then
+		return SCHEMA:PlayerSpawnSENT(ply,sent)
+	end
+	return ply:IsSuperAdmin()
+end)
+
+hook.Add("PlayerSpawnVehicle", "landisSchemaPlayerSpawnVehicle", function(ply,veh)
+	if SCHEMA.PlayerSpawnVehicle then
+		return SCHEMA:PlayerSpawnVehicle(ply,veh)
+	end
+	return ply:IsSuperAdmin()
 end)
 
 hook.Add("PlayerSpawnRagdoll", "landisSchemaPlayerSpawnRagdoll", function(ply,model)
@@ -127,7 +168,7 @@ hook.Add("PlayerSpawnRagdoll", "landisSchemaPlayerSpawnRagdoll", function(ply,mo
 end)
 
 hook.Add("PlayerSpawnSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,swep)
-	landis.ConsoleMessage(ply," is attempting to spawn a ",weapon," (SWEP)")
+	landis.ConsoleMessage(ply:Nick().." is attempting to spawn a "..weapon.." (SWEP)")
 	if SCHEMA.PlayerSpawnSWEP then
 		return SCHEMA:PlayerSpawnSWEP(ply,weapon,swep)
 	end
@@ -135,7 +176,7 @@ hook.Add("PlayerSpawnSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,s
 end)
 
 hook.Add("PlayerGiveSWEP", "landisSchemaPlayerSpawnSWEP", function(ply,weapon,swep)
-	landis.ConsoleMessage(ply," is attempting to give themselves a ",weapon)
+	landis.ConsoleMessage(ply:Nick() .. " is attempting to give themselves a " .. weapon)
 	if SCHEMA.PlayerGiveSWEP then
 		return SCHEMA:PlayerGiveSWEP(ply,weapon,swep)
 	end
@@ -150,34 +191,22 @@ hook.Add("PlayerInitialSpawn", "landisStartMenu", function(ply,transition)
 	net.Send(ply)
 end)
 
-hook.Add("CheckPassword", "CheckForBan", function(uSteamID64)
+hook.Add("CheckPassword", "landisCheckForBan", function(uSteamID64)
 	local userData = sql.Query("SELECT * FROM landis_bans WHERE steamid = " .. sql.SQLStr(uSteamID64) .. ";")
-	if not userData then return true end
-	for _,ban in ipairs(userData) do
-		if os.time() < tonumber(ban.end_date) then 
-			return false, "uh oh! looks like you're currently banned!\n\nBanned by: " .. ban.moderator .. "\nReason: "..ban.reason.."\nUnban Date: "..os.date("%A, %B %d - %x %X", ban.end_date)  
+	if userData then
+		for _,ban in ipairs(userData) do
+			if os.time() < tonumber(ban.end_date) then 
+				return false, "uh oh! looks like you're currently banned!\n\nBanned by: " .. ban.moderator .. "\nReason: "..ban.reason.."\nUnban Date: "..os.date("%A, %B %d - %x %X", ban.end_date)  
+			end
 		end
 	end
-	return true
 end)
 
-hook.Add("PlayerInitialSpawn", "setup_data", function(ply)
+hook.Add("PlayerInitialSpawn", "landisSetupData", function(ply)
 	ply:SetupData()
 end)
 
 
-hook.Add("PlayerDisconnected", "save_data", function(ply)
+hook.Add("PlayerDisconnected", "landisSaveData", function(ply)
 	ply:SaveAllData()
-end)
-
-hook.Add("PlayerGiveSWEP","noThumpThump", function(ply,class,swep)
-	if class == "ls_thumpthump" then
-		return ply:SteamID() == "STEAM_0:1:92733650"
-	end
-end)
-
-hook.Add("PlayerSpawnSWEP","noThumpThump", function(ply,class,swep)
-	if class == "ls_thumpthump" then
-		return ply:SteamID() == "STEAM_0:1:92733650"
-	end
 end)

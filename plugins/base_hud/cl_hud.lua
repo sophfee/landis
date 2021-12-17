@@ -1,4 +1,6 @@
 deathTime = 0
+local math = math
+local floor = math.floor
 
 local hiddenElements = {
 	CHudHealth = true,
@@ -206,6 +208,7 @@ landis.DefineSetting("!B-crosshairGreen",{name="Crosshair Color (Green)",type="s
 landis.DefineSetting("!C-crosshairBlue",{name="Crosshair Color (Blue)",type="slider",category="Crosshair",min=1,max=255,dec=0,default=255})
 landis.DefineSetting("!D-crosshairLength",{name="Crosshair Length",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
 landis.DefineSetting("!E-crosshairGap",{name="Crosshair Gap",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
+landis.DefineSetting("deathScreenDim",{name="Dim Death Screen",type="tickbox",category="UI",default=true})
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 
@@ -257,18 +260,19 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	end
 	
 	if SCHEMA:ShouldDrawElement( "Health" ) then 
-		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-50}) 
+		drawBar("Hunger",ply:GetHunger(),Color(212,158,65),{x=25,y=ScrH()-50}) 
+		drawBar("Health",(ply:Health()/ply:GetMaxHealth())*100,Color(255,0,0),{x=25,y=ScrH()-100}) 
 		landis.DrawText(ply:GetMoney().. " Credits",350,ScrH()-60,{size=36,bold=true},{x=TEXT_ALIGN_LEFT,y=TEXT_ALIGN_TOP},color_white)
 	end
 
 	if SCHEMA:ShouldDrawElement( "Armor" ) then 
 		if ply:Armor() > 0 then 
-			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-100})
+			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-150})
+			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-200,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-200,{size=36,bold=true},{x=0,y=0},color_white) 
+		else
 			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-150,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
 			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-150,{size=36,bold=true},{x=0,y=0},color_white) 
-		else
-			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-100,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
-			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-100,{size=36,bold=true},{x=0,y=0},color_white) 
 			
 		end
 	end
@@ -314,8 +318,15 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 			tweenIn:update(FrameTime())
 			local flatAlpha = math.Clamp(tweenInTable.alpha, 0, 255)
 
-			draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*flatAlpha, team.GetColor(LocalPlayer():Team()))
-			draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*flatAlpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+			local clr = table.Copy(team.GetColor(LocalPlayer():Team()))
+			if landis.GetSetting("deathScreenDim") then
+				clr.r = floor(clr.r/3)
+				clr.g = floor(clr.g/3)
+				clr.b = floor(clr.b/3)
+			end
+
+			draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*flatAlpha, clr)
+			draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*flatAlpha), ScrW(), (ScrH()/2), clr)
 
 			draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, flatAlpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,flatAlpha)) 
 		end
@@ -329,9 +340,16 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 		deathTime = math.Clamp(deathTime - FrameTime(),0,1)
 
 		tweenOut:update(FrameTime())
+		
+		local clr = table.Copy(team.GetColor(LocalPlayer():Team()))
+		if landis.GetSetting("deathScreenDim") then
+			clr.r = floor(clr.r/3)
+			clr.g = floor(clr.g/3)
+			clr.b = floor(clr.b/3)
+		end
 
-		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenOutTable.alpha, team.GetColor(LocalPlayer():Team()))
-		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenOutTable.alpha), ScrW(), (ScrH()/2), team.GetColor(LocalPlayer():Team()))
+		draw.RoundedBox(0, 0, 0, ScrW(), (ScrH()/2)*tweenOutTable.alpha, clr)
+		draw.RoundedBox(0, 0, ScrH()-((ScrH()/2)*tweenOutTable.alpha), ScrW(), (ScrH()/2), clr)
 
 		draw.SimpleTextOutlined("YOU ARE DEAD", "DEAD", ScrW()/2, ScrH()/2, Color( 255, 255, 255, tweenOutTable.alpha * 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER,1,Color(0,0,0,tweenOutTable.alpha))
 

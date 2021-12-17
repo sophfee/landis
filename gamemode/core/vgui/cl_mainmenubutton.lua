@@ -4,11 +4,13 @@ local floor = math.floor
 local clamp = math.Clamp
 
 function PANEL:Init()
-	self.Colored = 0
+	self.TWN = {}
+	self.TWN.Colored = 0
 	self.DisplayText = ""
 	self.HoveredSound = false
 	self:SetSize(200,45)
 	self:SetText("")
+	self.Tween = tween.new(0.12,self.TWN,{["Colored"]=12},"outInSine") 
 end
 
 function PANEL:SetDisplayText(t)
@@ -22,20 +24,22 @@ function PANEL:Paint(w,h)
 			surface.PlaySound(Sound("ui/buttonrollover.wav"))
 			self.HoveredSound = true
 		end
-		self.Colored = clamp( self.Colored + (64*FrameTime()), 0, 12)
+		self.Tween:update(FrameTime())
+		--self.TWN.Colored = clamp( self.TWN.Colored + (64*FrameTime()), 0, 12)
 	else
 		self.HoveredSound = false
-		self.Colored = clamp( self.Colored - (64*FrameTime()), 0, 12)
+		self.Tween:update(-FrameTime())
+		--elf.Colored = clamp( self.TWN.Colored - (64*FrameTime()), 0, 12)
 	end
 		
-	local r = floor(Lerp((self.Colored/12), 255, mainColor.r))
-	local g = floor(Lerp((self.Colored/12), 255, mainColor.g))
-	local b = floor(Lerp((self.Colored/12), 255, mainColor.b))
+	local r = floor(Lerp((self.TWN.Colored/12), 255, mainColor.r))
+	local g = floor(Lerp((self.TWN.Colored/12), 255, mainColor.g))
+	local b = floor(Lerp((self.TWN.Colored/12), 255, mainColor.b))
 	local c = Color(r,g,b,GlobalAlpha)
 
 	draw.SimpleText(
 		self.DisplayText, 
-		"landis-36", 
+		"landis-" .. 32 + floor(self.TWN.Colored/3), 
 		7, 
 		h/2, 
 		Color(
@@ -49,7 +53,7 @@ function PANEL:Paint(w,h)
 	)
 	draw.SimpleText(
 		self.DisplayText, 
-		"landis-36", 
+		"landis-" .. 32 + floor(self.TWN.Colored/3), 
 		5, 
 		h/2, 
 		c,

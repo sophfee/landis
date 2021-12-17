@@ -18,6 +18,49 @@ surface.CreateFont("entname", {
 	shadow = true
 })
 
+local function getName(k)
+	local name
+	local p = k:IsPlayer()
+	if p then
+		name = k:InNoclip() and "" or k:GetRPName()
+		return name
+	end
+
+	if k.name then
+		name = k.name
+		return name
+	end
+
+	if k.GetDisplayName then
+		name = k:GetDisplayName()
+		return name
+	end
+
+	return k:GetNWString("DisplayName","")
+end
+
+local function getDesc(k)
+	local name
+	local p = k:IsPlayer()
+	if p then
+		name = k:IsTyping() and "Typing..." or ""
+		return name
+	end
+
+	if k.desc then
+		name = k.desc
+		return name
+	end
+
+	if k.GetDescription then
+		name = k:GetDescription()
+		return name
+	end
+
+	return k:GetNWString("Description","")
+end
+
+
 hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 
 	local ply = LocalPlayer()
@@ -47,11 +90,12 @@ hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 
 		if IsValid( k ) then
 			local p = k:IsPlayer()
+			local name = getName(k)
+			
 
-			local name = p and k:GetRPName() or (k:GetNWString("DisplayName", "nil") == "nil" and k.DisplayName or k:GetNWString("DisplayName", "nil") )
 			--if not name then table.remove(drawEnts, v) continue end
 
-			local desc = p and ( k:IsTyping() and "Typing..." or "" ) or (k:GetNWString("Description", "nil") == "nil" and k.Description or k:GetNWString("Description", "nil") )
+			local desc = getDesc(k)
 			--if not desc then table.remove(drawEnts, v) continue end
 
 			local heightOffset = k.HeightOffset or 0

@@ -1,8 +1,7 @@
 function GM:PlayerStartVoice(ply)
 
-    local a = vgui.Create("landisVoice")
+    local a = vgui.Create("landisVoicePanel")
     a.Player = ply
-    a.Text = ply:Nick() .. " Started Talking"
     
 end
 

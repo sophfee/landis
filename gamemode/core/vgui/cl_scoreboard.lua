@@ -1,6 +1,6 @@
 local PANEL = {}
 
-openPlayercard = false
+landis.Playercard = landis.Playercard or nil
 
 function PANEL:CreatePlayerList()
 
@@ -30,6 +30,7 @@ function PANEL:Init()
 	self:SetDraggable(false)
 	self:ShowCloseButton(false)
 	self:SetTitle("Scoreboard")
+	self:SetPopupStayAtBack(true)
 	
 	self:DockPadding(7, 30, 7, 7)
 	if ScrW() < 800 or ScrH() < 600 then
@@ -55,17 +56,15 @@ end
 
 vgui.Register("landisScoreboard", PANEL, "DFrame")
 
-local activePanel
+landis.Scoreboard = landis.Scoreboard or nil
 
 -- Remove default scoreboard
 function GM:ScoreboardShow()
-	if not activePanel then
-		activePanel = vgui.Create("landisScoreboard",nil,"landisScoreboardPlayer")
-	end
+	landis.Scoreboard = landis.Scoreboard or vgui.Create("landisScoreboard",nil,"landisScoreboardPlayer")
 end
 function GM:ScoreboardHide()
-	if activePanel then
-		activePanel:Remove()
-		activePanel = nil
+	if landis.Scoreboard then
+		landis.Scoreboard:Remove()
+		landis.Scoreboard = nil
 	end
 end

@@ -1,8 +1,8 @@
-"land"
+"landis"
 {
 	"base"		"sandbox"
 	"title"		"landis"
-	"category"	"pvp"
+	"category"	"rp"
 	"menusystem"	"1"
 	"workshopid"	"-1"
 

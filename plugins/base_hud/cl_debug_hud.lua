@@ -7,14 +7,14 @@ surface.CreateFont("DebugHUD24", {
 	font = "Segoe UI Bold",
 	antialias = true,
 	extended = true,
-	weight = 4500,
+	weight = 2000,
 	size = 24
 })
 surface.CreateFont("DebugHUD18", {
 	font = "Segoe UI Light",
 	antialias = true,
 	extended = true,
-	weight = 4500,
+	weight = 2000,
 	size = 18
 })
 landis.DefineSetting("debugHUD",{type="tickbox",value=false,default=false,category="UI",name="Debug Hud"})
@@ -28,9 +28,10 @@ local function GetDebugHUDText()
 	t=t.."radialMenuOpen: " .. tostring(not landis.Radial.Close) .. "\n"
 	t=t.."radialMenuRadius: " .. landis.Radial.Radius .. "\n"
 	t=t.."deathTime: " .. deathTime .. "\n"
-	t=t.."teamIndex: " .. landis.TeamIndex
-	t=t.."inventoryItemCount: " .. #(LocalPlayer().Inventory)
-
+	t=t.."teamIndex: " .. landis.TeamIndex .. "\n"
+	t=t.."hunger: " .. LocalPlayer():GetHunger() .. "\n"
+	t=t.."inventoryItemCount: " .. #(LocalPlayer().Inventory) .. "\n"
+	t=t.."3d2dDoorsDrawCount: " .. debugDrawDoorCount .. "\n"
 	return t
 end
 
@@ -39,8 +40,9 @@ hook.Add("HUDPaint", "DebugHud_LANDIS", function()
 	local scrW = ScrW()
 	local scrH = ScrH()
 	local drwH = scrH/2+(scrH/4)
-	draw.SimpleText("Landis","DebugHud24",scrW/2,drwH,Color(200,200,200,180),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-	draw.SimpleText(LocalPlayer():SteamID64(),"DebugHud18",scrW/2,drwH+18,Color(200,200,200,180),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+	local msg = LocalPlayer():SteamID64() .. "\n" .. os.date("%X - %m/%d/%Y", os.time())
+	draw.SimpleText("Landis Alpha 0.4","DebugHUD24",scrW/2,drwH,Color(200,200,200,140),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
+	draw.DrawText(msg,"DebugHUD18",scrW/2,drwH+9,Color(200,200,200,140),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
 	if landis.GetSetting("debugHUD") then
 		draw.DrawText(GetDebugHUDText(), "BudgetLabel", 16, 16)
 	end

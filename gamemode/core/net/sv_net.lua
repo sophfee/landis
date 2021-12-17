@@ -3,7 +3,9 @@ util.AddNetworkString("landisStartChat")
 util.AddNetworkString("ragdoll_camera")
 util.AddNetworkString("landis_RequestTeamJoin")
 util.AddNetworkString("landis_spawn_vendor")
+util.AddNetworkString("landisItemDrop")
 util.AddNetworkString("landisItemEquip")
+util.AddNetworkString("landisItemUse")
 util.AddNetworkString("landisRPNameChange")
 util.AddNetworkString("landisRequestRank")
 util.AddNetworkString("landisAddChatText")
@@ -25,19 +27,79 @@ net.Receive("landisStartChat", function(len,ply)
 	ply.LastChatTime = CurTime()+0.075
 end)
 
+net.Receive("landisItemDrop", function(len,ply)
+	if (ply.limitItemDrop or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
+		return -- if the player's next allowed item drop is greater than the current time we return
+	end
+	ply.limitItemDrop = CurTime() + 1
+
+
+	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+	
+	local itemData  = ply.Inventory[itemIndex]
+
+	if itemData then
+		if itemData.Droppable then
+			ply.Inventory[itemIndex].onDrop(itemData,ply,itemIndex)
+		end
+	end
+end)
+
 net.Receive("landisItemEquip", function(len,ply)
 	if (ply.limitItemEquip or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
-		return -- if the player's next allowed vendorspawn is greater than the current time we return
+		return -- if the player's next allowed item equip is greater than the current time we return
 	end
 	ply.limitItemEquip = CurTime() + 1
 
 
 	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
 		if itemData.canEquip then
 			ply.Inventory[itemIndex].OnEquip(itemData,ply,itemIndex)
+		end
+	end
+end)
+
+net.Receive("landisItemUse", function(len,ply)
+	if (ply.limitItemUse or 0) > CurTime() then -- or 0 returns 0 if the thing is nil
+		return -- if the player's next allowed item use is greater than the current time we return
+	end
+	ply.limitItemUse = CurTime() + 1
+
+
+	local itemIndex = net.ReadInt(32)
+	if itemIndex == nil then
+		return
+	end
+
+	local itemData  = ply.Inventory[itemIndex]
+
+	if itemData then
+		if itemData.Usable then
+			if not itemData.UseBar then -- easier
+				print("hi")
+				ply.Inventory[itemIndex].OnUse(itemData,ply,itemIndex)
+				if itemData.UseRemove then
+					table.remove(ply.Inventory, itemIndex)
+				end
+			else
+				timer.Simple(itemData.UseBarTime,function()
+					print("hi")
+					ply.Inventory[itemIndex].OnUse(itemData,ply,itemIndex)
+					if itemData.UseRemove then
+						table.remove(ply.Inventory, itemIndex)
+					end
+				end)
+			end
 		end
 	end
 end)
@@ -94,7 +156,13 @@ net.Receive("landisRPNameChange", function(len,ply)
 	end
 	ply.rpNameChangeWait = CurTime() + 2
 
+
 	local name = net.ReadString()
+	if name == nil then -- nick, remember, players could just be sending nothing at all
+		return
+	end
+
+
 	name = landis.SafeString(name)
 	local len  = name:len()
 
@@ -113,11 +181,21 @@ net.Receive("landisRPNameChange", function(len,ply)
 end)
 
 net.Receive("landisRequestRank", function(len,ply)
+	if (ply.rankRequestWait or 0) > CurTime() then
+		return
+	end
+	ply.rankRequestWait = CurTime() + 1
 	local rank = net.ReadInt(32)
+	if rank == nil then -- make rank is valid
+		return
+	end
 
 	local class = net.ReadInt(32)
+	if class == nil then -- make sure class is valid
+		return
+	end
 	
-	
+
 	ply:SetNWInt("Rank", rank)
 	ply:SetNWInt("Class", class)
 	

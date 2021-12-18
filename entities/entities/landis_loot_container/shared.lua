@@ -11,6 +11,7 @@ ENT.AdminOnly = true
 ENT.name      = "Lootable Container"
 ENT.desc      = "Sometimes some materials and gear can appear here."
 
+ENT.Loot      = {}
 
 function ENT:SetupDataTables()
     self:NetworkVar("String", 0, "ContainerType")

@@ -114,6 +114,14 @@ hook.Add("PhysgunDrop", "landisDropPlayer", function(ply, ent)
 	end
 end)
 
+hook.Add("PhysgunDrop","landisSlowPhysObject",function(ply,ent)
+	ent:SetAngles(ent:GetAngles())
+	local phys = ent:GetPhysicsObject()
+	if IsValid(phys) then
+		phys:SetVelocity(Vector(0,0,0))
+	end
+end)
+
 hook.Add("PlayerSpawn","landisSetupHands", function(ply)
 	ply:SetupHands()
 	ply:SetTeam(1)

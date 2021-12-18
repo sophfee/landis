@@ -15,17 +15,19 @@ function PANEL:Init()
 		self:Remove()
 		return
 	end
-	self:SetPopupStayAtBack(true)
-	--MainMenuMusic = MainMenuMusic or CreateSound(LocalPlayer(), "music/hl2_intro.mp3")
-	--MainMenuMusic:Play()
 	SCHEMA:SetHUDElement("Crosshair",false)
 	SCHEMA:SetHUDElement("Health",false)
 	SCHEMA:SetHUDElement("Armor",false)
 	SCHEMA:SetHUDElement("Ammo",false)
-	menuOpen = true
-	 hook.Add("HUDShouldDraw", "removeall", function(name)
+    hook.Add("HUDShouldDraw", "removeall", function(name)
 		if not( name == "CHudGMod" )then return false end
 	end)
+	self:SetPopupStayAtBack(true)
+	MainMenuMusic = MainMenuMusic or CreateSound(LocalPlayer(), "music/hl2_song16.mp3")
+	MainMenuMusic:Play()
+	
+	menuOpen = true
+	
 	GlobalAlpha = 255
 	local fadeOut = false
 	self:SetSize(ScrW(),ScrH())
@@ -36,7 +38,7 @@ function PANEL:Init()
 				net.Start("landisRPNameChange")
 					net.WriteString(name)
 				net.SendToServer()
-				--MainMenuMusic:FadeOut(1.125)
+				MainMenuMusic:FadeOut(1.125)
 				hook.Remove("HUDShouldDraw", "removeall")
 		
 				MainMenu = nil
@@ -57,7 +59,7 @@ function PANEL:Init()
 				end)
 			end)
 		else
-			--MainMenuMusic:FadeOut(1.125)
+			MainMenuMusic:FadeOut(1.125)
 			hook.Remove("HUDShouldDraw", "removeall")
 		
 			MainMenu = nil
@@ -151,45 +153,6 @@ end
 vgui.Register("landisMainMenu", PANEL, "DPanel")
 
 MainMenu = MainMenu or nil
-
-local function getRandomSlideShow()
-	local t = {}
-	for v,k in RandomPairs(SCHEMA.MenuCamSlideShow) do
-		table.ForceInsert(t, k)
-	end
-	return t
-end
-
-net.Receive("landisStartMenu", function()
-	--Derma_Message("Hello! Welcome to Landis Development Build 0.2\n\nThis is an experimental version of the Landis framework, things may tend to destroy themselves.\nBugs may occur! This is normal for a development build. Make sure to report them!\n\nOverall, have fun toying with the new tools!\n\nEnjoy!\n- Nick","Welcome to the Landis Framework!","Let me play now!")
-	--surface.PlaySound(Sound("music/hl2_intro.mp3"))
-	timer.Simple(0.5, function()
-		landis.DefineSetting("mod-esp",{type="tickbox",value=false,default=false,category="Mod",name="Noclip ESP"})
-		MainMenu = MainMenu or vgui.Create("landisMainMenu")
-		Slides = getRandomSlideShow()
-		CanChangeAt= CurTime() + 18
-		Current    = 1
-		hook.Add("CalcView", "landisMAINMENUCALCVIEW", function()
-			if CurTime() > CanChangeAt then
-				CanChangeAt = CurTime() + 18
-				LocalPlayer():ScreenFade(SCREENFADE.OUT, Color(0,0,0), 1, 0.25)
-				timer.Simple(1.125, function()
-					LocalPlayer():ScreenFade(SCREENFADE.IN, Color(0,0,0), 1, 0.25)
-					Current = Current + 1
-					if Current > #Slides then
-						Current = 1
-					end
-				end)
-			end
-			return {
-				origin = Slides[Current].pos,
-				angles = Slides[Current].ang, --+ Angle((gui.MouseY()/ScrH())*45,(gui.MouseX()/ScrW())*45,0),
-				fov = 70,
-				drawviewer = true
-			}
-		end)
-	end)
-end)
 
 hook.Add("PlayerButtonDown", "landisMenuOpener", function(_,btn)
 	if not menuOpen then

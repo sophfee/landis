@@ -209,6 +209,7 @@ landis.DefineSetting("!C-crosshairBlue",{name="Crosshair Color (Blue)",type="sli
 landis.DefineSetting("!D-crosshairLength",{name="Crosshair Length",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
 landis.DefineSetting("!E-crosshairGap",{name="Crosshair Gap",type="slider",category="Crosshair",min=1,max=16,dec=0,default=5})
 landis.DefineSetting("deathScreenDim",{name="Dim Death Screen",type="tickbox",category="UI",default=true})
+landis.DefineSetting("mod-esp",{type="tickbox",value=false,default=false,category="Mod",name="Noclip ESP"})
 
 hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if not IsValid(ply) then 

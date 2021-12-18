@@ -3,7 +3,6 @@ local SKIN = {}
 --PrintTable(derma.GetDefaultSkin())
 
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
-PrintTable(SKIN.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
 SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)
 SKIN.fontFrame = "landis-24"

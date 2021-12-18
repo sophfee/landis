@@ -1,21 +1,5 @@
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:SetupDataTables()
-	self:NetworkVar("Bool", 0, "IsTyping")
-	self:NetworkVar("Bool",1,"InNoclip")
-	self:NetworkVar("Int",2,"XP")
-	self:NetworkVar("Int",3,"Hunger")
-	self:NetworkVar("String",4,"RPName")
-end
-
-function PLAYER:GetHunger()
-	return self:GetNWInt("Hunger",60)
-end
-
-function PLAYER:SetHunger(v)
-	return self:SetNWInt("Hunger",v)
-end
-
 PLAYER.Inventory = {}
 
 --- [INTERNAL] Setup player inventory.
@@ -42,12 +26,8 @@ function PLAYER:CanPickupItem( item )
 	return !(weight + item.weight > 20)
 end
 
-function PLAYER:GetRPName()
-	return self:GetNWString("RPName",self:Nick())
-end
-
 function PLAYER:InNoclip()
-	return self:GetNWBool("InNoclip",false)
+	return self:GetInNoclip()
 end
 
 function PLAYER:GetRankName()
@@ -222,6 +202,11 @@ end
 function PLAYER:GetTeamData()
 	return landis.Teams.Data[self:Team()]
 end
+
+function PLAYER:TeamClass()
+	return self:GetNWInt("")
+end
+
 
 function PLAYER:GetLoadout()
 	return self:GetTeamData()["loadout"] or nil

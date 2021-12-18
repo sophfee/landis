@@ -31,13 +31,6 @@ function GM:PlayerSpawn(ply)
 	hook.Run("PlayerLoadout", ply)
 end
 
-function GM:PlayerFootstep(ply,pos,foot,sound)
-	if SCHEMA.PlayerFootstep then
-		SCHEMA:PlayerFootstep(ply,pos,foot,sound)
-		return true
-	end
-end
-
 function GM:PlayerSetHandsModel( ply, ent )
 	local teamData = ply:GetTeamData()
 	if teamData then

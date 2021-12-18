@@ -17,8 +17,9 @@ function landis.Teams.Define(self)
 	
 	landis.ConsoleMessage("Registering team \""..self.UniqueID.."\"")
 	team.SetUp(landis.TeamIndex, self.DisplayName, self.TeamColor, true)
-	landis.Teams.Data[landis.TeamIndex] = self
-	landis.TeamIndex = landis.TeamIndex + 1
+	local teamIndex = landis.TeamIndex + 0
+	landis.Teams.Data[teamIndex] = self
+	landis.TeamIndex = teamIndex + 1
 
 	return teamIndex
 end

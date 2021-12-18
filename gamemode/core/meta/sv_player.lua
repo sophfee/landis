@@ -34,6 +34,11 @@ function PLAYER:SetupData()
 	end
 end
 
+function PLAYER:ClearInventory()
+	self.Inventory = {}
+	self:SendLua("LocalPlayer().Inventory = {}") -- easier than net message lol
+end
+
 function PLAYER:SetupNewUser()
 	local userData = baseData
 	local a = sql.Query("INSERT INTO landis_user VALUES("..sql.SQLStr(self:SteamID64()) ..", ".. sql.SQLStr(self:Nick()) ..", ".. tostring(0)..", "..sql.SQLStr("user")..")")

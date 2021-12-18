@@ -9,6 +9,7 @@ util.AddNetworkString("landisItemUse")
 util.AddNetworkString("landisRPNameChange")
 util.AddNetworkString("landisRequestRank")
 util.AddNetworkString("landisAddChatText")
+util.AddNetworkString("landisClearInventory")
 
 net.Receive("landisStartChat", function(len,ply)
   if (ply.LastChatTime or 0) < CurTime() then

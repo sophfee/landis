@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 ENT.Base = "base_gmodentity"
 ENT.Type = "anim"
-ENT.PrintName = "Landis Item"
+ENT.PrintName = "Item"
 ENT.Category  = "landis"
 ENT.Spawnable = true
 ENT.AdminOnly = true

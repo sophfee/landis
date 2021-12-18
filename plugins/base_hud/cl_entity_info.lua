@@ -22,7 +22,7 @@ local function getName(k)
 	local name
 	local p = k:IsPlayer()
 	if p then
-		name = k:InNoclip() and "" or k:GetRPName()
+		name = k:GetInNoclip() and "" or k:GetRPName()
 		return name
 	end
 

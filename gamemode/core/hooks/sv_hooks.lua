@@ -119,7 +119,24 @@ hook.Add("PlayerSpawn","landisSetupHands", function(ply)
 	ply:SetTeam(1)
 end)
 
-hook.Add("PlayerDeathSound","landisMuteDeathsound",function() return true end)
+hook.Add("PlayerHurt","landisPainSound",function(ply)
+	local teamData = ply:GetTeamData()
+	if teamData then
+		if teamData.Hurtsounds then
+			ply:EmitSound( Sound( table.Random(teamData.Hurtsounds) ) )
+		end
+	end
+end)
+
+hook.Add("PlayerDeathSound","landisDeathsound",function(ply) 
+	local teamData = ply:GetTeamData()
+	if teamData then
+		if teamData.Deathsounds then
+			ply:EmitSound( Sound( table.Random(teamData.Deathsounds) ) )
+		end
+	end
+	return true 
+end)
 
 hook.Add("landisOpenVendor", "landisBasicVendorFunc", function(ply,ent,class)
 	local ven = landis.GetVendor(class)

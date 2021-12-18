@@ -3,6 +3,7 @@ local SKIN = {}
 --PrintTable(derma.GetDefaultSkin())
 
 SKIN.Colours = table.Copy(derma.SkinList.Default.Colours)
+PrintTable(SKIN.Colours)
 SKIN.Colours.Window.TitleActive = Color(255, 255, 255)
 SKIN.Colours.Window.TitleInactive = Color(255, 255, 255)
 SKIN.fontFrame = "landis-24"
@@ -11,7 +12,17 @@ SKIN.Colours.Button.Hover = Color(255, 255, 255)
 SKIN.Colours.Button.Down = Color(180, 180, 180)
 SKIN.Colours.Button.Disabled = Color(0, 0, 0, 100)
 
+SKIN.Colours.Label.Dark      = Color(20,20,20,255)
 SKIN.Colours.Label.Highlight = Color(90, 200, 250, 255)
+
+SKIN.Colours.Tree.Normal      = Color(255,255,255,255)
+
+SKIN.Colours.Properties.Label_Normal = Color(255,255,255,255)
+SKIN.Colours.Properties.Column_Disabled = Color(40,40,40,255)
+
+SKIN.Colours.Category.Line.Text = Color(255,255,255,255)
+SKIN.Colours.Category.Line.Button_Selected = Color(40,40,40,255)
+SKIN.Colours.Category.LineAlt.Text = Color(255,255,255,255)
 
 landis.Config.CornerRadius = 0
 landis.Config.PillButtons = false

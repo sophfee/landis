@@ -9,5 +9,5 @@ ENT.PrintName = "Landis Money"
 ENT.Category  = "landis"
 ENT.Spawnable = true
 ENT.AdminOnly = true
-ENT.name = "Money"
-ENT.desc = "NaN credits"
+ENT.name = nil
+ENT.desc = nil

@@ -19,7 +19,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetHunger(60)
 	ply:SetRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
 	ply:SetRunSpeed(200)
-	ply:SetWalkSpeed(120)
+	ply:SetWalkSpeed(118)
 	ply:SetSlowWalkSpeed(70)
 	ply:SetDuckSpeed(0.2)
 	if teamData then
@@ -30,6 +30,27 @@ function GM:PlayerSpawn(ply)
 	ply:Give("landis_hands")
 	hook.Run("PlayerLoadout", ply)
 end
+function GM:PlayerSetHandsModel( ply, ent )
+	local teamData = ply:GetTeamData()
+	if teamData then
+		do
+			if teamData.Hands then
+				ent:SetModel(teamData.Hands)
+				return
+			end
+		end
+	end
+   local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+   local info = player_manager.TranslatePlayerHands(simplemodel)
+   if info then
+      ent:SetModel(info.model)
+      ent:SetSkin(info.skin)
+      ent:SetBodyGroups(info.body)
+   end
+end
+hook.Add("PlayerSetHandsModel","landisManualHands",function(ply,ent)
+	
+end)
 
 function GM:PlayerDeathThink()
 	return false

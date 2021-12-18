@@ -28,30 +28,7 @@ function PANEL:Init()
 	end)
 	GlobalAlpha = 255
 	local fadeOut = false
-	self:Dock(LEFT)
 	self:SetSize(ScrW(),ScrH())
-	self.Paint = function()
-		
-		if fadeOut then
-			GlobalAlpha = math.Clamp(GlobalAlpha-FrameTime()*255, 0, 255)
-		end
-		if SCHEMA.MenuHideTitle then return end
-		local mainColor = table.Copy(landis.Config.MainColor)
-		mainColor.a = GlobalAlpha
-		c = mainColor
-		local GlowColor = HSVToColor( (CurTime()*24) % 360, 1, 1 )
-		GlowColor.a = GlobalAlpha
-		draw.SimpleText(SCHEMA.Name or "Empty", "landis-96", 105, ScrH()/2-100, Color(
-			floor(c.r/2),
-			floor(c.g/2),
-			floor(c.b/2),
-			floor(GlobalAlpha)
-		), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
-		draw.SimpleText(SCHEMA.Name or "Empty", "landis-96", 100, ScrH()/2-100, mainColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
-		if not SCHEMA.IsPreview then return end
-		draw.SimpleText("Preview Build", "landis-24", 107, ScrH()/2-20, Color(128,128,0,GlobalAlpha), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
-		draw.SimpleText("Preview Build", "landis-24", 105, ScrH()/2-20, Color(255,255,0,GlobalAlpha), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
-	end
 	self.PlayBtn = vgui.Create("landisMainMenuButton", self, "landis_base-playbutton")
 	function self.PlayBtn:WhenPressed()
 		if LocalPlayer():GetRPName() == LocalPlayer():Nick() then
@@ -147,6 +124,28 @@ function PANEL:Init()
 
 	
 
+end
+
+function PANEL:Paint(w,h)
+	if fadeOut then
+		GlobalAlpha = math.Clamp(GlobalAlpha-FrameTime()*255, 0, 255)
+	end
+	if SCHEMA.MenuHideTitle then return end
+	local mainColor = table.Copy(landis.Config.MainColor)
+	mainColor.a = GlobalAlpha
+	c = mainColor
+	local GlowColor = HSVToColor( (CurTime()*24) % 360, 1, 1 )
+	GlowColor.a = GlobalAlpha
+	draw.SimpleText(SCHEMA.Name or "Empty", "landis-96", 105, ScrH()/2-100, Color(
+		floor(c.r/2),
+		floor(c.g/2),
+		floor(c.b/2),
+		floor(GlobalAlpha)
+	), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+	draw.SimpleText(SCHEMA.Name or "Empty", "landis-96", 100, ScrH()/2-100, mainColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+	if not SCHEMA.IsPreview then return end
+	draw.SimpleText("Preview Build", "landis-24", 107, ScrH()/2-20, Color(128,128,0,GlobalAlpha), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
+	draw.SimpleText("Preview Build", "landis-24", 105, ScrH()/2-20, Color(255,255,0,GlobalAlpha), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, Color(0,0,0,GlobalAlpha))
 end
 
 vgui.Register("landisMainMenu", PANEL, "DPanel")

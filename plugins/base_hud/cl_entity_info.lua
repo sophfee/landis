@@ -72,7 +72,7 @@ hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 
 	if traceData.Hit then
 		local e = traceData.Entity
-		if ((e.DisplayName and e.Description) or (not(e:GetNWString("DisplayName","NULL") == "NULL"))) or e:IsPlayer() then 
+		if ((e.name and e.desc) or (not(e:GetNWString("DisplayName","NULL") == "NULL"))) or e:IsPlayer() then 
 			if not table.HasValue( drawEnts, traceData.Entity) then
 				table.ForceInsert( drawEnts, traceData.Entity)
 				table.ForceInsert( drawAlpha, 0)
@@ -106,7 +106,7 @@ hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 
 			
 
-			draw.DrawText( name, "landis-24-S-B", pos.x, pos.y-24-heightOffset, Color(col.r,col.g,col.b,alpha),TEXT_ALIGN_CENTER)
+			draw.DrawText( name, "landis-24-S", pos.x, pos.y-24-heightOffset, Color(col.r,col.g,col.b,alpha),TEXT_ALIGN_CENTER)
 			draw.DrawText( desc, "landis-18-S", pos.x, pos.y-heightOffset, Color( 255, 255, 255, alpha ),TEXT_ALIGN_CENTER)
 
 			if hitEnt == k then

@@ -64,7 +64,7 @@ net.Receive("landisItemEquip", function(len,ply)
 	local itemData  = ply.Inventory[itemIndex]
 
 	if itemData then
-		if itemData.canEquip then
+		if itemData.CanEquip then
 			ply.Inventory[itemIndex].OnEquip(itemData,ply,itemIndex)
 		end
 	end

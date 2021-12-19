@@ -7,7 +7,9 @@ PLAYER.Inventory = {}
 function PLAYER:SetupInventory()
 	self.Inventory = {}
 end
-
+function PLAYER:GetTeamData()
+	return landis.Teams.Data[self:Team()]
+end
 function PLAYER:CanLockDoor(door)
 	if door:IsDoor() then
 		local doorGroup = door:GetDoorGroup() or 1000
@@ -15,6 +17,47 @@ function PLAYER:CanLockDoor(door)
 		if not teamData.DoorAccess then return false end
 		return (self:GetTeamData().DoorAccess[doorGroup] or false)
 	end
+end
+function PLAYER:SetupDataTables()
+	self:NetworkVar("Bool", 0, "IsTyping")
+	self:NetworkVar("Bool",1,"InNoclip")
+	self:NetworkVar("String",2,"RPName")
+	self:NetworkVar("Int",3,"XP")
+	self:NetworkVar("Int",4,"Hunger")
+	self:NetworkVar("Int",5,"Rank")
+	self:NetworkVar("Int",6,"TeamClass")
+end
+
+function PLAYER:GetInNoclip()
+	return (self:GetDTBool(1) or false)
+end
+
+function PLAYER:GetRPName()
+	return (self:GetNWString("RPName", self:Nick()))
+end
+
+function PLAYER:GetHunger()
+	return self:GetNWInt("Hunger",60)
+end
+
+function PLAYER:SetHunger(val)
+	self:SetNWInt("Hunger",val)
+end
+
+function PLAYER:GetRank()
+	return self:GetNWInt("Rank",0)
+end
+
+function PLAYER:SetRank(val)
+	return self:SetNWInt("Rank",val)
+end
+
+function PLAYER:GetTeamClass()
+	return self:GetNWInt("TeamClass",0)
+end
+
+function PLAYER:SetTeamClass(val)
+	return self:SetNWInt("TeamClass",val)
 end
 
 function PLAYER:Weight()
@@ -68,19 +111,6 @@ function PLAYER:GetPermissionLevel()
 	return PERMISSION_LEVEL_USER
 end
 
-function PLAYER:IsWeaponRaised()
-	local weapon = self:GetActiveWeapon()
-
-	if IsValid(weapon) then
-		if weapon.IsAlwaysRaised or false then
-			return true
-		elseif weapon.IsAlwaysLowered then
-			return false
-		end
-	end
-
-	return self:GetNWBool("weaponRaised", false)
-end
 
 function PLAYER:IsWeaponRaised()
 	local weapon = self:GetActiveWeapon()
@@ -206,10 +236,6 @@ if CLIENT then
 
 		return vm_origin, vm_angles
 	end
-end
-
-function PLAYER:GetTeamData()
-	return landis.Teams.Data[self:Team()]
 end
 
 function PLAYER:TeamClass()

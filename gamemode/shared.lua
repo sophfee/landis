@@ -133,22 +133,6 @@ function landis.Error(...)
 	print("======[ENDOF TRACEBACK]=====")
 end
 
--- TOP LEVEL PRIORITY
-DEFINE_BASECLASS("player_default")
-
-local PLAYER = {}
-function PLAYER:SetupDataTables()
-	self.Player:NetworkVar("Bool", 0, "IsTyping")
-	self.Player:NetworkVar("Bool",1,"InNoclip")
-	self.Player:NetworkVar("Int",2,"XP")
-	self.Player:NetworkVar("Int",3,"Hunger")
-	self.Player:NetworkVar("String",4,"RPName")
-	self.Player:NetworkVar("Int",5,"Rank")
-	self.Player:NetworkVar("Int",6,"TeamClass")
-end
-
-player_manager.RegisterClass( "landis_player", PLAYER, "player_default" )
-
 if SERVER then
 	// load core plugins/extensions
 	MsgC(Color(10,132,255),"[landis] loading libraries...\n")

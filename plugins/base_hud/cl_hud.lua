@@ -269,11 +269,11 @@ hook.Add("HUDPaint", "hudPlugin_draw", function()
 	if SCHEMA:ShouldDrawElement( "Armor" ) then 
 		if ply:Armor() > 0 then 
 			drawBar("Armor",ply:Armor(),Color(50,173,230),{x=25,y=ScrH()-150})
-			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-200,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
-			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-200,{size=36,bold=true},{x=0,y=0},color_white) 
+			landis.DrawText(LocalPlayer():GetRPName() or "",28,ScrH()-200,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName() or "",25,ScrH()-200,{size=36,bold=true},{x=0,y=0},color_white) 
 		else
-			landis.DrawText(LocalPlayer():GetRPName(),28,ScrH()-150,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
-			landis.DrawText(LocalPlayer():GetRPName(),25,ScrH()-150,{size=36,bold=true},{x=0,y=0},color_white) 
+			landis.DrawText(LocalPlayer():GetRPName() or "",28,ScrH()-150,{size=36,bold=true},{x=0,y=0},Color(40,40,40)) 
+			landis.DrawText(LocalPlayer():GetRPName() or "",25,ScrH()-150,{size=36,bold=true},{x=0,y=0},color_white) 
 			
 		end
 	end

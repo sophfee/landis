@@ -21,7 +21,7 @@ function PLAYER:SetupData()
 			return
 		end
 		self:SetUserGroup(userData[1].usergroup)
-		self:SetRPName(userData[1].rpname)
+		self:EditRPName(userData[1].rpname)
 	end
 	-- Setup Currency Data
 	do
@@ -68,6 +68,10 @@ function PLAYER:AddChatText(...)
 end
 
 local BlacklistedNames = {} -- add names
+
+function PLAYER:SetRPName(name)
+	self:SetNWString("RPName",name)
+end
 
 function PLAYER:EditRPName(name,no_sync)
 	self:SetRPName(name)

@@ -480,20 +480,6 @@ do
 		end
 	end
 
-	function meta:IsWeaponRaised()
-		local weapon = self.GetActiveWeapon(self)
-
-		if IsValid(weapon) then
-			if weapon.IsAlwaysRaised or ALWAYS_RAISED[weapon.GetClass(weapon)] then
-				return true
-			elseif weapon.IsAlwaysLowered then
-				return false
-			end
-		end
-
-		return self:GetSyncVar(SYNC_WEPRAISED, false)
-	end
-
 	if SERVER then
 		util.AddNetworkString("landisSeqSet")
 		

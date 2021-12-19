@@ -14,23 +14,6 @@ function GM:CanDrive()
 	return false
 end
 
-function GM:PlayerSpawn(ply)
-	local teamData = landis.Teams.Data[ply:Team()]
-	ply:SetHunger(60)
-	ply:EditRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
-	ply:SetRunSpeed(200)
-	ply:SetWalkSpeed(118)
-	ply:SetSlowWalkSpeed(70)
-	ply:SetDuckSpeed(0.2)
-	if teamData then
-		ply:SetModel(landis.Teams.Data[ply:Team()].Model or "")
-	end
-	ply:Give("weapon_physgun")
-	ply:Give("gmod_tool")
-	ply:Give("landis_hands")
-	hook.Run("PlayerLoadout", ply)
-end
-
 function GM:PlayerSetHandsModel( ply, ent )
 	local teamData = ply:GetTeamData()
 	if teamData then

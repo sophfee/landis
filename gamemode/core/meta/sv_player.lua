@@ -20,7 +20,7 @@ function PLAYER:SetupData()
 			return
 		end
 		self:SetUserGroup(userData[1].usergroup)
-		self:SetRPName(userData[1].rpname)
+		self:SetRPName(userData[1].rpname,false)
 	end
 	-- Setup Currency Data
 	do
@@ -68,8 +68,8 @@ end
 
 local BlacklistedNames = {} -- add names
 
-function PLAYER:SetRPName(name,no_sync)
-	self:SetNWString("RPName", name)
+function PLAYER:EditRPName(name,no_sync)
+	self:SetRPName(name)
 	if not no_sync then
 		sql.Query("UPDATE landis_user SET rpname = " .. sql.SQLStr(name) .. " WHERE steamid = " .. sql.SQLStr(self:SteamID64()))
 	end

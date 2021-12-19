@@ -17,7 +17,7 @@ end
 function GM:PlayerSpawn(ply)
 	local teamData = landis.Teams.Data[ply:Team()]
 	ply:SetHunger(60)
-	ply:SetRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
+	ply:EditRPName(ply:GetSyncRPName(),true) -- Save process time by skipping sync process since you are fetching from DB
 	ply:SetRunSpeed(200)
 	ply:SetWalkSpeed(118)
 	ply:SetSlowWalkSpeed(70)

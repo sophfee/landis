@@ -131,18 +131,18 @@ net.Receive("landis_RequestTeamJoin", function(len,ply)
 		local limit = landis.Teams.Data[teamIndex].Limit
 		if limit then
 			if #team.GetPlayers(teamIndex) < limit then
-				ply:SetNWInt("Rank",0)
-				ply:SetNWInt("Class",0)
-				ply:SetRPName(ply:GetSyncRPName())
+				ply:SetRank(0)
+				ply:SetTeamClass(0)
+				ply:EditRPName(ply:GetSyncRPName(),false)
 				ply:SetTeam(teamIndex)
 				local data = landis.Teams.Data[teamIndex]
 				ply:SetModel(data.Model)
 				ply:SetupHands()
 			end
 		else
-			ply:SetNWInt("Rank",0)
-			ply:SetNWInt("Class",0)
-			ply:SetRPName(ply:GetSyncRPName())
+			ply:SetRank(0)
+			ply:SetTeamClass(0)
+			ply:EditRPName(ply:GetSyncRPName(),false)
 			ply:SetTeam(teamIndex)
 			local data = landis.Teams.Data[teamIndex]
 			ply:SetModel(data.Model)
@@ -177,7 +177,7 @@ net.Receive("landisRPNameChange", function(len,ply)
 		return
 	end
 
-	ply:SetRPName(name)
+	ply:EditRPName(name,true)
 
 end)
 

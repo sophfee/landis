@@ -51,9 +51,9 @@ function landis.RegisterItem( meta )
 				landis.ConsoleMessage(ply:Nick(), " has ", t, " a ", self.UniqueID)
 			
 				if ply.Inventory[i].Equipped then
-					ply:Give(self.equipData.class)
+					ply:Give(self.EquipData.class,true)
 				else
-					ply:StripWeapon(self.equipData.class)
+					ply:StripWeapon(self.EquipData.class)
 				end
 			end
 			

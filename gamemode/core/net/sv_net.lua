@@ -177,7 +177,7 @@ net.Receive("landisRPNameChange", function(len,ply)
 		return
 	end
 
-	ply:EditRPName(name,true)
+	ply:EditRPName(name,false)
 
 end)
 

@@ -8,6 +8,15 @@ function PLAYER:SetupInventory()
 	self.Inventory = {}
 end
 
+function PLAYER:CanLockDoor(door)
+	if door:IsDoor() then
+		local doorGroup = door:GetDoorGroup() or 1000
+		local teamData = self:GetTeamData()
+		if not teamData.DoorAccess then return false end
+		return (self:GetTeamData().DoorAccess[doorGroup] or false)
+	end
+end
+
 function PLAYER:Weight()
 	local weight = 0
 	for v,k in ipairs(self.Inventory) do
@@ -103,7 +112,7 @@ end
 
 
 -- credit : Jake Green (vin)
--- code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!! -- oh BTW I got perms dw lmao, just doesnt work well
+-- code taken from impulse, PERMISSION NOT FULLY GRANTED, DO NOT USE PUBLICLY!!!! -- oh BTW I got perms dw 
 -- !! LEAVE CODE AS COMMENT UNTIL FURTHER NOTICE !!                               -- proof of permission: https://cdn.discordapp.com/attachments/822883467997872168/896128437939503164/unknown.png
 
 if SERVER then

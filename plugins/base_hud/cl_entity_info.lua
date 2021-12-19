@@ -18,6 +18,18 @@ surface.CreateFont("entname", {
 	shadow = true
 })
 
+local function shouldDisplay(e)
+	if e:IsPlayer() then
+		return true
+	end
+	if e:IsDoor() then
+		return true
+	end
+	if e.GetDisplayName then
+		return true
+	end
+end
+
 local function getName(k)
 	local name
 	local p = k:IsPlayer()
@@ -34,6 +46,11 @@ local function getName(k)
 	if k.GetDisplayName then
 		name = k:GetDisplayName()
 		return name
+	end
+
+	if k:IsDoor() then
+		local dg = landis.Doorgroups.Data[k:GetDoorGroup()]
+		return dg and dg.Name or "Purchaseable Door"
 	end
 
 	return k:GetNWString("DisplayName","")
@@ -57,6 +74,10 @@ local function getDesc(k)
 		return name
 	end
 
+	if k:IsDoor() then
+		return ""
+	end
+
 	return k:GetNWString("Description","")
 end
 
@@ -72,7 +93,7 @@ hook.Add( "HUDPaint", "landisDrawEntInfo", function()
 
 	if traceData.Hit then
 		local e = traceData.Entity
-		if ((e.name and e.desc) or (not(e:GetNWString("DisplayName","NULL") == "NULL"))) or e:IsPlayer() then 
+		if shouldDisplay(e) then 
 			if not table.HasValue( drawEnts, traceData.Entity) then
 				table.ForceInsert( drawEnts, traceData.Entity)
 				table.ForceInsert( drawAlpha, 0)

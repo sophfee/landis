@@ -15,8 +15,27 @@ function landis.Schema.Boot( schemaName )
 	landis.ConsoleMessage("booting schema \"" .. schemaName .. "\"")
 	landis.Schema.Name = schemaName
 	landis.includeDir(GM.FolderName .. "/schema")
+	landis.ConsoleMessage("schema finished booting!")
+	if SERVER then
+		for doorGroup,doors in pairs(SCHEMA.Doors) do
+			for _,mapID in ipairs(doors) do
+				local doorEnt = ents.GetMapCreatedEntity(mapID)
+				if IsValid(doorEnt) then
+					doorEnt:SetDTInt(0,doorGroup)
+				end
+			end
+			--[[if IsValid(doorEnt) then
+				landis.SetDoorgroup(doorEnt,doorGroup)
+			else
+				landis.Warn("Failed to load doorgroup for door @ " .. tostring(doorPos))
+			end]]
+		end
+	end
 end
-
+hook.Add("InitPostEntity","landisLoadDoors",function()
+	PrintTable(SCHEMA)
+	
+end)
 -- Default Hooks
 
 function SCHEMA:ShowRankInChat(ply,rank)

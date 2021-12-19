@@ -10,6 +10,7 @@ function PLAYER:SetXP( num )
 end
 
 function PLAYER:SetupData()
+	player_manager.SetPlayerClass(self,"landis_player")
 	landis.ConsoleMessage("Setting up data for User: "..self:Nick())
 	-- Setup Core Data
 	do 
@@ -20,7 +21,7 @@ function PLAYER:SetupData()
 			return
 		end
 		self:SetUserGroup(userData[1].usergroup)
-		self:SetRPName(userData[1].rpname,false)
+		self:SetRPName(userData[1].rpname)
 	end
 	-- Setup Currency Data
 	do

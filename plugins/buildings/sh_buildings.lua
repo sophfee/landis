@@ -61,25 +61,3 @@ if SERVER then
 		end
 	end)
 end
-
-landis.Buildings.Register("RDC",{
-	Purchasable = false,
-	Doors = {
-		[1] = {
-			pos   = Vector(3384,4535,382),
-			label = "RDC Exit"
-		},
-		[2] = {
-			pos   = Vector(2991,4792,382),
-			label = "RDCRDCRDC"
-		},
-		[3] = {
-			pos = Vector(1889,4744,438),
-			label = "dor"
-		},
-		[4] = {
-			pos = Vector(2540,5221,382),
-			label = "Shop"
-		}
-	}
-})
